@@ -13,7 +13,10 @@
     "build": "rollup -c",
     "prepare": "npm run build",
     "coverage": "nyc npm test",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "nyc report --reporter=text-lcov | coveralls",
+    "lint": "tslint 'src/**/*.ts'",
+    "prepub": "npm run lint && npm run test && npm run build",
+    "pub": "npm version patch && npm publish && git push"
   },
   "keywords": [
     "webcrypto",
