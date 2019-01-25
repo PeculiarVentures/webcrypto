@@ -1,0 +1,70 @@
+{
+  "name": "@peculiar/webcrypto",
+  "version": "1.0.0",
+  "description": "A WebCrypto Polyfill for NodeJS",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PeculiarVentures/webcrypto.git"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "build": "rollup -c",
+    "prepare": "npm run build",
+    "coverage": "nyc npm test",
+    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+  },
+  "keywords": [
+    "webcrypto",
+    "crypto",
+    "sha",
+    "rsa",
+    "ec",
+    "aes",
+    "des",
+    "hmac",
+    "pbkdf2"
+  ],
+  "author": "PeculiarVentures",
+  "contributors": [
+    "Miroshin Stepan<microshine@mail.ru>"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/webcrypto/issues"
+  },
+  "homepage": "https://github.com/PeculiarVentures/webcrypto#readme",
+  "banner": "// Copyright (c) 2019, Peculiar Ventures, All rights reserved.",
+  "devDependencies": {
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.10",
+    "mocha": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.0",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.6"
+  },
+  "dependencies": {
+    "@peculiar/asn1-schema": "^1.0.1",
+    "@peculiar/json-schema": "^1.0.7",
+    "asn1js": "^2.0.21",
+    "pvtsutils": "^1.0.3",
+    "tslib": "^1.9.3",
+    "webcrypto-core": "^0.1.25"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ]
+  }
+}

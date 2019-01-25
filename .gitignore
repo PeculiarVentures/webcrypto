@@ -1,0 +1,14 @@
+/node_modules
+
+# VS Code
+/.vscode
+
+# Coverage
+/.nyc_output
+/coverage
+
+# Output
+index.js
+
+# MacOS
+.DS_Store
