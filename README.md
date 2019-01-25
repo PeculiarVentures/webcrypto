@@ -1,11 +1,4 @@
-# node-webcrypto
-
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/node-webcrypto-ossl/master/LICENSE)
-[![Build Status](https://travis-ci.org/PeculiarVentures/node-webcrypto-ossl.svg?branch=master)](https://travis-ci.org/PeculiarVentures/node-webcrypto-ossl)
-[![Coverage Status](https://coveralls.io/repos/github/PeculiarVentures/node-webcrypto-ossl/badge.svg?branch=master)](https://coveralls.io/github/PeculiarVentures/node-webcrypto-ossl?branch=master)
-[![npm version](https://badge.fury.io/js/node-webcrypto-ossl.svg)](https://badge.fury.io/js/node-webcrypto-ossl)
-
-[![NPM](https://nodei.co/npm/node-webcrypto-ossl.png)](https://nodei.co/npm/node-webcrypto-ossl/)
+# @peculiar/webcrypto
 
 We wanted to be able to write Javascript that used crypto on both the client and the server but we did not want to rely on Javascript implementations of crypto. The only native cryptography available in browser is [Web Crypto](http://caniuse.com/#search=cryptography), this resulted in us creating a `@peculiar/webcrypto`.
 
