@@ -16,7 +16,7 @@
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint 'src/**/*.ts'",
     "prepub": "npm run lint && npm run test && npm run build",
-    "pub": "npm version patch && npm publish && git push"
+    "pub": "npm version patch && npm publish --access=public && git push"
   },
   "keywords": [
     "webcrypto",
