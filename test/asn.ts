@@ -30,7 +30,7 @@ context("ASN", () => {
       });
 
       it("serialize", () => {
-        const key = JsonParser.fromJSON(json, asn.RsaPrivateKey);
+        const key = JsonParser.fromJSON(json, { targetSchema: asn.RsaPrivateKey });
 
         const keyInfo = new asn.PrivateKeyInfo();
         keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
@@ -60,7 +60,7 @@ context("ASN", () => {
       });
 
       it("serialize", () => {
-        const key = JsonParser.fromJSON(json, asn.RsaPublicKey);
+        const key = JsonParser.fromJSON(json, { targetSchema: asn.RsaPublicKey });
 
         const keyInfo = new asn.PublicKeyInfo();
         keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
@@ -100,7 +100,7 @@ context("ASN", () => {
         keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(
           new asn.ObjectIdentifier("1.2.840.10045.3.1.7"),
         );
-        const key = JsonParser.fromJSON(json, asn.EcPrivateKey);
+        const key = JsonParser.fromJSON(json, { targetSchema: asn.EcPrivateKey });
         keyInfo.privateKey = AsnSerializer.serialize(key);
 
         const asnKeyInfo = Buffer.from(AsnSerializer.serialize(keyInfo));

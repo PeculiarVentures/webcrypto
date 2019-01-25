@@ -33,7 +33,7 @@ export class DesCrypto {
 
     switch (format.toLowerCase()) {
       case "jwk":
-        key = JsonParser.fromJSON(keyData, DesCryptoKey);
+        key = JsonParser.fromJSON(keyData, { targetSchema: DesCryptoKey });
         break;
       case "raw":
         key = new DesCryptoKey();

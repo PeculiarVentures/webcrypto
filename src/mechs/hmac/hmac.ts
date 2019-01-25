@@ -40,7 +40,7 @@ export class HmacProvider extends core.HmacProvider {
 
     switch (format.toLowerCase()) {
       case "jwk":
-        key = JsonParser.fromJSON(keyData, HmacCryptoKey);
+        key = JsonParser.fromJSON(keyData, { targetSchema: HmacCryptoKey });
         break;
       case "raw":
         key = new HmacCryptoKey();

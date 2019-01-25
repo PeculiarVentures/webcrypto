@@ -38,7 +38,7 @@ export class EcPrivateKey extends AsymmetricKey implements IJsonConvertible {
     keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(
       new ObjectIdentifier(getOidByNamedCurve(json.crv!)),
     );
-    const key = JsonParser.fromJSON(json, asn.EcPrivateKey);
+    const key = JsonParser.fromJSON(json, { targetSchema: asn.EcPrivateKey });
     keyInfo.privateKey = AsnSerializer.serialize(key);
 
     this.data = Buffer.from(AsnSerializer.serialize(keyInfo));

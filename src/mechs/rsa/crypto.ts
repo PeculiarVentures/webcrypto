@@ -77,10 +77,10 @@ export class RsaCrypto {
       case "jwk":
         const jwk = keyData as JsonWebKey;
         if (jwk.d) {
-          const asnKey = JsonParser.fromJSON(keyData, asn.RsaPrivateKey);
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.RsaPrivateKey });
           return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
         } else {
-          const asnKey = JsonParser.fromJSON(keyData, asn.RsaPublicKey);
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.RsaPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
       case "spki": {

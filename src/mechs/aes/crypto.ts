@@ -38,7 +38,7 @@ export class AesCrypto {
 
     switch (format.toLowerCase()) {
       case "jwk":
-        key = JsonParser.fromJSON(keyData, AesCryptoKey);
+        key = JsonParser.fromJSON(keyData, { targetSchema: AesCryptoKey });
         break;
       case "raw":
         key = new AesCryptoKey();

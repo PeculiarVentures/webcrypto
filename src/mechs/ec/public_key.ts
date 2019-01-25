@@ -29,7 +29,7 @@ export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
   }
 
   public fromJSON(json: JsonWebKey) {
-    const key = JsonParser.fromJSON(json, asn.EcPublicKey);
+    const key = JsonParser.fromJSON(json, { targetSchema: asn.EcPublicKey });
 
     const keyInfo = new asn.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.10045.2.1";

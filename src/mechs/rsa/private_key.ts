@@ -27,7 +27,7 @@ export class RsaPrivateKey extends AsymmetricKey {
   }
 
   public fromJSON(json: JsonWebKey) {
-    const key = JsonParser.fromJSON(json, asn.RsaPrivateKey);
+    const key = JsonParser.fromJSON(json, { targetSchema: asn.RsaPrivateKey });
 
     const keyInfo = new asn.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";

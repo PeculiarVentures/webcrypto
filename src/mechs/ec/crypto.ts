@@ -120,10 +120,10 @@ export class EcCrypto {
       case "jwk":
         const jwk = keyData as JsonWebKey;
         if (jwk.d) {
-          const asnKey = JsonParser.fromJSON(keyData, asn.EcPrivateKey);
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.EcPrivateKey });
           return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
         } else {
-          const asnKey = JsonParser.fromJSON(keyData, asn.EcPublicKey);
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.EcPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
       case "raw": {
