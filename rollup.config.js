@@ -9,7 +9,7 @@ export default {
     plugins: [
         typescript({ typescript: require("typescript"), target: "esnext", removeComments: true }),
     ],
-    external: Object.keys(pkg.dependencies),
+    external: ["crypto", ...Object.keys(pkg.dependencies)],
     output: [
         {
             banner: banner.join("\n"),
