@@ -1,0 +1,26 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/mern-starter # directory where steps will run
+    docker: # run the steps with Docker
+      - image: circleci/node:10.15.0
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache: # special step to restore the dependency cache 
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: install-deps
+          command: npm install
+      - save_cache: # special step to save the dependency cache
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run: # run tests with code coverage
+          name: test-code-coverage
+          command: npm run coverage
+      - run: # run coveralls report
+          name: test-report-coveralls
+          command: npm run coveralls
