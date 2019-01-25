@@ -1,1 +1,2 @@
-export * from "./crypto";
+export { CryptoKey } from "./keys";
+export { Crypto } from "./crypto";
