@@ -7,6 +7,7 @@
     "url": "https://github.com/PeculiarVentures/webcrypto.git"
   },
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "test": "mocha",
     "build": "rollup -c",
@@ -45,11 +46,11 @@
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^1.0.1",
-    "@peculiar/json-schema": "^1.0.7",
+    "@peculiar/json-schema": "^1.1.4",
     "asn1js": "^2.0.21",
     "pvtsutils": "^1.0.3",
     "tslib": "^1.9.3",
-    "webcrypto-core": "^0.1.25"
+    "webcrypto-core": "^1.0.1"
   },
   "nyc": {
     "extension": [
