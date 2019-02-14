@@ -6,7 +6,7 @@ export class Pbkdf2Provider extends core.Pbkdf2Provider {
 
   public async onDeriveBits(algorithm: Pbkdf2Params, baseKey: PbkdfCryptoKey, length: number): Promise<ArrayBuffer> {
     return new Promise<ArrayBuffer>((resolve, reject) => {
-      const salt = this.prepareData(algorithm.salt);
+      const salt = core.BufferSourceConverter.toArrayBuffer(algorithm.salt);
       const hash = (algorithm.hash as Algorithm).name.replace("-", "");
       crypto.pbkdf2(baseKey.data, Buffer.from(salt), algorithm.iterations, length >> 3, hash, (err, derivedBits) => {
         if (err) {
