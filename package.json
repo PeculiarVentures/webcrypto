@@ -40,23 +40,23 @@
   "homepage": "https://github.com/PeculiarVentures/webcrypto#readme",
   "banner": "// Copyright (c) 2019, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.10",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^10.12.26",
     "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
-    "nyc": "^13.1.0",
+    "nyc": "^13.2.0",
     "rollup": "^1.1.2",
     "rollup-plugin-typescript": "^1.0.0",
     "ts-node": "^7.0.1",
-    "typescript": "^3.1.6"
+    "typescript": "^3.3.3"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^1.0.1",
-    "@peculiar/json-schema": "^1.1.4",
+    "@peculiar/asn1-schema": "^1.0.2",
+    "@peculiar/json-schema": "^1.1.5",
     "asn1js": "^2.0.21",
     "pvtsutils": "^1.0.3",
     "tslib": "^1.9.3",
-    "webcrypto-core": "^1.0.1"
+    "webcrypto-core": "^1.0.4"
   },
   "nyc": {
     "extension": [
