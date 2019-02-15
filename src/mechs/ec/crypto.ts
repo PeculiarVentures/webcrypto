@@ -62,10 +62,12 @@ export class EcCrypto {
     const signature = signer.sign(options);
     const ecSignature = AsnParser.parse(signature, asn.EcDsaSignature);
 
-    return new Uint8Array(Buffer.concat([
-      Buffer.from(ecSignature.r),
-      Buffer.from(ecSignature.s),
-    ])).buffer;
+    const pointSize = this.getPointSize(key.algorithm.namedCurve);
+    const r = this.addPadding(pointSize, Buffer.from(ecSignature.r));
+    const s = this.addPadding(pointSize, Buffer.from(ecSignature.s));
+
+    const signatureRaw = new Uint8Array(Buffer.concat([r, s])).buffer;
+    return signatureRaw;
   }
 
   public static async verify(algorithm: EcdsaParams, key: EcPublicKey, signature: Uint8Array, data: Uint8Array): Promise<boolean> {
@@ -78,11 +80,12 @@ export class EcCrypto {
     };
 
     const ecSignature = new asn.EcDsaSignature();
-    const size = signature.length / 2;
-    ecSignature.r = signature.buffer.slice(0, size);
-    ecSignature.s = signature.buffer.slice(size, size + size);
+    const pointSize = this.getPointSize(key.algorithm.namedCurve);
+    ecSignature.r = this.removePadding(signature.slice(0, pointSize));
+    ecSignature.s = this.removePadding(signature.slice(pointSize, pointSize + pointSize));
 
-    const ok = signer.verify(options, Buffer.from(AsnSerializer.serialize(ecSignature)));
+    const ecSignatureRaw = Buffer.from(AsnSerializer.serialize(ecSignature));
+    const ok = signer.verify(options, ecSignatureRaw);
     return ok;
   }
 
@@ -190,6 +193,36 @@ export class EcCrypto {
       default:
         throw new core.OperationError(`Cannot convert WebCrypto named curve to NodeJs. Unknown name '${curve}'`);
     }
+  }
+
+  private static getPointSize(namedCurve: string) {
+    switch (namedCurve) {
+      case "P-256":
+      case "K-256":
+        return 32;
+      case "P-384":
+        return 48;
+      case "P-521":
+        return 66;
+      default:
+        throw new Error(`Cannot get size for the named curve '${namedCurve}'`);
+    }
+  }
+
+  private static addPadding(pointSize: number, bytes: Buffer) {
+    const res = Buffer.alloc(pointSize);
+    res.set(Buffer.from(bytes), pointSize - bytes.length);
+    return res;
+  }
+
+  private static removePadding(bytes: Uint8Array) {
+    for (let i = 0; i < bytes.length; i++) {
+      if (!bytes[i]) {
+        continue;
+      }
+      return bytes.slice(i).buffer;
+    }
+    return new ArrayBuffer(0);
   }
 
 }
