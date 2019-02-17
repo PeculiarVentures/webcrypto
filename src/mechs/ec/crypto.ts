@@ -55,8 +55,11 @@ export class EcCrypto {
     const signer = crypto.createSign(cryptoAlg);
     signer.update(Buffer.from(data));
 
+    if (!key.pem) {
+      key.pem = `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`;
+    }
     const options = {
-      key: `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`,
+      key: key.pem,
     };
 
     const signature = signer.sign(options);
@@ -75,8 +78,11 @@ export class EcCrypto {
     const signer = crypto.createVerify(cryptoAlg);
     signer.update(Buffer.from(data));
 
+    if (!key.pem) {
+      key.pem = `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`;
+    }
     const options = {
-      key: `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`,
+      key: key.pem,
     };
 
     const ecSignature = new asn.EcDsaSignature();

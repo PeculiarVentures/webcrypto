@@ -192,8 +192,11 @@ export class RsaCrypto {
     const signer = crypto.createSign(cryptoAlg);
     signer.update(Buffer.from(data));
 
+    if (!key.pem) {
+      key.pem = `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`;
+    }
     const options: INodeCryptoSignOptions = {
-      key: `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`,
+      key: key.pem,
     };
     if (algorithm.name.toUpperCase() === "RSA-PSS") {
       // @ts-ignore
@@ -210,8 +213,11 @@ export class RsaCrypto {
     const signer = crypto.createVerify(cryptoAlg);
     signer.update(Buffer.from(data));
 
+    if (!key.pem) {
+      key.pem = `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`;
+    }
     const options: INodeCryptoSignOptions = {
-      key: `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`,
+      key: key.pem,
     };
     if (algorithm.name.toUpperCase() === "RSA-PSS") {
       // @ts-ignore
