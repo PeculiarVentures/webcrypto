@@ -8,7 +8,7 @@
 /coverage
 
 # Output
-index.js
+build
 
 # MacOS
 .DS_Store
