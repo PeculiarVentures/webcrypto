@@ -4,7 +4,7 @@ import { AesCryptoKey } from "./key";
 
 export class AesKwProvider extends core.AesKwProvider {
 
-  public async onGenerateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey> {
+  public async onGenerateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     return await AesCrypto.generateKey(
       {
         name: this.name,
@@ -23,11 +23,11 @@ export class AesKwProvider extends core.AesKwProvider {
     return AesCrypto.importKey(format, keyData, { name: algorithm.name }, extractable, keyUsages);
   }
 
-  public async onEncrypt(algorithm: AesKeyAlgorithm, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public async onEncrypt(algorithm: Algorithm, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     return AesCrypto.encrypt(algorithm, key, new Uint8Array(data));
   }
 
-  public async onDecrypt(algorithm: AesKeyAlgorithm, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public async onDecrypt(algorithm: Algorithm, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     return AesCrypto.decrypt(algorithm, key, new Uint8Array(data));
   }
 
