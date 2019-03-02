@@ -74,6 +74,8 @@ export class AesCrypto {
         return this.encryptAesCTR(algorithm as AesCtrParams, key, Buffer.from(data));
       case "AES-GCM":
         return this.encryptAesGCM(algorithm as AesGcmParams, key, Buffer.from(data));
+      case "AES-KW":
+        return this.encryptAesKW(algorithm as AesKeyAlgorithm, key, Buffer.from(data));
       default:
         throw new core.OperationError("algorithm: Is not recognized");
     }
@@ -91,6 +93,8 @@ export class AesCrypto {
         return this.decryptAesCTR(algorithm as AesCtrParams, key, Buffer.from(data));
       case "AES-GCM":
         return this.decryptAesGCM(algorithm as AesGcmParams, key, Buffer.from(data));
+      case "AES-KW":
+        return this.decryptAesKW(algorithm as AesKeyAlgorithm, key, Buffer.from(data));
       default:
         throw new core.OperationError("algorithm: Is not recognized");
     }
@@ -153,4 +157,20 @@ export class AesCrypto {
     return new Uint8Array(dec).buffer;
   }
 
+  public static async encryptAesKW(algorithm: AesKeyAlgorithm, key: AesCryptoKey, data: Buffer) {
+    const iv = Buffer.from("A6A6A6A6A6A6A6A6", "hex");
+    const cipher = crypto.createCipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, iv);
+    let enc = cipher.update(data);
+    enc = Buffer.concat([enc, cipher.final()]);
+    const res = new Uint8Array(enc).buffer;
+    return res;
+  }
+
+  public static async decryptAesKW(algorithm: AesKeyAlgorithm, key: AesCryptoKey, data: Buffer) {
+    const iv = Buffer.from("A6A6A6A6A6A6A6A6", "'hex");
+    const decipher = crypto.createDecipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, iv);
+    let dec = decipher.update(data);
+    dec = Buffer.concat([dec, decipher.final()]);
+    return new Uint8Array(dec).buffer;
+  }
 }
