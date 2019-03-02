@@ -3,8 +3,8 @@ import {
   AesCbcProvider, AesCtrProvider, AesGcmProvider, AesKwProvider,
   DesCbcProvider, DesEde3CbcProvider,
   EcdhProvider, EcdsaProvider,
-  HmacProvider,
-  Pbkdf2Provider, HkdfProvider,
+  HkdfProvider, HmacProvider,
+  Pbkdf2Provider,
   RsaOaepProvider, RsaPssProvider, RsaSsaProvider,
   Sha1Provider, Sha256Provider, Sha384Provider, Sha512Provider,
 } from "./mechs";
