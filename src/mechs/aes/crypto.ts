@@ -8,6 +8,8 @@ const WRONG_KEY_TYPE = `Key must be instance of ${AesCryptoKey.name}`;
 
 export class AesCrypto {
 
+  public static AES_KW_IV = Buffer.from("A6A6A6A6A6A6A6A6", "hex");
+
   public static async generateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<AesCryptoKey> {
     const key = new AesCryptoKey();
     key.algorithm = algorithm;
@@ -157,18 +159,15 @@ export class AesCrypto {
     return new Uint8Array(dec).buffer;
   }
 
-  public static async encryptAesKW(algorithm: AesKeyAlgorithm, key: AesCryptoKey, data: Buffer) {
-    const iv = Buffer.from("A6A6A6A6A6A6A6A6", "hex");
-    const cipher = crypto.createCipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, iv);
+  public static async encryptAesKW(algorithm: Algorithm, key: AesCryptoKey, data: Buffer) {
+    const cipher = crypto.createCipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, this.AES_KW_IV);
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
-    const res = new Uint8Array(enc).buffer;
-    return res;
+    return new Uint8Array(enc).buffer;
   }
 
-  public static async decryptAesKW(algorithm: AesKeyAlgorithm, key: AesCryptoKey, data: Buffer) {
-    const iv = Buffer.from("A6A6A6A6A6A6A6A6", "'hex");
-    const decipher = crypto.createDecipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, iv);
+  public static async decryptAesKW(algorithm: Algorithm, key: AesCryptoKey, data: Buffer) {
+    const decipher = crypto.createDecipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, this.AES_KW_IV);
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
     return new Uint8Array(dec).buffer;
