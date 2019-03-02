@@ -24,3 +24,6 @@ jobs:
       - run: # run coveralls report
           name: test-report-coveralls
           command: npm run coveralls
+      - run: # run tslint
+          name: lint
+          command: npm run lint
