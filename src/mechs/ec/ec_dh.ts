@@ -6,7 +6,7 @@ import { EcPublicKey } from "./public_key";
 
 export class EcdhProvider extends core.EcdhProvider {
 
-  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey> {
+  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const key = await EcCrypto.generateKey(
       {
         ...algorithm,

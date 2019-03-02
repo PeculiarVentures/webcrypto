@@ -8,7 +8,7 @@ export class EcdsaProvider extends core.EcdsaProvider {
 
   public namedCurves = ["P-256", "P-384", "P-521", "K-256"];
 
-  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey> {
+  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const key = await EcCrypto.generateKey(
       {
         ...algorithm,

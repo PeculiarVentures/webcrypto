@@ -4,7 +4,7 @@ import { AesCryptoKey } from "./key";
 
 export class AesCbcProvider extends core.AesCbcProvider {
 
-  public async onGenerateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey> {
+  public async onGenerateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const key = await AesCrypto.generateKey(
       {
         name: this.name,

@@ -6,7 +6,7 @@ import { RsaPublicKey } from "./public_key";
 
 export class RsaOaepProvider extends core.RsaOaepProvider {
 
-  public async onGenerateKey(algorithm: RsaHashedKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey> {
+  public async onGenerateKey(algorithm: RsaHashedKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const key = await RsaCrypto.generateKey(
       {
         ...algorithm,

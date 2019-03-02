@@ -18,7 +18,7 @@ export class Pbkdf2Provider extends core.Pbkdf2Provider {
     });
   }
 
-  public async importKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
+  public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     if (format === "raw") {
       const key = new PbkdfCryptoKey();
       key.data = Buffer.from(keyData as ArrayBuffer);

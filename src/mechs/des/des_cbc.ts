@@ -11,7 +11,7 @@ export class DesCbcProvider extends core.DesProvider {
   public ivSize = 8;
   public name = "DES-CBC";
 
-  public async onGenerateKey(algorithm: core.DesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair | CryptoKey> {
+  public async onGenerateKey(algorithm: core.DesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const key = await DesCrypto.generateKey(
       {
         name: this.name,
