@@ -4,7 +4,7 @@ import {
   DesCbcProvider, DesEde3CbcProvider,
   EcdhProvider, EcdsaProvider,
   HmacProvider,
-  Pbkdf2Provider,
+  Pbkdf2Provider, HkdfProvider,
   RsaOaepProvider, RsaPssProvider, RsaSsaProvider,
   Sha1Provider, Sha256Provider, Sha384Provider, Sha512Provider,
 } from "./mechs";
@@ -49,6 +49,10 @@ export class SubtleCrypto extends core.SubtleCrypto {
 
     //#region HMAC
     this.providers.set(new HmacProvider());
+    //#endregion
+
+    //#region HKDF
+    this.providers.set(new HkdfProvider());
     //#endregion
   }
 }
