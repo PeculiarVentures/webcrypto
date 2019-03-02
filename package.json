@@ -56,7 +56,7 @@
     "asn1js": "^2.0.21",
     "pvtsutils": "^1.0.3",
     "tslib": "^1.9.3",
-    "webcrypto-core": "^1.0.5"
+    "webcrypto-core": "^1.0.7"
   },
   "nyc": {
     "extension": [
