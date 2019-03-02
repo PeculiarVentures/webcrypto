@@ -18,6 +18,9 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run: # lint
+          name: lint
+          command: npm run lint
       - run: # run tests with code coverage
           name: test-code-coverage
           command: npm run coverage

@@ -14,7 +14,7 @@
     "prepare": "npm run build",
     "coverage": "nyc npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "tslint 'src/**/*.ts'",
+    "lint": "tslint '{src,test}/**/*.ts'",
     "prepub": "npm run lint && npm run test && npm run build",
     "pub": "npm version patch && npm publish --access=public && git push"
   },
@@ -48,6 +48,7 @@
     "rollup": "^1.2.2",
     "rollup-plugin-typescript": "^1.0.0",
     "ts-node": "^7.0.1",
+    "tslint": "^5.13.1",
     "typescript": "^3.3.3"
   },
   "dependencies": {
