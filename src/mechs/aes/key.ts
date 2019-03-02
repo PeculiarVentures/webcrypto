@@ -18,6 +18,8 @@ export class AesCryptoKey extends SymmetricKey {
         return `A${this.algorithm.length}CTR`;
       case "AES-GCM":
         return `A${this.algorithm.length}GCM`;
+      case "AES-KW":
+        return `A${this.algorithm.length}KW`;
       default:
         throw new core.AlgorithmError("Unsupported algorithm name");
     }

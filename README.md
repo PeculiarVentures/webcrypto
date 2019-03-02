@@ -40,6 +40,7 @@ npm install @peculiar/webcrypto
 | AES-CBC           |      X      |         |       X       |             |        X        |         X         |         |
 | AES-CTR           |      X      |         |       X       |             |        X        |         X         |         |
 | AES-GCM           |      X      |         |       X       |             |        X        |         X         |         |
+| AES-KW            |      X      |         |       X       |             |                 |         X         |         |
 | ECDSA<sup>1</sup> |      X      |         |       X       |      X      |                 |                   |         |
 | ECDH<sup>1</sup>  |      X      |         |       X       |             |                 |                   |    X    |
 | PBKDF2            |             |         |       X       |             |                 |                   |    X    |
