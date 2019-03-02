@@ -89,6 +89,7 @@ context("AES", () => {
               name: "AES-CBC",
               iv: Buffer.from("1234567890abcdef"),
             } as AesCbcParams,
+            wrappedKey: Convert.FromHex("c630c4bf95977db13f386cc950b18e98521d54c4fda0ba15b2884d2695638bd9"),
           },
         ],
       },

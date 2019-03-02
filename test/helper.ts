@@ -74,6 +74,7 @@ export interface ITestWrapKeyAction extends ITestAction {
   key: IImportKeyParams | IImportKeyPairParams;
   algorithm: Algorithm;
   wKey: IImportKeyParams;
+  wrappedKey?: BufferSource;
 }
 
 export interface ITestImportAction extends IImportKeyParams, ITestAction {
@@ -335,6 +336,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
               const key = await getKeys(crypto, action.key);
 
               const wrappedKey = await crypto.subtle.wrapKey(action.wKey.format, wKey, key.publicKey, action.algorithm);
+
+              if (action.wrappedKey) {
+                assert.equal(Convert.ToHex(wrappedKey), Convert.ToHex(action.wrappedKey));
+              }
 
               const unwrappedKey = await crypto.subtle.unwrapKey(
                 action.wKey.format,
