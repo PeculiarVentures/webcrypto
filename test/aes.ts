@@ -559,7 +559,7 @@ context("AES", () => {
             algorithm: {
               name: "AES-KW",
             },
-            wrappedKey: Buffer.from("1FA68B0A8112B447AEF34BD8FB5A7B829D3E862371D2CFE5", "hex")
+            wrappedKey: Buffer.from("1FA68B0A8112B447AEF34BD8FB5A7B829D3E862371D2CFE5", "hex"),
           },
         ],
         import: [
@@ -617,7 +617,7 @@ context("AES", () => {
             algorithm: {
               name: "AES-KW",
             },
-            wrappedKey: Buffer.from("031D33264E15D33268F24EC260743EDCE1C6C7DDEE725A936BA814915C6762D2", "hex")
+            wrappedKey: Buffer.from("031D33264E15D33268F24EC260743EDCE1C6C7DDEE725A936BA814915C6762D2", "hex"),
           },
         ],
         import: [
