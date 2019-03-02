@@ -223,6 +223,11 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
                 action.extractable,
                 action.keyUsages);
 
+              // Can't continue if key is not exctractable.
+              if (!action.extractable) {
+                return;
+              }
+
               const exportedData = await crypto.subtle.exportKey(
                 action.format,
                 importedKey);

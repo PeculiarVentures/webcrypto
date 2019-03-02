@@ -43,6 +43,7 @@ npm install @peculiar/webcrypto
 | AES-KW            |      X      |         |       X       |             |                 |         X         |         |
 | ECDSA<sup>1</sup> |      X      |         |       X       |      X      |                 |                   |         |
 | ECDH<sup>1</sup>  |      X      |         |       X       |             |                 |                   |    X    |
+| HKDF              |             |         |       X       |             |                 |                   |    X    |
 | PBKDF2            |             |         |       X       |             |                 |                   |    X    |
 | DES-CBC<sup>2</sup>|      X      |         |       X       |             |        X        |         X         |         |
 | DES-EDE3-CBC<sup>2</sup>|      X      |         |       X       |             |        X        |         X         |         |
