@@ -15,6 +15,7 @@
     "coverage": "nyc npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "lint": "tslint '{src,test}/**/*.ts'",
+    "lint:fix": "tslint --fix '{src,test}/**/*.ts'",
     "prepub": "npm run lint && npm run test && npm run build",
     "pub": "npm version patch && npm publish --access=public && git push"
   },
