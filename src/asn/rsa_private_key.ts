@@ -1,6 +1,6 @@
-import { AsnIntegerArrayBufferConverter, AsnIntegerConverter, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnIntegerConverter, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
 import { JsonProp } from "@peculiar/json-schema";
-import { JsonBase64UrlArrayBufferConverter } from "../converters";
+import { AsnIntegerArrayBufferConverter, JsonBase64UrlArrayBufferConverter } from "../converters";
 
 // RFC 3437
 // https://tools.ietf.org/html/rfc3447#appendix-A.1.2
