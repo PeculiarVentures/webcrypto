@@ -2,7 +2,7 @@ import { Convert } from "pvtsutils";
 import { Crypto } from "../src";
 import { ITestGenerateKeyAction, testCrypto } from "./helper";
 
-context("HMAC", () => {
+context.only("HMAC", () => {
 
   const crypto = new Crypto();
 
@@ -69,7 +69,7 @@ context("HMAC", () => {
           },
         ],
         import: [
-          {
+          { // JWK SHA-1
             name: "JWK SHA-1",
             format: "jwk",
             data: {
@@ -87,7 +87,7 @@ context("HMAC", () => {
             extractable: true,
             keyUsages: ["sign", "verify"],
           },
-          {
+          { // JWK SHA-256
             name: "JWK SHA-256",
             format: "jwk",
             data: {
@@ -104,7 +104,7 @@ context("HMAC", () => {
             extractable: true,
             keyUsages: ["sign", "verify"],
           },
-          {
+          { // JWK SHA-384
             name: "JWK SHA-384",
             format: "jwk",
             data: {
@@ -121,7 +121,7 @@ context("HMAC", () => {
             extractable: true,
             keyUsages: ["sign", "verify"],
           },
-          {
+          { // JWK SHA-512
             name: "JWK SHA-512",
             format: "jwk",
             data: {
@@ -138,10 +138,21 @@ context("HMAC", () => {
             extractable: true,
             keyUsages: ["sign", "verify"],
           },
-          {
-            name: "raw",
+          { // raw 128
+            name: "raw 128",
             format: "raw",
             data: Convert.FromBase64("AQIDBAUGBwgJAAECAwQFBg"),
+            algorithm: {
+              name: "HMAC",
+              hash: "SHA-512",
+            } as HmacImportParams,
+            extractable: true,
+            keyUsages: ["sign", "verify"],
+          },
+          { // raw 160
+            name: "raw 160",
+            format: "raw",
+            data: new Uint8Array(20),
             algorithm: {
               name: "HMAC",
               hash: "SHA-512",

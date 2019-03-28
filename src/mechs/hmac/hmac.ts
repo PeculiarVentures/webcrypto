@@ -58,16 +58,6 @@ export class HmacProvider extends core.HmacProvider {
     key.extractable = extractable;
     key.usages = keyUsages;
 
-    // check key length
-    switch (key.algorithm.length) {
-      case 128:
-      case 192:
-      case 256:
-        break;
-      default:
-        throw new core.OperationError("keyData: Is wrong key length");
-    }
-
     return key;
   }
 
