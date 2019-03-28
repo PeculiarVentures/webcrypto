@@ -2,7 +2,7 @@ import { Convert } from "pvtsutils";
 import { Crypto } from "../src";
 import { ITestGenerateKeyAction, testCrypto } from "./helper";
 
-context.only("HMAC", () => {
+context("HMAC", () => {
 
   const crypto = new Crypto();
 
@@ -32,6 +32,16 @@ context.only("HMAC", () => {
               keyUsages: ["sign", "verify"],
             } as ITestGenerateKeyAction;
           }),
+          {
+            name: "length:160",
+            algorithm: {
+              name: "HMAC",
+              hash: "SHA-256",
+              length: 160,
+            },
+            extractable: true,
+            keyUsages: ["sign", "verify"],
+          } as ITestGenerateKeyAction,
         ],
         sign: [
           {
