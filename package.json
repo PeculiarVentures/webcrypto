@@ -42,7 +42,7 @@
   "banner": "// Copyright (c) 2019, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
     "@types/mocha": "^5.2.6",
-    "@types/node": "^10.14.6",
+    "@types/node": "^12.0.2",
     "coveralls": "^3.0.3",
     "mocha": "^6.1.4",
     "nyc": "^14.1.0",
