@@ -144,10 +144,10 @@ export class RsaCrypto {
 
     const key = new RsaPrivateKey();
     key.data = Buffer.from(AsnSerializer.serialize(keyInfo));
-    key.algorithm.publicExponent = new Uint8Array(asnKey.publicExponent);
-    key.algorithm.modulusLength = asnKey.modulus.byteLength << 3;
 
     key.algorithm = Object.assign({}, algorithm) as RsaHashedKeyAlgorithm;
+    key.algorithm.publicExponent = new Uint8Array(asnKey.publicExponent);
+    key.algorithm.modulusLength = asnKey.modulus.byteLength << 3;
     key.extractable = extractable;
     key.usages = keyUsages;
 
@@ -162,10 +162,10 @@ export class RsaCrypto {
 
     const key = new RsaPublicKey();
     key.data = Buffer.from(AsnSerializer.serialize(keyInfo));
-    key.algorithm.publicExponent = new Uint8Array(asnKey.publicExponent);
-    key.algorithm.modulusLength = asnKey.modulus.byteLength << 3;
 
     key.algorithm = Object.assign({}, algorithm) as RsaHashedKeyAlgorithm;
+    key.algorithm.publicExponent = new Uint8Array(asnKey.publicExponent);
+    key.algorithm.modulusLength = asnKey.modulus.byteLength << 3;
     key.extractable = extractable;
     key.usages = keyUsages;
 

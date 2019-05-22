@@ -28,7 +28,7 @@ export class SubtleCrypto extends core.SubtleCrypto {
     //#region RSA
     this.providers.set(new RsaSsaProvider());
     this.providers.set(new RsaPssProvider());
-    // this.providers.set(new RsaOaepProvider()); // TODO: Fix encrypt/decrypt
+    this.providers.set(new RsaOaepProvider());
     //#endregion
 
     //#region EC
