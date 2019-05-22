@@ -35,7 +35,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
     const psLength = keySize - dataLength - 2 * hashSize - 2;
 
     if (dataLength > keySize - 2 * hashSize - 2) {
-      throw new Error("data too large");
+      throw new Error("Data too large");
     }
 
     const message = new Uint8Array(keySize);
@@ -114,7 +114,6 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
       .digest();
     for (let i = 0; i < hashSize; i++) {
       if (labelHash[i] !== dataBlock[i]) {
-        console.log(labelHash, dataBlock);
         throw new Error("Decryption failed");
       }
     }
