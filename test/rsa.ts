@@ -197,7 +197,6 @@ context("RSA", () => {
         generateKey: ["SHA-1", "SHA-256", "SHA-384", "SHA-512"].map((hash) => {
           return {
             name: hash,
-            skip: true,
             algorithm: {
               name: "RSA-OAEP",
               hash,
@@ -211,7 +210,6 @@ context("RSA", () => {
         encrypt: [
           {
             name: "with label",
-            skip: true,
             algorithm: {
               name: "RSA-OAEP",
               label: new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]),
@@ -257,12 +255,11 @@ context("RSA", () => {
           },
           {
             name: "without label",
-            skip: true,
             algorithm: {
               name: "RSA-OAEP",
             } as RsaOaepParams,
             data: new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]),
-            encData: Convert.FromBase64("aHu8PBZuctYecfINKgUdB8gBoLyUUFxTZDTzTHUk9KKxtYywYml48HoijBG5DyaIWUUbOIdPgap9C8pFG2iYShQnE9Aj3gzKLHacBbFw1P79+Ei/Tm0j/THiXqCplBZC4dIp4jhTDepmdrlXZcY0slmjG+h8h8TpSmWKP3pEGGk="),
+            encData: Convert.FromBase64("NcsyyVE/y4Z1K5bWGElWAkvlN+jWpfgPtcytlydWUUz4RqFeW5w6KA1cQMHy3eNh920YXDjsLSYHe6Dz1CEqjIKkHS9HBuOhLA39yUArOu/fmn1lMnwb9N9roTxHDxpgY3y98DXEVkAKU4Py0rlzJLVazDV/+1YcbzFLCSKUNaI="),
             key: {
               publicKey: {
                 format: "jwk",
