@@ -20,6 +20,8 @@ We wanted to be able to write Javascript that used crypto on both the client and
 
 **At this time this solution should be considered suitable for research and experimentation, further code and security review is needed before utilization in a production application.**
 
+**Module is based on NodeJS v10 Crypto API. It would work only with Node v10 and higher.**
+
 ## Installing
 
 ```
