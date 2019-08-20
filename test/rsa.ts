@@ -33,8 +33,8 @@ context("RSA", () => {
             signature: Convert.FromBase64("f8OvbYnwX5YPVPjWkOTalYTFJjS1Ks7iNmPdLEby/kK6BEGk5uPvY/ebcok6sTQpQXJXJFJbOcMrZftmJXpm1szcgOdNgVW6FDc3722a9Mzvk/YfvNUCQRNEMON9lYKdpOLSXAFpXR5ovZytbFQ2w2ztpKkJvNY2QZQlizcZKSg="),
             key: {
               publicKey: {
-                format: "jwk",
-                algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "RS256",
                   e: "AQAB",
@@ -44,11 +44,11 @@ context("RSA", () => {
                   n: "vqpvdxuyZ6rKYnWTj_ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j-n3FV9xUCGiplWdqMJJKT-4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE-4G55Oxlm52ID2_RJesP5nzcGTriQwoRbrJP5OEt0",
                 },
                 extractable: true,
-                keyUsages: ["verify"],
+                keyUsages: ["verify"] as KeyUsage[],
               },
               privateKey: {
-                format: "jwk",
-                algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "RS256",
                   d: "AkeIWJywp9OfYsj0ECsKmhDVBw55ZL_yU-rbIrashQ_31P6gsc_0I-SVN1rd8Hz79OJ_rTY8ZRBZ4PIyFdPoyvuo5apHdAHH6riJKxDHWPxhE-ReNVEPSTiF1ry8DSe5zC7w9BLnH_QM8bkN4cOnvgqrg7EbrGWomAGJVvoRwOM",
@@ -64,7 +64,7 @@ context("RSA", () => {
                   qi: "FByTxX4G2eXkk1xe0IuiEv7I5NS-CnFyp8iB4XLG0rabnfcIZFKpf__X0sNyVOAVo5-jJMuUYjCRTdaXNAWhkg",
                 },
                 extractable: true,
-                keyUsages: ["sign"],
+                keyUsages: ["sign"] as KeyUsage[],
               },
             },
           },
@@ -73,7 +73,7 @@ context("RSA", () => {
           {
             name: "public key JWK",
             format: "jwk" as KeyFormat,
-            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as Algorithm,
+            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as RsaHashedImportParams,
             data: {
               alg: "RS256",
               e: "AQAB",
@@ -83,20 +83,20 @@ context("RSA", () => {
               n: "vqpvdxuyZ6rKYnWTj_ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j-n3FV9xUCGiplWdqMJJKT-4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE-4G55Oxlm52ID2_RJesP5nzcGTriQwoRbrJP5OEt0",
             },
             extractable: true,
-            keyUsages: ["verify"],
+            keyUsages: ["verify"] as KeyUsage[],
           },
           {
             name: "public key SPKI",
             format: "spki" as KeyFormat,
-            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as Algorithm,
+            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as RsaHashedImportParams,
             data: Convert.FromBase64("MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC+qm93G7JnqspidZOP9nMMEVkAACWl7mGmiJgepraPmQru/xTkRo9jZsuJv2bgHjSP6fcVX3FQIaKmVZ2owkkpP7g+MY7kTdLg32SMWG7nuehhPvPvfTYnSwld6gVtfGWAT7gbnk7GWbnYgPb9El6w/mfNwZOuJDChFusk/k4S3QIDAQAB"),
             extractable: true,
-            keyUsages: ["verify"],
+            keyUsages: ["verify"] as KeyUsage[],
           },
           {
             name: "private key JWK",
             format: "jwk" as KeyFormat,
-            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as Algorithm,
+            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as RsaHashedImportParams,
             data: {
               alg: "RS256",
               d: "AkeIWJywp9OfYsj0ECsKmhDVBw55ZL_yU-rbIrashQ_31P6gsc_0I-SVN1rd8Hz79OJ_rTY8ZRBZ4PIyFdPoyvuo5apHdAHH6riJKxDHWPxhE-ReNVEPSTiF1ry8DSe5zC7w9BLnH_QM8bkN4cOnvgqrg7EbrGWomAGJVvoRwOM",
@@ -112,15 +112,15 @@ context("RSA", () => {
               qi: "FByTxX4G2eXkk1xe0IuiEv7I5NS-CnFyp8iB4XLG0rabnfcIZFKpf__X0sNyVOAVo5-jJMuUYjCRTdaXNAWhkg",
             },
             extractable: true,
-            keyUsages: ["sign"],
+            keyUsages: ["sign"] as KeyUsage[],
           },
           {
             name: "private key pkcs8",
             format: "pkcs8" as KeyFormat,
-            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as Algorithm,
+            algorithm: { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" } as RsaHashedImportParams,
             data: Convert.FromBase64("MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAL6qb3cbsmeqymJ1k4/2cwwRWQAAJaXuYaaImB6mto+ZCu7/FORGj2Nmy4m/ZuAeNI/p9xVfcVAhoqZVnajCSSk/uD4xjuRN0uDfZIxYbue56GE+8+99NidLCV3qBW18ZYBPuBueTsZZudiA9v0SXrD+Z83Bk64kMKEW6yT+ThLdAgMBAAECgYACR4hYnLCn059iyPQQKwqaENUHDnlkv/JT6tsitqyFD/fU/qCxz/Qj5JU3Wt3wfPv04n+tNjxlEFng8jIV0+jK+6jlqkd0AcfquIkrEMdY/GET5F41UQ9JOIXWvLwNJ7nMLvD0Eucf9AzxuQ3hw6e+CquDsRusZaiYAYlW+hHA4wJBAOoxbZgSSUBSJUFF12WCILx+9GPWtN6Fiozbhdr3m+WX9PRLSzRPOjaZyJuOtzp6ByT1tJvMBxV2WX3GFUyD0f8CQQDQa20MyXWQjNJXas3MZek5Ly1SqvkvPQS1VnAhv0Yk8yYnQ/eBnzTXMSBlnj56xTtwtR/4FJkQCZ+coDzQbaMjAkEApOolqL7HwnmWLn7GDX8zGkm0Q1IAj+ouBL7ZZbaTm3wETLtwu+dGsQheEdzP/mfL/CTiCAwGuQBcSItimD0DdQJAFTSY59AnkgmB7TsErWNBE3xlVB/pMpE2xWyCBCz96gyDOUOFDz8vlSV+clhjawJeRd1n30nZOPSBtOHozhwZmQJAFByTxX4G2eXkk1xe0IuiEv7I5NS+CnFyp8iB4XLG0rabnfcIZFKpf//X0sNyVOAVo5+jJMuUYjCRTdaXNAWhkg=="),
             extractable: true,
-            keyUsages: ["sign"],
+            keyUsages: ["sign"] as KeyUsage[],
           },
         ],
       },
@@ -152,8 +152,8 @@ context("RSA", () => {
             signature: Convert.FromBase64("OYz/7fv71ELOs5kuz5IiYq1NsXuOazl22xqIFjiY++hYFzJMWaR+ZI0WPoMOifvb1PNKmdQ4dY+QbpYC1vdzlAKfkLe22l5htLyQaXzjD/yeMZYrL0KmrabC9ayL6bxrMW+ccePStkbrF1Jn0LT09l22aX/r1y3SPrl0b+zwo/Q="),
             key: {
               publicKey: {
-                format: "jwk",
-                algorithm: { name: "RSA-PSS", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSA-PSS", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "PS256",
                   e: "AQAB",
@@ -163,11 +163,11 @@ context("RSA", () => {
                   n: "vqpvdxuyZ6rKYnWTj_ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j-n3FV9xUCGiplWdqMJJKT-4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE-4G55Oxlm52ID2_RJesP5nzcGTriQwoRbrJP5OEt0",
                 },
                 extractable: true,
-                keyUsages: ["verify"],
+                keyUsages: ["verify"] as KeyUsage[],
               },
               privateKey: {
-                format: "jwk",
-                algorithm: { name: "RSA-PSS", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSA-PSS", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "PS256",
                   d: "AkeIWJywp9OfYsj0ECsKmhDVBw55ZL_yU-rbIrashQ_31P6gsc_0I-SVN1rd8Hz79OJ_rTY8ZRBZ4PIyFdPoyvuo5apHdAHH6riJKxDHWPxhE-ReNVEPSTiF1ry8DSe5zC7w9BLnH_QM8bkN4cOnvgqrg7EbrGWomAGJVvoRwOM",
@@ -183,7 +183,7 @@ context("RSA", () => {
                   qi: "FByTxX4G2eXkk1xe0IuiEv7I5NS-CnFyp8iB4XLG0rabnfcIZFKpf__X0sNyVOAVo5-jJMuUYjCRTdaXNAWhkg",
                 },
                 extractable: true,
-                keyUsages: ["sign"],
+                keyUsages: ["sign"] as KeyUsage[],
               },
             },
           },
@@ -218,8 +218,8 @@ context("RSA", () => {
             encData: Convert.FromBase64("aHu8PBZuctYecfINKgUdB8gBoLyUUFxTZDTzTHUk9KKxtYywYml48HoijBG5DyaIWUUbOIdPgap9C8pFG2iYShQnE9Aj3gzKLHacBbFw1P79+Ei/Tm0j/THiXqCplBZC4dIp4jhTDepmdrlXZcY0slmjG+h8h8TpSmWKP3pEGGk="),
             key: {
               publicKey: {
-                format: "jwk",
-                algorithm: { name: "RSA-OAEP", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSA-OAEP", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "RSA-OAEP-256",
                   e: "AQAB",
@@ -229,11 +229,11 @@ context("RSA", () => {
                   n: "vqpvdxuyZ6rKYnWTj_ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j-n3FV9xUCGiplWdqMJJKT-4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE-4G55Oxlm52ID2_RJesP5nzcGTriQwoRbrJP5OEt0",
                 },
                 extractable: true,
-                keyUsages: ["encrypt"],
+                keyUsages: ["encrypt"] as KeyUsage[],
               },
               privateKey: {
-                format: "jwk",
-                algorithm: { name: "RSA-OAEP", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSA-OAEP", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "RSA-OAEP-256",
                   d: "AkeIWJywp9OfYsj0ECsKmhDVBw55ZL_yU-rbIrashQ_31P6gsc_0I-SVN1rd8Hz79OJ_rTY8ZRBZ4PIyFdPoyvuo5apHdAHH6riJKxDHWPxhE-ReNVEPSTiF1ry8DSe5zC7w9BLnH_QM8bkN4cOnvgqrg7EbrGWomAGJVvoRwOM",
@@ -249,7 +249,7 @@ context("RSA", () => {
                   qi: "FByTxX4G2eXkk1xe0IuiEv7I5NS-CnFyp8iB4XLG0rabnfcIZFKpf__X0sNyVOAVo5-jJMuUYjCRTdaXNAWhkg",
                 },
                 extractable: true,
-                keyUsages: ["decrypt"],
+                keyUsages: ["decrypt"] as KeyUsage[],
               },
             },
           },
@@ -262,8 +262,8 @@ context("RSA", () => {
             encData: Convert.FromBase64("NcsyyVE/y4Z1K5bWGElWAkvlN+jWpfgPtcytlydWUUz4RqFeW5w6KA1cQMHy3eNh920YXDjsLSYHe6Dz1CEqjIKkHS9HBuOhLA39yUArOu/fmn1lMnwb9N9roTxHDxpgY3y98DXEVkAKU4Py0rlzJLVazDV/+1YcbzFLCSKUNaI="),
             key: {
               publicKey: {
-                format: "jwk",
-                algorithm: { name: "RSA-OAEP", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSA-OAEP", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "RSA-OAEP-256",
                   e: "AQAB",
@@ -273,11 +273,11 @@ context("RSA", () => {
                   n: "vqpvdxuyZ6rKYnWTj_ZzDBFZAAAlpe5hpoiYHqa2j5kK7v8U5EaPY2bLib9m4B40j-n3FV9xUCGiplWdqMJJKT-4PjGO5E3S4N9kjFhu57noYT7z7302J0sJXeoFbXxlgE-4G55Oxlm52ID2_RJesP5nzcGTriQwoRbrJP5OEt0",
                 },
                 extractable: true,
-                keyUsages: ["encrypt"],
+                keyUsages: ["encrypt"] as KeyUsage[],
               },
               privateKey: {
-                format: "jwk",
-                algorithm: { name: "RSA-OAEP", hash: "SHA-256" },
+                format: "jwk" as KeyFormat,
+                algorithm: { name: "RSA-OAEP", hash: "SHA-256" } as RsaHashedImportParams,
                 data: {
                   alg: "RSA-OAEP-256",
                   d: "AkeIWJywp9OfYsj0ECsKmhDVBw55ZL_yU-rbIrashQ_31P6gsc_0I-SVN1rd8Hz79OJ_rTY8ZRBZ4PIyFdPoyvuo5apHdAHH6riJKxDHWPxhE-ReNVEPSTiF1ry8DSe5zC7w9BLnH_QM8bkN4cOnvgqrg7EbrGWomAGJVvoRwOM",
@@ -293,7 +293,7 @@ context("RSA", () => {
                   qi: "FByTxX4G2eXkk1xe0IuiEv7I5NS-CnFyp8iB4XLG0rabnfcIZFKpf__X0sNyVOAVo5-jJMuUYjCRTdaXNAWhkg",
                 },
                 extractable: true,
-                keyUsages: ["decrypt"],
+                keyUsages: ["decrypt"] as KeyUsage[],
               },
             },
           },
