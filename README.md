@@ -39,6 +39,7 @@ npm install @peculiar/webcrypto
 | HMAC              |      X      |         |       X       |      X      |                 |                   |         |
 | RSASSA-PKCS1-v1_5 |      X      |         |       X       |      X      |                 |                   |         |
 | RSA-PSS           |      X      |         |       X       |      X      |                 |                   |         |
+| RSA-PKCS1<sup>2</sup>|      X   |         |       X       |      X      |        X        |         X         |         |
 | RSA-OAEP          |      X      |         |       X       |             |        X        |         X         |         |
 | AES-CMAC          |      X      |         |       X       |      X      |                 |                   |         |
 | AES-CBC           |      X      |         |       X       |             |        X        |         X         |         |

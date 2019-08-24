@@ -9,6 +9,8 @@ export function getJwkAlgorithm(algorithm: RsaHashedKeyAlgorithm) {
       return `RS${/(\d+)$/.exec(algorithm.hash.name)![1]}`;
     case "RSA-PSS":
       return `PS${/(\d+)$/.exec(algorithm.hash.name)![1]}`;
+    case "RSA-PKCS1":
+      return `RS1`;
     default:
       throw new core.OperationError("algorithm: Is not recognized");
   }
