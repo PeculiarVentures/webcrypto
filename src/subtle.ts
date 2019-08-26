@@ -6,7 +6,7 @@ import {
   EcdsaProvider, HkdfProvider,
   HmacProvider,
   Pbkdf2Provider,
-  RsaOaepProvider, RsaPkcs1Provider, RsaPssProvider, RsaSsaProvider,
+  RsaEsProvider, RsaOaepProvider, RsaPssProvider, RsaSsaProvider,
   Sha1Provider, Sha256Provider, Sha384Provider, Sha512Provider,
 } from "./mechs";
 
@@ -31,7 +31,7 @@ export class SubtleCrypto extends core.SubtleCrypto {
     this.providers.set(new RsaSsaProvider());
     this.providers.set(new RsaPssProvider());
     this.providers.set(new RsaOaepProvider());
-    this.providers.set(new RsaPkcs1Provider());
+    this.providers.set(new RsaEsProvider());
     //#endregion
 
     //#region EC

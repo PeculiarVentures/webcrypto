@@ -3,4 +3,4 @@ export * from "./public_key";
 export * from "./rsa_ssa";
 export * from "./rsa_pss";
 export * from "./rsa_oaep";
-export * from "./rsa_pkcs1";
+export * from "./rsa_es";

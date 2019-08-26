@@ -6,17 +6,13 @@ import { RsaCrypto } from "./crypto";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
 
-export type RsaPkcs1Params = Algorithm;
-export type RsaPkcs1SignParams = core.HashedAlgorithm;
+export class RsaEsProvider extends core.ProviderCrypto {
 
-export class RsaPkcs1Provider extends core.ProviderCrypto {
-
-  public name = "RSA-PKCS1";
+  public name = "RSAES-PKCS1-v1_5";
   public usages = {
-    publicKey: ["encrypt", "wrapKey", "verify"] as core.KeyUsages,
-    privateKey: ["decrypt", "unwrapKey", "sign"] as core.KeyUsages,
+    publicKey: ["encrypt", "wrapKey"] as core.KeyUsages,
+    privateKey: ["decrypt", "unwrapKey"] as core.KeyUsages,
   };
-  public hashAlgorithms = ["SHA-1", "SHA-256", "SHA-384", "SHA-512"];
 
   public async onGenerateKey(algorithm: RsaKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const key = await RsaCrypto.generateKey(
@@ -53,46 +49,13 @@ export class RsaPkcs1Provider extends core.ProviderCrypto {
     }
   }
 
-  public async onSign(algorithm: RsaPkcs1SignParams, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
-    const signature = crypto
-      .createSign((algorithm.hash as Algorithm).name.replace("-", ""))
-      .update(Buffer.from(data))
-      .sign(this.toCryptoOptions(key) as any);
-    return new Uint8Array(signature).buffer;
-  }
-
-  public checkSign(algorithm: RsaPkcs1SignParams, key: CryptoKey, data: ArrayBuffer) {
-    this.checkAlgorithmName(algorithm);
-    this.checkAlgorithmSignParams(algorithm);
-    this.checkCryptoKey(key, "sign");
-  }
-
-  public checkAlgorithmSignParams(algorithm: RsaPkcs1SignParams) {
-    this.checkRequiredProperty(algorithm, "hash");
-    this.checkHashAlgorithm(algorithm.hash as Algorithm, this.hashAlgorithms);
-  }
-
-  public async onVerify(algorithm: RsaPkcs1SignParams, key: RsaPublicKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
-    const ok = crypto
-      .createVerify((algorithm.hash as Algorithm).name.replace("-", ""))
-      .update(Buffer.from(data))
-      .verify(this.toCryptoOptions(key) as any, Buffer.from(signature));
-    return ok;
-  }
-
-  public checkVerify(algorithm: RsaPkcs1SignParams, key: CryptoKey, signature: ArrayBuffer, data: ArrayBuffer) {
-    this.checkAlgorithmName(algorithm);
-    this.checkAlgorithmSignParams(algorithm);
-    this.checkCryptoKey(key, "verify");
-  }
-
-  public async onEncrypt(algorithm: RsaPkcs1Params, key: RsaPublicKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public async onEncrypt(algorithm: Algorithm, key: RsaPublicKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const options = this.toCryptoOptions(key);
     const enc = crypto.publicEncrypt(options, new Uint8Array(data));
     return new Uint8Array(enc).buffer;
   }
 
-  public async onDecrypt(algorithm: RsaPkcs1Params, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public async onDecrypt(algorithm: Algorithm, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const options = this.toCryptoOptions(key);
     const dec = crypto.privateDecrypt(options, new Uint8Array(data));
     return new Uint8Array(dec).buffer;
@@ -123,12 +86,5 @@ export class RsaPkcs1Provider extends core.ProviderCrypto {
       // @ts-ignore
       padding: crypto.constants.RSA_PKCS1_PADDING,
     };
-  }
-
-  private prepareSignData(algorithm: RsaPkcs1SignParams, data: ArrayBuffer) {
-    return crypto
-      .createHash((algorithm.hash as Algorithm).name.replace("-", ""))
-      .update(Buffer.from(data))
-      .digest();
   }
 }
