@@ -56,7 +56,7 @@
     "@peculiar/asn1-schema": "^1.0.3",
     "@peculiar/json-schema": "^1.1.5",
     "asn1js": "^2.0.26",
-    "pvtsutils": "^1.0.4",
+    "pvtsutils": "^1.0.6",
     "tslib": "^1.10.0",
     "webcrypto-core": "^1.0.12"
   },
