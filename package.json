@@ -42,15 +42,15 @@
   "banner": "// Copyright (c) 2019, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.2",
+    "@types/node": "^12.7.4",
     "coveralls": "^3.0.6",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
-    "rollup": "^1.19.4",
+    "rollup": "^1.20.3",
     "rollup-plugin-typescript": "^1.0.1",
     "ts-node": "^8.3.0",
-    "tslint": "^5.18.0",
-    "typescript": "^3.5.3"
+    "tslint": "^5.19.0",
+    "typescript": "^3.6.2"
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^1.0.3",
@@ -58,7 +58,7 @@
     "asn1js": "^2.0.26",
     "pvtsutils": "^1.0.6",
     "tslib": "^1.10.0",
-    "webcrypto-core": "^1.0.12"
+    "webcrypto-core": "^1.0.13"
   },
   "nyc": {
     "extension": [
