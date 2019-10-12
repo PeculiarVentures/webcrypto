@@ -44,6 +44,7 @@ npm install @peculiar/webcrypto
 | AES-CMAC          |      X      |         |       X       |      X      |                 |                   |         |
 | AES-CBC           |      X      |         |       X       |             |        X        |         X         |         |
 | AES-CTR           |      X      |         |       X       |             |        X        |         X         |         |
+| AES-ECB           |      X      |         |       X       |             |        X        |         X         |         |
 | AES-GCM           |      X      |         |       X       |             |        X        |         X         |         |
 | AES-KW            |      X      |         |       X       |             |                 |         X         |         |
 | ECDSA<sup>1</sup> |      X      |         |       X       |      X      |                 |                   |         |
