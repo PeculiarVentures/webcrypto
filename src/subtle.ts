@@ -1,7 +1,7 @@
 import * as core from "webcrypto-core";
 import {
-  AesCbcProvider, AesCmacProvider, AesCtrProvider, AesGcmProvider,
-  AesKwProvider, DesCbcProvider,
+  AesCbcProvider, AesCmacProvider, AesCtrProvider, AesEcbProvider, AesGcmProvider, AesKwProvider,
+  DesCbcProvider,
   DesEde3CbcProvider, EcdhProvider,
   EcdsaProvider, HkdfProvider,
   HmacProvider,
@@ -20,6 +20,7 @@ export class SubtleCrypto extends core.SubtleCrypto {
     this.providers.set(new AesGcmProvider());
     this.providers.set(new AesCmacProvider());
     this.providers.set(new AesKwProvider());
+    this.providers.set(new AesEcbProvider());
     //#endregion
 
     //#region DES
