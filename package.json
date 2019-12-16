@@ -7,17 +7,25 @@
     "url": "https://github.com/PeculiarVentures/webcrypto.git"
   },
   "main": "build/webcrypto.js",
+  "module": "build/webcrypto.es.js",
   "types": "index.d.ts",
   "scripts": {
     "test": "mocha",
-    "build": "rollup -c",
     "prepare": "npm run build",
     "coverage": "nyc npm test",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
-    "lint": "tslint '{src,test}/**/*.ts'",
-    "lint:fix": "tslint --fix '{src,test}/**/*.ts'",
-    "prepub": "npm run lint && npm run test && npm run build",
-    "pub": "npm version patch && npm publish --access=public && git push"
+    "build": "npm run build:module",
+    "clear": "rimraf build/*",
+    "rebuild": "npm run clear && npm run build",
+    "build:module": "rollup -c",
+    "lint": "tslint -p .",
+    "lint:fix": "tslint --fix -p .",
+    "prepub": "npm run lint && npm run rebuild",
+    "pub": "npm version patch && npm publish",
+    "postpub": "git push && git push --tags origin master",
+    "prepub:next": "npm run lint && npm run rebuild",
+    "pub:next": "npm version prerelease --preid=next && npm publish --tag next",
+    "postpub:next": "git push"
   },
   "keywords": [
     "webcrypto",
@@ -42,23 +50,24 @@
   "banner": "// Copyright (c) 2019, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
     "@types/mocha": "^5.2.7",
-    "@types/node": "^12.7.12",
-    "coveralls": "^3.0.7",
-    "mocha": "^6.2.1",
+    "@types/node": "^12.12.18",
+    "coveralls": "^3.0.9",
+    "mocha": "^6.2.2",
     "nyc": "^14.1.1",
-    "rollup": "^1.23.1",
-    "rollup-plugin-typescript": "^1.0.1",
-    "ts-node": "^8.4.1",
-    "tslint": "^5.20.0",
-    "typescript": "^3.6.4"
+    "rimraf": "^3.0.0",
+    "rollup": "^1.27.13",
+    "rollup-plugin-typescript2": "^0.25.3",
+    "ts-node": "^8.5.4",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3"
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^1.0.3",
-    "@peculiar/json-schema": "^1.1.5",
+    "@peculiar/json-schema": "^1.1.6",
     "asn1js": "^2.0.26",
-    "pvtsutils": "^1.0.6",
+    "pvtsutils": "^1.0.9",
     "tslib": "^1.10.0",
-    "webcrypto-core": "^1.0.14"
+    "webcrypto-core": "^1.0.17"
   },
   "nyc": {
     "extension": [
