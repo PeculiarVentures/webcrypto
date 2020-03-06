@@ -1,5 +1,5 @@
 import { AsnIntegerArrayBufferConverter, AsnProp, AsnPropTypes, IAsnConverter } from "@peculiar/asn1-schema";
-//@ts-ignore
+// @ts-ignore
 import * as asn1 from "asn1js";
 
 // RFC 3279
