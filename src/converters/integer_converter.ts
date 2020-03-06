@@ -1,6 +1,6 @@
 import { IAsnConverter } from "@peculiar/asn1-schema";
-// tslint:disable-next-line: no-var-requires
-const asn1 = require("asn1js");
+//@ts-ignore
+import * as asn1 from "asn1js";
 
 export const AsnIntegerArrayBufferConverter: IAsnConverter<ArrayBuffer> = {
   fromASN: (value: any) => {

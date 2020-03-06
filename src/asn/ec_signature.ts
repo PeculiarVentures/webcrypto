@@ -1,6 +1,6 @@
 import { AsnIntegerArrayBufferConverter, AsnProp, AsnPropTypes, IAsnConverter } from "@peculiar/asn1-schema";
-// tslint:disable-next-line: no-var-requires
-const asn1 = require("asn1js");
+//@ts-ignore
+import * as asn1 from "asn1js";
 
 // RFC 3279
 // https://tools.ietf.org/html/rfc3279#section-2.2.3

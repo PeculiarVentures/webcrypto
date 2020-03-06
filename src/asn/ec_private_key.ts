@@ -3,9 +3,6 @@ import { IJsonConvertible } from "@peculiar/json-schema";
 import { Convert } from "pvtsutils";
 import { EcPublicKey } from "./ec_public_key";
 
-// tslint:disable-next-line: no-var-requires
-const asn1 = require("asn1js");
-
 // RFC 5915
 // https://tools.ietf.org/html/rfc5915#section-3
 //
