@@ -42,7 +42,7 @@ function aes(key: Buffer, message: Buffer) {
 }
 
 function getMessageBlock(message: Buffer, blockIndex: number) {
-  const block = new Buffer(blockSize);
+  const block = Buffer.alloc(blockSize);
   const start = blockIndex * blockSize;
   const end = start + blockSize;
 
@@ -52,7 +52,7 @@ function getMessageBlock(message: Buffer, blockIndex: number) {
 }
 
 function getPaddedMessageBlock(message: Buffer, blockIndex: number) {
-  const block = new Buffer(blockSize);
+  const block = Buffer.alloc(blockSize);
   const start = blockIndex * blockSize;
   const end = message.length;
 
