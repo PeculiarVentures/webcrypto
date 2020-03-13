@@ -90,5 +90,10 @@
   },
   "engines": {
     "node": ">=10.12.0"
+  },
+  "mocha": {
+    "require": "ts-node/register",
+    "extension": ["ts"],
+    "files": "test/**/*.ts"
   }
 }
