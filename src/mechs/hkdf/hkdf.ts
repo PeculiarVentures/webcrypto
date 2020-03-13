@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import * as core from "webcrypto-core";
 import { BufferSourceConverter, CryptoKey } from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { HkdfCryptoKey } from "./key";
 
 export class HkdfProvider extends core.HkdfProvider {
@@ -15,7 +16,7 @@ export class HkdfProvider extends core.HkdfProvider {
     key.algorithm = { name: this.name };
     key.extractable = extractable;
     key.usages = keyUsages;
-    return key;
+    return setCryptoKey(key);
   }
 
   public async onDeriveBits(params: HkdfParams, baseKey: HkdfCryptoKey, length: number): Promise<ArrayBuffer> {
@@ -26,7 +27,7 @@ export class HkdfProvider extends core.HkdfProvider {
     const info = BufferSourceConverter.toUint8Array(params.info);
 
     const PRK = crypto.createHmac(hash, BufferSourceConverter.toUint8Array(params.salt))
-        .update(BufferSourceConverter.toUint8Array(baseKey.data))
+        .update(BufferSourceConverter.toUint8Array(getCryptoKey(baseKey).data))
         .digest();
 
     const blocks = [Buffer.alloc(0)];
@@ -44,7 +45,7 @@ export class HkdfProvider extends core.HkdfProvider {
 
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
-    if (!(key instanceof HkdfCryptoKey)) {
+    if (!(getCryptoKey(key) instanceof HkdfCryptoKey)) {
       throw new TypeError("key: Is not HKDF CryptoKey");
     }
   }

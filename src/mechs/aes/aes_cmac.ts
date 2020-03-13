@@ -1,5 +1,6 @@
 import * as crypto from "crypto";
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { AesCrypto } from "./crypto";
 import { AesCryptoKey } from "./key";
 
@@ -121,11 +122,11 @@ export class AesCmacProvider extends core.AesCmacProvider {
       extractable,
       keyUsages);
 
-    return key;
+    return setCryptoKey(key);
   }
 
   public async onSign(algorithm: AesCmacParams, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
-    const result = aesCmac(key.data, Buffer.from(data));
+    const result = aesCmac(getCryptoKey(key).data, Buffer.from(data));
     return new Uint8Array(result).buffer;
   }
 
@@ -135,16 +136,17 @@ export class AesCmacProvider extends core.AesCmacProvider {
   }
 
   public async onExportKey(format: KeyFormat, key: AesCryptoKey): Promise<JsonWebKey | ArrayBuffer> {
-    return AesCrypto.exportKey(format, key);
+    return AesCrypto.exportKey(format, getCryptoKey(key) as AesCryptoKey);
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    return AesCrypto.importKey(format, keyData, { name: algorithm.name }, extractable, keyUsages);
+    const res = await AesCrypto.importKey(format, keyData, { name: algorithm.name }, extractable, keyUsages);
+    return setCryptoKey(res);
   }
 
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
-    if (!(key instanceof AesCryptoKey)) {
+    if (!(getCryptoKey(key) instanceof AesCryptoKey)) {
       throw new TypeError("key: Is not a AesCryptoKey");
     }
   }

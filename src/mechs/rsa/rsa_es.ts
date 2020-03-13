@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
@@ -15,7 +15,7 @@ export class RsaEsProvider extends core.ProviderCrypto {
   };
 
   public async onGenerateKey(algorithm: RsaKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
-    const key = await RsaCrypto.generateKey(
+    const keys = await RsaCrypto.generateKey(
       {
         ...algorithm,
         name: this.name,
@@ -23,7 +23,10 @@ export class RsaEsProvider extends core.ProviderCrypto {
       extractable,
       keyUsages);
 
-    return key;
+    return {
+      privateKey: setCryptoKey(keys.privateKey as RsaPrivateKey),
+      publicKey: setCryptoKey(keys.publicKey as RsaPublicKey),
+    };
   }
 
   public checkGenerateKeyParams(algorithm: RsaKeyGenParams) {
@@ -62,17 +65,18 @@ export class RsaEsProvider extends core.ProviderCrypto {
   }
 
   public async onExportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {
-    return RsaCrypto.exportKey(format, key);
+    return RsaCrypto.exportKey(format, getCryptoKey(key));
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const key = await RsaCrypto.importKey(format, keyData, { ...algorithm, name: this.name }, extractable, keyUsages);
-    return key;
+    return setCryptoKey(key);
   }
 
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
-    if (!(key instanceof RsaPrivateKey || key instanceof RsaPublicKey)) {
+    const internalKey = getCryptoKey(key);
+    if (!(internalKey instanceof RsaPrivateKey || internalKey instanceof RsaPublicKey)) {
       throw new TypeError("key: Is not RSA CryptoKey");
     }
   }
@@ -82,7 +86,7 @@ export class RsaEsProvider extends core.ProviderCrypto {
   private toCryptoOptions(key: RsaPrivateKey | RsaPublicKey) {
     const type = key.type.toUpperCase();
     return {
-      key: `-----BEGIN ${type} KEY-----\n${key.data.toString("base64")}\n-----END ${type} KEY-----`,
+      key: `-----BEGIN ${type} KEY-----\n${getCryptoKey(key).data.toString("base64")}\n-----END ${type} KEY-----`,
       // @ts-ignore
       padding: crypto.constants.RSA_PKCS1_PADDING,
     };

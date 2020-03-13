@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { HmacCryptoKey } from "./key";
 
 export class HmacProvider extends core.HmacProvider {
@@ -16,12 +17,12 @@ export class HmacProvider extends core.HmacProvider {
     key.usages = keyUsages;
     key.data = crypto.randomBytes(length >> 3);
 
-    return key;
+    return setCryptoKey(key);
   }
 
   public async onSign(algorithm: Algorithm, key: HmacCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const hash = key.algorithm.hash.name.replace("-", "");
-    const hmac = crypto.createHmac(hash, key.data)
+    const hmac = crypto.createHmac(hash, getCryptoKey(key).data)
       .update(Buffer.from(data)).digest();
 
     return new Uint8Array(hmac).buffer;
@@ -29,7 +30,7 @@ export class HmacProvider extends core.HmacProvider {
 
   public async onVerify(algorithm: Algorithm, key: HmacCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
     const hash = key.algorithm.hash.name.replace("-", "");
-    const hmac = crypto.createHmac(hash, key.data)
+    const hmac = crypto.createHmac(hash, getCryptoKey(key).data)
       .update(Buffer.from(data)).digest();
 
     return hmac.compare(Buffer.from(signature)) === 0;
@@ -58,15 +59,15 @@ export class HmacProvider extends core.HmacProvider {
     key.extractable = extractable;
     key.usages = keyUsages;
 
-    return key;
+    return setCryptoKey(key);
   }
 
   public async onExportKey(format: KeyFormat, key: HmacCryptoKey): Promise<JsonWebKey | ArrayBuffer> {
     switch (format.toLowerCase()) {
       case "jwk":
-        return JsonSerializer.toJSON(key);
+        return JsonSerializer.toJSON(getCryptoKey(key));
       case "raw":
-        return new Uint8Array(key.data).buffer;
+        return new Uint8Array(getCryptoKey(key).data).buffer;
       default:
         throw new core.OperationError("format: Must be 'jwk' or 'raw'");
     }
@@ -74,7 +75,7 @@ export class HmacProvider extends core.HmacProvider {
 
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
-    if (!(key instanceof HmacCryptoKey)) {
+    if (!(getCryptoKey(key) instanceof HmacCryptoKey)) {
       throw new TypeError("key: Is not HMAC CryptoKey");
     }
   }
