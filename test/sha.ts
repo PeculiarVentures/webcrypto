@@ -1,6 +1,6 @@
 import { Convert } from "pvtsutils";
 import { Crypto } from "../src";
-import { ITestGenerateKeyAction, testCrypto } from "./helper";
+import { testCrypto } from "./helper";
 
 context("SHA", () => {
 

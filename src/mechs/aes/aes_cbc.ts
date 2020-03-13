@@ -31,7 +31,7 @@ export class AesCbcProvider extends core.AesCbcProvider {
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     return AesCrypto.importKey(format, keyData, { name: algorithm.name }, extractable, keyUsages);
   }
-
+  
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(key instanceof AesCryptoKey)) {

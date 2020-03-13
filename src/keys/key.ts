@@ -7,7 +7,7 @@ export class CryptoKey extends core.CryptoKey {
   public algorithm: KeyAlgorithm = { name: "" };
 
   @JsonProp({ name: "ext", type: JsonPropTypes.Boolean, optional: true })
-  public extractable: boolean = false;
+  public extractable = false;
 
   public type: KeyType = "secret";
 
@@ -15,8 +15,8 @@ export class CryptoKey extends core.CryptoKey {
   public usages: KeyUsage[] = [];
 
   @JsonProp({ type: JsonPropTypes.String })
-  protected kty: string = "oct";
+  protected kty = "oct";
 
   @JsonProp({ type: JsonPropTypes.String })
-  protected alg: string = "";
+  protected alg = "";
 }

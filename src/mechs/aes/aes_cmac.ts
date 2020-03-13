@@ -34,59 +34,11 @@ function xor(a: Buffer, b: Buffer) {
   return output;
 }
 
-function generateSubkeys(key: Buffer) {
-  const l = aes(key, zero);
-
-  let subkey1 = bitShiftLeft(l);
-  if (l[0] & 0x80) {
-    subkey1 = xor(subkey1, rb);
-  }
-
-  let subkey2 = bitShiftLeft(subkey1);
-  if (subkey1[0] & 0x80) {
-    subkey2 = xor(subkey2, rb);
-  }
-
-  return { subkey1, subkey2 };
-}
-
 function aes(key: Buffer, message: Buffer) {
   const cipher = crypto.createCipheriv(`aes${key.length << 3}`, key, zero);
   const result = cipher.update(message);
   cipher.final();
   return result;
-}
-
-function aesCmac(key: Buffer, message: Buffer) {
-  const subkeys = generateSubkeys(key);
-  let blockCount = Math.ceil(message.length / blockSize);
-  let lastBlockCompleteFlag: boolean;
-  let lastBlock: Buffer;
-  let lastBlockIndex: number;
-
-  if (blockCount === 0) {
-    blockCount = 1;
-    lastBlockCompleteFlag = false;
-  } else {
-    lastBlockCompleteFlag = (message.length % blockSize === 0);
-  }
-  lastBlockIndex = blockCount - 1;
-
-  if (lastBlockCompleteFlag) {
-    lastBlock = xor(getMessageBlock(message, lastBlockIndex), subkeys.subkey1);
-  } else {
-    lastBlock = xor(getPaddedMessageBlock(message, lastBlockIndex), subkeys.subkey2);
-  }
-
-  let x = zero;
-  let y;
-
-  for (let index = 0; index < lastBlockIndex; index++) {
-    y = xor(x, getMessageBlock(message, index));
-    x = aes(key, y);
-  }
-  y = xor(lastBlock, x);
-  return aes(key, y);
 }
 
 function getMessageBlock(message: Buffer, blockIndex: number) {
@@ -109,6 +61,53 @@ function getPaddedMessageBlock(message: Buffer, blockIndex: number) {
   block[end - start] = 0x80;
 
   return block;
+}
+
+function generateSubkeys(key: Buffer) {
+  const l = aes(key, zero);
+
+  let subkey1 = bitShiftLeft(l);
+  if (l[0] & 0x80) {
+    subkey1 = xor(subkey1, rb);
+  }
+
+  let subkey2 = bitShiftLeft(subkey1);
+  if (subkey1[0] & 0x80) {
+    subkey2 = xor(subkey2, rb);
+  }
+
+  return { subkey1, subkey2 };
+}
+
+function aesCmac(key: Buffer, message: Buffer) {
+  const subkeys = generateSubkeys(key);
+  let blockCount = Math.ceil(message.length / blockSize);
+  let lastBlockCompleteFlag: boolean;
+  let lastBlock: Buffer;
+
+  if (blockCount === 0) {
+    blockCount = 1;
+    lastBlockCompleteFlag = false;
+  } else {
+    lastBlockCompleteFlag = (message.length % blockSize === 0);
+  }
+  const lastBlockIndex = blockCount - 1;
+
+  if (lastBlockCompleteFlag) {
+    lastBlock = xor(getMessageBlock(message, lastBlockIndex), subkeys.subkey1);
+  } else {
+    lastBlock = xor(getPaddedMessageBlock(message, lastBlockIndex), subkeys.subkey2);
+  }
+
+  let x = zero;
+  let y;
+
+  for (let index = 0; index < lastBlockIndex; index++) {
+    y = xor(x, getMessageBlock(message, index));
+    x = aes(key, y);
+  }
+  y = xor(lastBlock, x);
+  return aes(key, y);
 }
 
 export class AesCmacProvider extends core.AesCmacProvider {

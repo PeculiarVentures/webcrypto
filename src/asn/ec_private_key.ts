@@ -1,4 +1,4 @@
-import { AsnIntegerConverter, AsnParser, AsnProp, AsnPropTypes, AsnSerializer, IAsnConverter } from "@peculiar/asn1-schema";
+import { AsnIntegerConverter, AsnProp, AsnPropTypes, AsnSerializer } from "@peculiar/asn1-schema";
 import { IJsonConvertible } from "@peculiar/json-schema";
 import { Convert } from "pvtsutils";
 import { EcPublicKey } from "./ec_public_key";

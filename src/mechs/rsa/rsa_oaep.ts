@@ -159,7 +159,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
    * @param seed
    * @param length
    */
-  protected mgf1(algorithm: Algorithm, seed: Uint8Array, length: number = 0) {
+  protected mgf1(algorithm: Algorithm, seed: Uint8Array, length = 0) {
     const hashSize = ShaCrypto.size(algorithm) >> 3;
     const mask = new Uint8Array(length);
     const counter = new Uint8Array(4);

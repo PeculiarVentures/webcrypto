@@ -150,9 +150,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
   params.forEach((param) => {
     context(param.name, () => {
       //#region Generate key
-      if (param.actions.generateKey) {
+      const generateKey = param.actions.generateKey;
+      if (generateKey) {
         context("Generate Key", () => {
-          param.actions.generateKey!.forEach((action, index) => {
+          generateKey.forEach((action, index) => {
             wrapTest(async () => {
               const algorithm = Object.assign({}, action.algorithm);
               algorithm.name = algorithm.name.toLowerCase();
@@ -184,9 +185,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
       //#endregion
 
       //#region encrypt
-      if (param.actions.encrypt) {
+      const encrypt = param.actions.encrypt;
+      if (encrypt) {
         context("Encrypt/Decrypt", () => {
-          param.actions.encrypt!.forEach((action, index) => {
+          encrypt.forEach((action, index) => {
             wrapTest(async () => {
               // import keys
               const keys = await getKeys(crypto, action.key);
@@ -212,9 +214,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
       //#endregion
 
       //#region Import/Export
-      if (param.actions.import) {
+      const importFn = param.actions.import;
+      if (importFn) {
         context("Import/Export", () => {
-          param.actions.import!.forEach((action, index) => {
+          importFn.forEach((action, index) => {
             wrapTest(async () => {
               const importedKey = await crypto.subtle.importKey(
                 action.format,
@@ -223,7 +226,7 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
                 action.extractable,
                 action.keyUsages);
 
-              // Can't continue if key is not exctractable.
+              // Can't continue if key is not extractable.
               if (!action.extractable) {
                 return;
               }
@@ -244,9 +247,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
       //#endregion
 
       //#region Sign/Verify
-      if (param.actions.sign) {
+      const sign = param.actions.sign;
+      if (sign) {
         context("Sign/Verify", () => {
-          param.actions.sign!.forEach((action, index) => {
+          sign.forEach((action, index) => {
             wrapTest(async () => {
               // import keys
               const keys = await getKeys(crypto, action.key);
@@ -275,9 +279,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
       //#endregion
 
       //#region Derive bits
-      if (param.actions.deriveBits) {
+      const deriveBits = param.actions.deriveBits;
+      if (deriveBits) {
         context("Derive bits", () => {
-          param.actions.deriveBits!.forEach((action, index) => {
+          deriveBits.forEach((action, index) => {
             wrapTest(async () => {
               // import keys
               const keys = await getKeys(crypto, action.key);
@@ -295,9 +300,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
       //#endregion
 
       //#region Derive key
-      if (param.actions.deriveKey) {
+      const deriveKey = param.actions.deriveKey;
+      if (deriveKey) {
         context("Derive key", () => {
-          param.actions.deriveKey!.forEach((action, index) => {
+          deriveKey.forEach((action, index) => {
             wrapTest(async () => {
               // import keys
               const keys = await getKeys(crypto, action.key);
@@ -320,9 +326,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
       //#endregion
 
       //#region Digest
-      if (param.actions.digest) {
+      const digest = param.actions.digest;
+      if (digest) {
         context("Digest", () => {
-          param.actions.digest!.forEach((action, index) => {
+          digest.forEach((action, index) => {
             wrapTest(async () => {
               const hash = await crypto.subtle.digest(action.algorithm, action.data);
               assert.equal(Convert.ToHex(hash), Convert.ToHex(action.hash));
@@ -333,9 +340,10 @@ export function testCrypto(crypto: Crypto, params: ITestParams[]) {
       //#endregion
 
       //#region Wrap/Unwrap key
-      if (param.actions.wrapKey) {
+      const wrapKey = param.actions.wrapKey;
+      if (wrapKey) {
         context("Wrap/Unwrap key", () => {
-          param.actions.wrapKey!.forEach((action, index) => {
+          wrapKey.forEach((action, index) => {
             wrapTest(async () => {
               const wKey = (await getKeys(crypto, action.wKey)).privateKey;
               const key = await getKeys(crypto, action.key);

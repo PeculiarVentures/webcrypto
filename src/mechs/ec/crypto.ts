@@ -1,6 +1,6 @@
+import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import crypto from "crypto";
 import * as core from "webcrypto-core";
 import * as asn from "../../asn";
 import { ObjectIdentifier } from "../../asn";
@@ -116,9 +116,10 @@ export class EcCrypto {
       case "pkcs8":
       case "spki":
         return new Uint8Array(key.data).buffer;
-      case "raw":
+      case "raw": {
         const publicKeyInfo = AsnParser.parse(key.data, asn.PublicKeyInfo);
         return publicKeyInfo.publicKey;
+      }
       default:
         throw new core.OperationError("format: Must be 'jwk', 'raw', pkcs8' or 'spki'");
     }
@@ -126,7 +127,7 @@ export class EcCrypto {
 
   public static async importKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     switch (format.toLowerCase()) {
-      case "jwk":
+      case "jwk": {
         const jwk = keyData as JsonWebKey;
         if (jwk.d) {
           const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.EcPrivateKey });
@@ -135,6 +136,7 @@ export class EcCrypto {
           const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.EcPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
+      }
       case "raw": {
         const asnKey = new asn.EcPublicKey(keyData as ArrayBuffer);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
