@@ -1,9 +1,9 @@
 import typescript from "rollup-plugin-typescript2";
-const pkg = require("./package.json");
+import pkg from "./package.json";
 
 const banner = [
   "/**",
-  " * Copyright (c) 2019, Peculiar Ventures, All rights reserved.",
+  " * Copyright (c) 2019-2020, Peculiar Ventures, All rights reserved.",
   " */",
   "",
 ].join("\n");
