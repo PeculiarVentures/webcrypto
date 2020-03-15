@@ -1,5 +1,6 @@
 import * as crypto from "crypto";
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { AesCrypto } from "./crypto";
 import { AesCryptoKey } from "./key";
 
@@ -34,6 +35,35 @@ function xor(a: Buffer, b: Buffer) {
   return output;
 }
 
+function aes(key: Buffer, message: Buffer) {
+  const cipher = crypto.createCipheriv(`aes${key.length << 3}`, key, zero);
+  const result = cipher.update(message);
+  cipher.final();
+  return result;
+}
+
+function getMessageBlock(message: Buffer, blockIndex: number) {
+  const block = Buffer.alloc(blockSize);
+  const start = blockIndex * blockSize;
+  const end = start + blockSize;
+
+  message.copy(block, 0, start, end);
+
+  return block;
+}
+
+function getPaddedMessageBlock(message: Buffer, blockIndex: number) {
+  const block = Buffer.alloc(blockSize);
+  const start = blockIndex * blockSize;
+  const end = message.length;
+
+  block.fill(0);
+  message.copy(block, 0, start, end);
+  block[end - start] = 0x80;
+
+  return block;
+}
+
 function generateSubkeys(key: Buffer) {
   const l = aes(key, zero);
 
@@ -50,19 +80,11 @@ function generateSubkeys(key: Buffer) {
   return { subkey1, subkey2 };
 }
 
-function aes(key: Buffer, message: Buffer) {
-  const cipher = crypto.createCipheriv(`aes${key.length << 3}`, key, zero);
-  const result = cipher.update(message);
-  cipher.final();
-  return result;
-}
-
 function aesCmac(key: Buffer, message: Buffer) {
   const subkeys = generateSubkeys(key);
   let blockCount = Math.ceil(message.length / blockSize);
   let lastBlockCompleteFlag: boolean;
   let lastBlock: Buffer;
-  let lastBlockIndex: number;
 
   if (blockCount === 0) {
     blockCount = 1;
@@ -70,7 +92,7 @@ function aesCmac(key: Buffer, message: Buffer) {
   } else {
     lastBlockCompleteFlag = (message.length % blockSize === 0);
   }
-  lastBlockIndex = blockCount - 1;
+  const lastBlockIndex = blockCount - 1;
 
   if (lastBlockCompleteFlag) {
     lastBlock = xor(getMessageBlock(message, lastBlockIndex), subkeys.subkey1);
@@ -89,28 +111,6 @@ function aesCmac(key: Buffer, message: Buffer) {
   return aes(key, y);
 }
 
-function getMessageBlock(message: Buffer, blockIndex: number) {
-  const block = new Buffer(blockSize);
-  const start = blockIndex * blockSize;
-  const end = start + blockSize;
-
-  message.copy(block, 0, start, end);
-
-  return block;
-}
-
-function getPaddedMessageBlock(message: Buffer, blockIndex: number) {
-  const block = new Buffer(blockSize);
-  const start = blockIndex * blockSize;
-  const end = message.length;
-
-  block.fill(0);
-  message.copy(block, 0, start, end);
-  block[end - start] = 0x80;
-
-  return block;
-}
-
 export class AesCmacProvider extends core.AesCmacProvider {
 
   public async onGenerateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
@@ -122,11 +122,11 @@ export class AesCmacProvider extends core.AesCmacProvider {
       extractable,
       keyUsages);
 
-    return key;
+    return setCryptoKey(key);
   }
 
   public async onSign(algorithm: AesCmacParams, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
-    const result = aesCmac(key.data, Buffer.from(data));
+    const result = aesCmac(getCryptoKey(key).data, Buffer.from(data));
     return new Uint8Array(result).buffer;
   }
 
@@ -136,16 +136,17 @@ export class AesCmacProvider extends core.AesCmacProvider {
   }
 
   public async onExportKey(format: KeyFormat, key: AesCryptoKey): Promise<JsonWebKey | ArrayBuffer> {
-    return AesCrypto.exportKey(format, key);
+    return AesCrypto.exportKey(format, getCryptoKey(key) as AesCryptoKey);
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    return AesCrypto.importKey(format, keyData, { name: algorithm.name }, extractable, keyUsages);
+    const res = await AesCrypto.importKey(format, keyData, { name: algorithm.name }, extractable, keyUsages);
+    return setCryptoKey(res);
   }
 
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
-    if (!(key instanceof AesCryptoKey)) {
+    if (!(getCryptoKey(key) instanceof AesCryptoKey)) {
       throw new TypeError("key: Is not a AesCryptoKey");
     }
   }

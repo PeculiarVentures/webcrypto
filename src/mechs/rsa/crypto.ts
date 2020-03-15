@@ -1,6 +1,6 @@
+import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import crypto from "crypto";
 import * as core from "webcrypto-core";
 import * as asn from "../../asn";
 import { CryptoKey } from "../../keys";
@@ -74,7 +74,7 @@ export class RsaCrypto {
 
   public static async importKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     switch (format.toLowerCase()) {
-      case "jwk":
+      case "jwk": {
         const jwk = keyData as JsonWebKey;
         if (jwk.d) {
           const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.RsaPrivateKey });
@@ -83,6 +83,7 @@ export class RsaCrypto {
           const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.RsaPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
+      }
       case "spki": {
         const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), asn.PublicKeyInfo);
         const asnKey = AsnParser.parse(keyInfo.publicKey, asn.RsaPublicKey);

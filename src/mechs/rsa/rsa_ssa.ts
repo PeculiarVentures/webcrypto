@@ -1,5 +1,5 @@
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
@@ -7,7 +7,7 @@ import { RsaPublicKey } from "./public_key";
 export class RsaSsaProvider extends core.RsaSsaProvider {
 
   public async onGenerateKey(algorithm: RsaHashedKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
-    const key = await RsaCrypto.generateKey(
+    const keys = await RsaCrypto.generateKey(
       {
         ...algorithm,
         name: this.name,
@@ -15,29 +15,33 @@ export class RsaSsaProvider extends core.RsaSsaProvider {
       extractable,
       keyUsages);
 
-    return key;
+      return {
+        privateKey: setCryptoKey(keys.privateKey as RsaPrivateKey),
+        publicKey: setCryptoKey(keys.publicKey as RsaPublicKey),
+      };
   }
 
   public async onSign(algorithm: Algorithm, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
-    return RsaCrypto.sign(algorithm, key, new Uint8Array(data));
+    return RsaCrypto.sign(algorithm, getCryptoKey(key) as RsaPrivateKey, new Uint8Array(data));
   }
 
   public async onVerify(algorithm: Algorithm, key: RsaPublicKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
-    return RsaCrypto.verify(algorithm, key, new Uint8Array(signature), new Uint8Array(data));
+    return RsaCrypto.verify(algorithm, getCryptoKey(key) as RsaPublicKey, new Uint8Array(signature), new Uint8Array(data));
   }
 
   public async onExportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {
-    return RsaCrypto.exportKey(format, key);
+    return RsaCrypto.exportKey(format, getCryptoKey(key));
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const key = await RsaCrypto.importKey(format, keyData, {...algorithm, name: this.name}, extractable, keyUsages);
-    return key;
+    return setCryptoKey(key);
   }
 
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
-    if (!(key instanceof RsaPrivateKey || key instanceof RsaPublicKey)) {
+    const internalKey = getCryptoKey(key);
+    if (!(internalKey instanceof RsaPrivateKey || internalKey instanceof RsaPublicKey)) {
       throw new TypeError("key: Is not RSA CryptoKey");
     }
   }

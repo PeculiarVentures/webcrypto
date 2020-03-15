@@ -1,2 +1,2 @@
-export { CryptoKey } from "./keys";
+export { CryptoKey } from "webcrypto-core";
 export { Crypto } from "./crypto";

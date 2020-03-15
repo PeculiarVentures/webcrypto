@@ -1,4 +1,3 @@
-import { Convert } from "pvtsutils";
 import { Crypto } from "../src";
 import { testCrypto } from "./helper";
 

@@ -29,14 +29,14 @@ export class EcPrivateKey extends AsymmetricKey implements IJsonConvertible {
   }
 
   public fromJSON(json: JsonWebKey) {
-    if (!json.alg) {
-      throw new core.OperationError(`Cannot get named curve from JWK. Property 'alg' is required`);
+    if (!json.crv) {
+      throw new core.OperationError(`Cannot get named curve from JWK. Property 'crv' is required`);
     }
 
     const keyInfo = new asn.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
     keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(
-      new ObjectIdentifier(getOidByNamedCurve(json.crv!)),
+      new ObjectIdentifier(getOidByNamedCurve(json.crv)),
     );
     const key = JsonParser.fromJSON(json, { targetSchema: asn.EcPrivateKey });
     keyInfo.privateKey = AsnSerializer.serialize(key);

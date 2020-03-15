@@ -1,10 +1,8 @@
-import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import crypto, { CipherGCM, DecipherGCM } from "crypto";
+import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { AesCryptoKey } from "./key";
-
-const WRONG_KEY_TYPE = `Key must be instance of ${AesCryptoKey.name}`;
 
 export class AesCrypto {
 

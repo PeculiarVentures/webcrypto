@@ -1,5 +1,4 @@
 import { JsonProp } from "@peculiar/json-schema";
-import * as core from "webcrypto-core";
 import { JsonBase64UrlConverter } from "../../converters";
 import { CryptoKey } from "../../keys";
 

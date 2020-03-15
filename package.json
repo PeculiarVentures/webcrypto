@@ -18,8 +18,8 @@
     "clear": "rimraf build/*",
     "rebuild": "npm run clear && npm run build",
     "build:module": "rollup -c",
-    "lint": "tslint -p .",
-    "lint:fix": "tslint --fix -p .",
+    "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint --fix . --ext .ts",
     "prepub": "npm run lint && npm run rebuild",
     "pub": "npm version patch && npm publish",
     "postpub": "git push && git push --tags origin master",
@@ -47,18 +47,21 @@
     "url": "https://github.com/PeculiarVentures/webcrypto/issues"
   },
   "homepage": "https://github.com/PeculiarVentures/webcrypto#readme",
-  "banner": "// Copyright (c) 2019, Peculiar Ventures, All rights reserved.",
+  "banner": "// Copyright (c) 2020, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.29",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^12.12.30",
+    "@typescript-eslint/eslint-plugin": "^2.23.0",
+    "@typescript-eslint/parser": "^2.23.0",
     "coveralls": "^3.0.9",
-    "mocha": "^6.2.2",
+    "eslint": "^6.8.0",
+    "eslint-plugin-import": "^2.20.1",
+    "mocha": "^7.1.0",
     "nyc": "^14.1.1",
     "rimraf": "^3.0.2",
-    "rollup": "^1.32.1",
-    "rollup-plugin-typescript2": "^0.25.3",
+    "rollup": "^2.0.6",
+    "rollup-plugin-typescript2": "^0.26.0",
     "ts-node": "^8.6.2",
-    "tslint": "^5.20.1",
     "typescript": "^3.8.3"
   },
   "dependencies": {
@@ -87,5 +90,10 @@
   },
   "engines": {
     "node": ">=10.12.0"
+  },
+  "mocha": {
+    "require": "ts-node/register",
+    "extension": ["ts"],
+    "files": "test/**/*.ts"
   }
 }

@@ -1,4 +1,3 @@
-import assert from "assert";
 import * as core from "webcrypto-core";
 import { Crypto } from "../src";
 import { DesCbcParams } from "../src/mechs";

@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { PbkdfCryptoKey } from "./key";
 
 export class Pbkdf2Provider extends core.Pbkdf2Provider {
@@ -8,7 +9,7 @@ export class Pbkdf2Provider extends core.Pbkdf2Provider {
     return new Promise<ArrayBuffer>((resolve, reject) => {
       const salt = core.BufferSourceConverter.toArrayBuffer(algorithm.salt);
       const hash = (algorithm.hash as Algorithm).name.replace("-", "");
-      crypto.pbkdf2(baseKey.data, Buffer.from(salt), algorithm.iterations, length >> 3, hash, (err, derivedBits) => {
+      crypto.pbkdf2(getCryptoKey(baseKey).data, Buffer.from(salt), algorithm.iterations, length >> 3, hash, (err, derivedBits) => {
         if (err) {
           reject(err);
         } else {
@@ -25,14 +26,14 @@ export class Pbkdf2Provider extends core.Pbkdf2Provider {
       key.algorithm = { name: this.name };
       key.extractable = false;
       key.usages = keyUsages;
-      return key;
+      return setCryptoKey(key);
     }
     throw new core.OperationError("format: Must be 'raw'");
   }
 
   public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
-    if (!(key instanceof PbkdfCryptoKey)) {
+    if (!(getCryptoKey(key) instanceof PbkdfCryptoKey)) {
       throw new TypeError("key: Is not PBKDF CryptoKey");
     }
   }
