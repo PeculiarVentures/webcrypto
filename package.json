@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/webcrypto",
-  "version": "1.0.23",
+  "version": "1.0.24",
   "description": "A WebCrypto Polyfill for NodeJS",
   "repository": {
     "type": "git",
@@ -93,7 +93,9 @@
   },
   "mocha": {
     "require": "ts-node/register",
-    "extension": ["ts"],
+    "extension": [
+      "ts"
+    ],
     "files": "test/**/*.ts"
   }
 }
