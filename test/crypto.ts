@@ -1,9 +1,12 @@
 import assert from "assert";
+import { WebcryptoTest } from "@peculiar/webcrypto-test";
 import { Crypto } from "../src";
 
+const crypto = new Crypto();
+
+WebcryptoTest.check(crypto as any, {});
 context("Crypto", () => {
 
-  const crypto = new Crypto();
 
   context("getRandomValues", () => {
 
