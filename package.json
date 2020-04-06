@@ -68,7 +68,6 @@
   "dependencies": {
     "@peculiar/asn1-schema": "^1.0.5",
     "@peculiar/json-schema": "^1.1.10",
-    "asn1js": "^2.0.26",
     "pvtsutils": "^1.0.10",
     "tslib": "^1.11.1",
     "webcrypto-core": "^1.0.19-next.0"

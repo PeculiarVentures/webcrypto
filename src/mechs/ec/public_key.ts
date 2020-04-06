@@ -1,8 +1,6 @@
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { IJsonConvertible, JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import * as asn from "../../asn";
-import { ObjectIdentifier } from "../../asn";
 import { AsymmetricKey } from "../../keys/asymmetric";
 import { getOidByNamedCurve } from "./helper";
 
@@ -12,8 +10,8 @@ export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
   public algorithm!: EcKeyAlgorithm;
 
   public getKey() {
-    const keyInfo = AsnParser.parse(this.data, asn.PublicKeyInfo);
-    return new asn.EcPublicKey(keyInfo.publicKey);
+    const keyInfo = AsnParser.parse(this.data, core.asn1.PublicKeyInfo);
+    return new core.asn1.EcPublicKey(keyInfo.publicKey);
   }
 
   public toJSON() {
@@ -34,12 +32,12 @@ export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
       throw new core.OperationError(`Cannot get named curve from JWK. Property 'crv' is required`);
     }
 
-    const key = JsonParser.fromJSON(json, { targetSchema: asn.EcPublicKey });
+    const key = JsonParser.fromJSON(json, { targetSchema: core.asn1.EcPublicKey });
 
-    const keyInfo = new asn.PublicKeyInfo();
+    const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
     keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(
-      new ObjectIdentifier(getOidByNamedCurve(json.crv)),
+      new core.asn1.ObjectIdentifier(getOidByNamedCurve(json.crv)),
     );
     keyInfo.publicKey = AsnSerializer.toASN(key).valueHex;
 

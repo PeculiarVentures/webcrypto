@@ -1,6 +1,6 @@
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import * as asn from "../../asn";
+import * as core from "webcrypto-core";
 import { AsymmetricKey } from "../../keys";
 import { getJwkAlgorithm } from "./helper";
 
@@ -9,8 +9,8 @@ export class RsaPrivateKey extends AsymmetricKey {
   public algorithm!: RsaHashedKeyAlgorithm;
 
   public getKey() {
-    const keyInfo = AsnParser.parse(this.data, asn.PrivateKeyInfo);
-    return AsnParser.parse(keyInfo.privateKey, asn.RsaPrivateKey);
+    const keyInfo = AsnParser.parse(this.data, core.asn1.PrivateKeyInfo);
+    return AsnParser.parse(keyInfo.privateKey, core.asn1.RsaPrivateKey);
   }
 
   public toJSON() {
@@ -27,9 +27,9 @@ export class RsaPrivateKey extends AsymmetricKey {
   }
 
   public fromJSON(json: JsonWebKey) {
-    const key = JsonParser.fromJSON(json, { targetSchema: asn.RsaPrivateKey });
+    const key = JsonParser.fromJSON(json, { targetSchema: core.asn1.RsaPrivateKey });
 
-    const keyInfo = new asn.PrivateKeyInfo();
+    const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
     keyInfo.privateKeyAlgorithm.parameters = null;
     keyInfo.privateKey = AsnSerializer.serialize(key);

@@ -2,7 +2,6 @@ import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import * as asn from "../../asn";
 import { CryptoKey } from "../../keys";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
@@ -77,21 +76,21 @@ export class RsaCrypto {
       case "jwk": {
         const jwk = keyData as JsonWebKey;
         if (jwk.d) {
-          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.RsaPrivateKey });
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: core.asn1.RsaPrivateKey });
           return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
         } else {
-          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.RsaPublicKey });
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: core.asn1.RsaPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
       }
       case "spki": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), asn.PublicKeyInfo);
-        const asnKey = AsnParser.parse(keyInfo.publicKey, asn.RsaPublicKey);
+        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
+        const asnKey = AsnParser.parse(keyInfo.publicKey, core.asn1.RsaPublicKey);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), asn.PrivateKeyInfo);
-        const asnKey = AsnParser.parse(keyInfo.privateKey, asn.RsaPrivateKey);
+        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        const asnKey = AsnParser.parse(keyInfo.privateKey, core.asn1.RsaPrivateKey);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
       default:
@@ -137,8 +136,8 @@ export class RsaCrypto {
     }
   }
 
-  protected static importPrivateKey(asnKey: asn.RsaPrivateKey, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
-    const keyInfo = new asn.PrivateKeyInfo();
+  protected static importPrivateKey(asnKey: core.asn1.RsaPrivateKey, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
+    const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
     keyInfo.privateKeyAlgorithm.parameters = null;
     keyInfo.privateKey = AsnSerializer.serialize(asnKey);
@@ -155,8 +154,8 @@ export class RsaCrypto {
     return key;
   }
 
-  protected static importPublicKey(asnKey: asn.RsaPublicKey, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
-    const keyInfo = new asn.PublicKeyInfo();
+  protected static importPublicKey(asnKey: core.asn1.RsaPublicKey, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
+    const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
     keyInfo.publicKeyAlgorithm.parameters = null;
     keyInfo.publicKey = AsnSerializer.serialize(asnKey);

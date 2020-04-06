@@ -2,8 +2,6 @@ import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import * as asn from "../../asn";
-import { ObjectIdentifier } from "../../asn";
 import { CryptoKey } from "../../keys";
 import { getOidByNamedCurve } from "./helper";
 import { EcPrivateKey } from "./private_key";
@@ -63,7 +61,7 @@ export class EcCrypto {
     };
 
     const signature = signer.sign(options);
-    const ecSignature = AsnParser.parse(signature, asn.EcDsaSignature);
+    const ecSignature = AsnParser.parse(signature, core.asn1.EcDsaSignature);
 
     const pointSize = this.getPointSize(key.algorithm.namedCurve);
     const r = this.addPadding(pointSize, Buffer.from(ecSignature.r));
@@ -85,7 +83,7 @@ export class EcCrypto {
       key: key.pem,
     };
 
-    const ecSignature = new asn.EcDsaSignature();
+    const ecSignature = new core.asn1.EcDsaSignature();
     const pointSize = this.getPointSize(key.algorithm.namedCurve);
     ecSignature.r = this.removePadding(signature.slice(0, pointSize));
     ecSignature.s = this.removePadding(signature.slice(pointSize, pointSize + pointSize));
@@ -99,11 +97,11 @@ export class EcCrypto {
     const cryptoAlg = this.getOpenSSLNamedCurve((baseKey.algorithm as EcKeyAlgorithm).namedCurve);
 
     const ecdh = crypto.createECDH(cryptoAlg);
-    const asnPrivateKey = AsnParser.parse(baseKey.data, asn.PrivateKeyInfo);
-    const asnEcPrivateKey = AsnParser.parse(asnPrivateKey.privateKey, asn.EcPrivateKey);
+    const asnPrivateKey = AsnParser.parse(baseKey.data, core.asn1.PrivateKeyInfo);
+    const asnEcPrivateKey = AsnParser.parse(asnPrivateKey.privateKey, core.asn1.EcPrivateKey);
     ecdh.setPrivateKey(Buffer.from(asnEcPrivateKey.privateKey));
 
-    const asnPublicKey = AsnParser.parse((algorithm.public as CryptoKey).data, asn.PublicKeyInfo);
+    const asnPublicKey = AsnParser.parse((algorithm.public as CryptoKey).data, core.asn1.PublicKeyInfo);
     const bits = ecdh.computeSecret(Buffer.from(asnPublicKey.publicKey));
 
     return new Uint8Array(bits).buffer.slice(0, length >> 3);
@@ -117,7 +115,7 @@ export class EcCrypto {
       case "spki":
         return new Uint8Array(key.data).buffer;
       case "raw": {
-        const publicKeyInfo = AsnParser.parse(key.data, asn.PublicKeyInfo);
+        const publicKeyInfo = AsnParser.parse(key.data, core.asn1.PublicKeyInfo);
         return publicKeyInfo.publicKey;
       }
       default:
@@ -130,25 +128,25 @@ export class EcCrypto {
       case "jwk": {
         const jwk = keyData as JsonWebKey;
         if (jwk.d) {
-          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.EcPrivateKey });
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: core.asn1.EcPrivateKey });
           return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
         } else {
-          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: asn.EcPublicKey });
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: core.asn1.EcPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
       }
       case "raw": {
-        const asnKey = new asn.EcPublicKey(keyData as ArrayBuffer);
+        const asnKey = new core.asn1.EcPublicKey(keyData as ArrayBuffer);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "spki": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), asn.PublicKeyInfo);
-        const asnKey = new asn.EcPublicKey(keyInfo.publicKey);
+        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
+        const asnKey = new core.asn1.EcPublicKey(keyInfo.publicKey);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), asn.PrivateKeyInfo);
-        const asnKey = AsnParser.parse(keyInfo.privateKey, asn.EcPrivateKey);
+        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        const asnKey = AsnParser.parse(keyInfo.privateKey, core.asn1.EcPrivateKey);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
       default:
@@ -156,10 +154,10 @@ export class EcCrypto {
     }
   }
 
-  protected static async importPrivateKey(asnKey: asn.EcPrivateKey, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
-    const keyInfo = new asn.PrivateKeyInfo();
+  protected static async importPrivateKey(asnKey: core.asn1.EcPrivateKey, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
+    const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
-    keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(new ObjectIdentifier(getOidByNamedCurve(algorithm.namedCurve)));
+    keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(new core.asn1.ObjectIdentifier(getOidByNamedCurve(algorithm.namedCurve)));
     keyInfo.privateKey = AsnSerializer.serialize(asnKey);
 
     const key = new EcPrivateKey();
@@ -172,10 +170,10 @@ export class EcCrypto {
     return key;
   }
 
-  protected static async importPublicKey(asnKey: asn.EcPublicKey, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
-    const keyInfo = new asn.PublicKeyInfo();
+  protected static async importPublicKey(asnKey: core.asn1.EcPublicKey, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
+    const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
-    keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(new ObjectIdentifier(getOidByNamedCurve(algorithm.namedCurve)));
+    keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(new core.asn1.ObjectIdentifier(getOidByNamedCurve(algorithm.namedCurve)));
     keyInfo.publicKey = asnKey.value;
 
     const key = new EcPublicKey();
