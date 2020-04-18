@@ -7,7 +7,7 @@ import { HmacCryptoKey } from "./key";
 export class HmacProvider extends core.HmacProvider {
 
   public async onGenerateKey(algorithm: HmacKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const length = algorithm.length || this.getDefaultLength((algorithm.hash as Algorithm).name);
+    const length = (algorithm.length || this.getDefaultLength((algorithm.hash as Algorithm).name)) >> 3 << 3;
     const key = new HmacCryptoKey();
     key.algorithm = {
       ...algorithm as any,
