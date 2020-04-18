@@ -11,6 +11,7 @@ export class HmacProvider extends core.HmacProvider {
     const key = new HmacCryptoKey();
     key.algorithm = {
       ...algorithm as any,
+      length,
       name: this.name,
     };
     key.extractable = extractable;
