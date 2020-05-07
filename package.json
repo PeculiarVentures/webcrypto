@@ -49,28 +49,28 @@
   "homepage": "https://github.com/PeculiarVentures/webcrypto#readme",
   "banner": "// Copyright (c) 2020, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
-    "@peculiar/webcrypto-test": "^1.0.3",
+    "@peculiar/webcrypto-test": "^1.0.6",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^12.12.36",
-    "@typescript-eslint/eslint-plugin": "^2.28.0",
-    "@typescript-eslint/parser": "^2.28.0",
-    "coveralls": "^3.0.11",
+    "@types/node": "^12.12.38",
+    "@typescript-eslint/eslint-plugin": "^2.31.0",
+    "@typescript-eslint/parser": "^2.31.0",
+    "coveralls": "^3.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
-    "mocha": "^7.1.1",
-    "nyc": "^14.1.1",
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.6.1",
+    "rollup": "^2.8.2",
     "rollup-plugin-typescript2": "^0.26.0",
-    "ts-node": "^8.8.2",
+    "ts-node": "^8.10.1",
     "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^1.1.2",
+    "@peculiar/asn1-schema": "^2.0.1",
     "@peculiar/json-schema": "^1.1.10",
     "pvtsutils": "^1.0.10",
-    "tslib": "^1.11.1",
-    "webcrypto-core": "^1.0.20"
+    "tslib": "^1.11.2",
+    "webcrypto-core": "^1.1.0"
   },
   "nyc": {
     "extension": [
