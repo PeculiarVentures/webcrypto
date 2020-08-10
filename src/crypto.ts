@@ -2,7 +2,7 @@ import crypto from "crypto";
 import * as core from "webcrypto-core";
 import { SubtleCrypto } from "./subtle";
 
-export class Crypto implements core.Crypto {
+export class Crypto extends core.Crypto {
 
   public subtle = new SubtleCrypto();
 
