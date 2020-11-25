@@ -1,7 +1,7 @@
 # @peculiar/webcrypto
 
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/webcrypto/master/LICENSE.md)
-[![CircleCI](https://circleci.com/gh/PeculiarVentures/webcrypto.svg?style=svg)](https://circleci.com/gh/PeculiarVentures/webcrypto)
+![test](https://github.com/PeculiarVentures/webcrypto/workflows/test/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/PeculiarVentures/webcrypto/badge.svg?branch=master)](https://coveralls.io/github/PeculiarVentures/webcrypto?branch=master)
 [![npm version](https://badge.fury.io/js/%40peculiar%2Fwebcrypto.svg)](https://badge.fury.io/js/%40peculiar%2Fwebcrypto)
 
