@@ -34,7 +34,6 @@ export class RsaCrypto {
       Buffer.from(algorithm.publicExponent),
     ]).readInt32BE(0);
 
-    // @ts-ignore NodeJs d.ts error
     const keys = crypto.generateKeyPairSync("rsa", {
       modulusLength: algorithm.modulusLength,
       publicExponent,
@@ -199,7 +198,6 @@ export class RsaCrypto {
       key: key.pem,
     };
     if (algorithm.name.toUpperCase() === "RSA-PSS") {
-      // @ts-ignore
       options.padding = crypto.constants.RSA_PKCS1_PSS_PADDING;
       options.saltLength = (algorithm as RsaPssParams).saltLength;
     }
@@ -220,7 +218,6 @@ export class RsaCrypto {
       key: key.pem,
     };
     if (algorithm.name.toUpperCase() === "RSA-PSS") {
-      // @ts-ignore
       options.padding = crypto.constants.RSA_PKCS1_PSS_PADDING;
       options.saltLength = (algorithm as RsaPssParams).saltLength;
     }
@@ -232,7 +229,6 @@ export class RsaCrypto {
   protected static encryptOAEP(algorithm: RsaOaepParams, key: RsaPublicKey, data: Uint8Array) {
     const options: crypto.RsaPublicKey = {
       key: `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`,
-      // @ts-ignore
       padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
     };
     if (algorithm.label) {
@@ -245,7 +241,6 @@ export class RsaCrypto {
   protected static decryptOAEP(algorithm: RsaOaepParams, key: RsaPrivateKey, data: Uint8Array) {
     const options: crypto.RsaPrivateKey = {
       key: `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`,
-      // @ts-ignore
       padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
     };
     if (algorithm.label) {

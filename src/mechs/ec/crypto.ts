@@ -23,14 +23,12 @@ export class EcCrypto {
     publicKey.extractable = true;
     publicKey.usages = keyUsages.filter((usage) => this.publicKeyUsages.indexOf(usage) !== -1);
 
-    // @ts-ignore NodeJs d.ts error
     const keys = crypto.generateKeyPairSync("ec", {
       namedCurve: this.getOpenSSLNamedCurve(algorithm.namedCurve),
       publicKeyEncoding: {
         format: "der",
         type: "spki",
       },
-      // @ts-ignore NodeJs d.ts error
       privateKeyEncoding: {
         format: "der",
         type: "pkcs8",

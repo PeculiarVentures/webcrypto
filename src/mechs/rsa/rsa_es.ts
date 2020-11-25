@@ -87,7 +87,6 @@ export class RsaEsProvider extends core.ProviderCrypto {
     const type = key.type.toUpperCase();
     return {
       key: `-----BEGIN ${type} KEY-----\n${getCryptoKey(key).data.toString("base64")}\n-----END ${type} KEY-----`,
-      // @ts-ignore
       padding: crypto.constants.RSA_PKCS1_PADDING,
     };
   }
