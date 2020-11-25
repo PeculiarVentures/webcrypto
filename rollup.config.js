@@ -3,7 +3,7 @@ import pkg from "./package.json";
 
 const banner = [
   "/**",
-  " * Copyright (c) 2019-2020, Peculiar Ventures, All rights reserved.",
+  " * Copyright (c) 2020 Peculiar Ventures, LLC",
   " */",
   "",
 ].join("\n");

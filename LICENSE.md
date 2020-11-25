@@ -1,6 +1,6 @@
 MIT License
 
-Copyright Peculiar Ventures, Inc. (c) 2019 
+Copyright (c) 2020 Peculiar Ventures, LLC
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
