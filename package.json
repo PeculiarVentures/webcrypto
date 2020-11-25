@@ -6,6 +6,12 @@
     "type": "git",
     "url": "https://github.com/PeculiarVentures/webcrypto.git"
   },
+  "files": [
+    "build/**/*.{ts,js}",
+    "index.d.ts",
+    "README.md",
+    "LICENSE.md"
+  ],
   "main": "build/webcrypto.js",
   "module": "build/webcrypto.es.js",
   "types": "index.d.ts",
@@ -84,6 +90,7 @@
       "**/*.d.ts"
     ],
     "reporter": [
+      "lcov",
       "text-summary",
       "html"
     ]
