@@ -56,26 +56,26 @@
   "banner": "// Copyright (c) 2020, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
     "@peculiar/webcrypto-test": "^1.0.7",
-    "@types/mocha": "^8.0.4",
-    "@types/node": "^12.19.7",
-    "@typescript-eslint/eslint-plugin": "^4.8.2",
-    "@typescript-eslint/parser": "^4.8.2",
+    "@types/mocha": "^8.2.0",
+    "@types/node": "^12.19.12",
+    "@typescript-eslint/eslint-plugin": "^4.12.0",
+    "@typescript-eslint/parser": "^4.12.0",
     "coveralls": "^3.1.0",
-    "eslint": "^7.14.0",
+    "eslint": "^7.17.0",
     "eslint-plugin-import": "^2.22.1",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.33.3",
+    "rollup": "^2.36.1",
     "rollup-plugin-typescript2": "^0.29.0",
-    "ts-node": "^9.0.0",
-    "typescript": "^3.9.7"
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3"
   },
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.0.26",
+    "@peculiar/asn1-schema": "^2.0.27",
     "@peculiar/json-schema": "^1.1.12",
     "pvtsutils": "^1.1.1",
-    "tslib": "^2.0.3",
+    "tslib": "^2.1.0",
     "webcrypto-core": "^1.1.8"
   },
   "nyc": {
