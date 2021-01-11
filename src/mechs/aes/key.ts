@@ -10,6 +10,8 @@ export class AesCryptoKey extends SymmetricKey {
   @JsonProp({name: "k", converter: JsonBase64UrlConverter})
   public data!: Buffer;
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   public get alg() {
     switch (this.algorithm.name.toUpperCase()) {
       case "AES-CBC":

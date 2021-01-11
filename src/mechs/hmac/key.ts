@@ -9,6 +9,8 @@ export class HmacCryptoKey extends CryptoKey {
 
   public algorithm!: HmacKeyAlgorithm;
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   protected get alg() {
     const hash = this.algorithm.hash.name.toUpperCase();
     return `HS${hash.replace("SHA-", "")}`;
