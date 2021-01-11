@@ -140,15 +140,34 @@ export class EcCrypto {
       case "spki": {
         const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
         const asnKey = new core.asn1.EcPublicKey(keyInfo.publicKey);
+        this.assertKeyParameters(keyInfo.publicKeyAlgorithm.parameters, algorithm.namedCurve);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
         const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
         const asnKey = AsnParser.parse(keyInfo.privateKey, core.asn1.EcPrivateKey);
+        this.assertKeyParameters(keyInfo.privateKeyAlgorithm.parameters, algorithm.namedCurve);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
       default:
         throw new core.OperationError("format: Must be 'jwk', 'raw', 'pkcs8' or 'spki'");
+    }
+  }
+
+  protected static assertKeyParameters(parameters: ArrayBuffer | null | undefined, namedCurve: string) {
+    if (!parameters) {
+      throw new core.CryptoError("Key info doesn't have required parameters");
+    }
+
+    let namedCurveIdentifier = "";
+    try {
+      namedCurveIdentifier = AsnParser.parse(parameters, core.asn1.ObjectIdentifier).value;
+    } catch (e) {
+      throw new core.CryptoError("Cannot read key info parameters");
+    }
+
+    if (getOidByNamedCurve(namedCurve) !== namedCurveIdentifier) {
+      throw new core.CryptoError("Key info parameter doesn't match to named curve");
     }
   }
 
@@ -171,7 +190,8 @@ export class EcCrypto {
   protected static async importPublicKey(asnKey: core.asn1.EcPublicKey, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
     const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
-    keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(new core.asn1.ObjectIdentifier(getOidByNamedCurve(algorithm.namedCurve)));
+    const namedCurve = getOidByNamedCurve(algorithm.namedCurve);
+    keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(new core.asn1.ObjectIdentifier(namedCurve));
     keyInfo.publicKey = asnKey.value;
 
     const key = new EcPublicKey();
