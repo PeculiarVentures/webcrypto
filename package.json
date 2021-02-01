@@ -76,7 +76,7 @@
     "@peculiar/json-schema": "^1.1.12",
     "pvtsutils": "^1.1.1",
     "tslib": "^2.1.0",
-    "webcrypto-core": "^1.1.8"
+    "webcrypto-core": "^1.1.10"
   },
   "nyc": {
     "extension": [
