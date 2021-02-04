@@ -42,7 +42,12 @@
     "aes",
     "des",
     "hmac",
-    "pbkdf2"
+    "pbkdf2",
+    "eddsa",
+    "x25519",
+    "ed25519",
+    "x448",
+    "ed448"
   ],
   "author": "PeculiarVentures",
   "contributors": [
