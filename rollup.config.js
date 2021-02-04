@@ -23,7 +23,7 @@ export default {
       }
     }),
   ],
-  external: ["crypto", ...external],
+  external: ["crypto", "process", ...external],
   output: [
     {
       banner,
