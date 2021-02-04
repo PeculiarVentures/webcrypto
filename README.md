@@ -49,6 +49,8 @@ npm install @peculiar/webcrypto
 | AES-KW            |      X      |         |       X       |             |                 |         X         |         |
 | ECDSA<sup>1</sup> |      X      |         |       X       |      X      |                 |                   |         |
 | ECDH<sup>1</sup>  |      X      |         |       X       |             |                 |                   |    X    |
+| EdDSA<sup>2,3</sup> |      X      |         |       X       |      X      |                 |                   |         |
+| ECDH-ES<sup>2,4</sup>  |      X      |         |       X       |             |                 |                   |    X    |
 | HKDF              |             |         |       X       |             |                 |                   |    X    |
 | PBKDF2            |             |         |       X       |             |                 |                   |    X    |
 | DES-CBC<sup>2</sup>|      X      |         |       X       |             |        X        |         X         |         |
@@ -57,6 +59,10 @@ npm install @peculiar/webcrypto
 <sup>1</sup> Mechanism supports extended list of named curves `P-256`, `P-384`, `P-521`, and `K-256`
 
 <sup>2</sup> Mechanism is not defined by the WebCrypto specifications. Use of mechanism in a safe way is hard, it was added for the purpose of enabling interoperability with an existing system. We recommend against its use unless needed for interoperability.
+
+<sup>3</sup> Mechanism supports extended list of named curves `Ed25519`, and `Ed448`
+
+<sup>4</sup> Mechanism supports extended list of named curves `X25519`, and `X448`
 
 ## Using
 
