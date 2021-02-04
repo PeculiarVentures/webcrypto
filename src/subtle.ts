@@ -1,9 +1,12 @@
+import * as process from "process";
 import * as core from "webcrypto-core";
 import {
   AesCbcProvider, AesCmacProvider, AesCtrProvider, AesEcbProvider, AesGcmProvider, AesKwProvider,
   DesCbcProvider,
   DesEde3CbcProvider, EcdhProvider,
   EcdsaProvider, HkdfProvider,
+  EdDsaProvider,
+  EcdhEsProvider,
   HmacProvider,
   Pbkdf2Provider,
   RsaEsProvider, RsaOaepProvider, RsaPssProvider, RsaSsaProvider,
@@ -58,5 +61,16 @@ export class SubtleCrypto extends core.SubtleCrypto {
     //#region HKDF
     this.providers.set(new HkdfProvider());
     //#endregion
+
+    const nodeMajorVersion = /^v(\d+)/.exec(process.version)?.[1];
+    if (nodeMajorVersion && parseInt(nodeMajorVersion, 10) >= 14) {
+      //#region EdDSA
+      this.providers.set(new EdDsaProvider());
+      //#endregion
+
+      //#region ECDH-ES
+      this.providers.set(new EcdhEsProvider());
+      //#endregion
+    }
   }
 }
