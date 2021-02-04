@@ -1,7 +1,10 @@
 import assert from "assert";
+import process from "process";
 import { WebcryptoTest } from "@peculiar/webcrypto-test";
 import * as core from "webcrypto-core";
 import { Crypto } from "../src";
+
+const nodeMajorVersion = parseInt(/^v(\d+)/.exec(process.version)![1], 10);
 
 const crypto = new Crypto();
 
@@ -57,38 +60,38 @@ context("Crypto", () => {
     assert.strictEqual((hmac.algorithm as globalThis.HmacKeyAlgorithm).length, 512);
   });
 
-  context("EdDSA", () => {
+  (nodeMajorVersion < 14 ? context.skip : context)("EdDSA", () => {
 
-    context("generateKey", () => {
+      context("generateKey", () => {
 
-      it("Ed25519", async () => {
-        const keys = await crypto.subtle.generateKey({ name: "eddsa", namedCurve: "ed25519" } as globalThis.EcKeyGenParams, false, ["sign", "verify"]) as CryptoKeyPair;
-        assert.strictEqual(keys.privateKey.algorithm.name, "EdDSA");
-        assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "Ed25519");
-      });
+        it("Ed25519", async () => {
+          const keys = await crypto.subtle.generateKey({ name: "eddsa", namedCurve: "ed25519" } as globalThis.EcKeyGenParams, false, ["sign", "verify"]) as CryptoKeyPair;
+          assert.strictEqual(keys.privateKey.algorithm.name, "EdDSA");
+          assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "Ed25519");
+        });
 
-      it("Ed448", async () => {
-        const keys = await crypto.subtle.generateKey({ name: "eddsa", namedCurve: "ed448" } as globalThis.EcKeyGenParams, true, ["sign", "verify"]) as CryptoKeyPair;
-        assert.strictEqual(keys.privateKey.algorithm.name, "EdDSA");
-        assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "Ed448");
+        it("Ed448", async () => {
+          const keys = await crypto.subtle.generateKey({ name: "eddsa", namedCurve: "ed448" } as globalThis.EcKeyGenParams, true, ["sign", "verify"]) as CryptoKeyPair;
+          assert.strictEqual(keys.privateKey.algorithm.name, "EdDSA");
+          assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "Ed448");
 
-        const data = await crypto.subtle.exportKey("jwk", keys.privateKey);
-        assert.strictEqual(data.kty, "OKP");
-        assert.strictEqual(data.crv, "Ed448");
-        assert.strictEqual(!!data.d, true);
-        const privateKey = await crypto.subtle.importKey("jwk", data, { name: "eddsa", namedCurve: "ed448" } as EcKeyImportParams, false, ["sign"]);
+          const data = await crypto.subtle.exportKey("jwk", keys.privateKey);
+          assert.strictEqual(data.kty, "OKP");
+          assert.strictEqual(data.crv, "Ed448");
+          assert.strictEqual(!!data.d, true);
+          const privateKey = await crypto.subtle.importKey("jwk", data, { name: "eddsa", namedCurve: "ed448" } as EcKeyImportParams, false, ["sign"]);
 
-        const message = Buffer.from("message");
-        const signature = await crypto.subtle.sign({ name: "EdDSA" }, privateKey, message);
-        const ok = await crypto.subtle.verify({ name: "EdDSA" }, keys.publicKey, signature, message);
-        assert.strictEqual(ok, true);
+          const message = Buffer.from("message");
+          const signature = await crypto.subtle.sign({ name: "EdDSA" }, privateKey, message);
+          const ok = await crypto.subtle.verify({ name: "EdDSA" }, keys.publicKey, signature, message);
+          assert.strictEqual(ok, true);
+        });
+
       });
 
     });
 
-  });
-
-  context("ECDH-ES", () => {
+    (nodeMajorVersion < 14 ? context.skip : context)("ECDH-ES",  () => {
 
     context("generateKey", () => {
 
