@@ -4,6 +4,7 @@ import { WebcryptoTest } from "@peculiar/webcrypto-test";
 import * as core from "webcrypto-core";
 import { Crypto } from "../src";
 
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const nodeMajorVersion = parseInt(/^v(\d+)/.exec(process.version)![1], 10);
 
 const crypto = new Crypto();
