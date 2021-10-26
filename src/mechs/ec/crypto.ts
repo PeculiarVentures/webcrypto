@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
+import {BufferSourceConverter} from "pvtsutils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { getOidByNamedCurve } from "./helper";
@@ -12,7 +13,7 @@ export class EcCrypto {
   public static publicKeyUsages = ["verify"];
   public static privateKeyUsages = ["sign", "deriveKey", "deriveBits"];
 
-  public static async generateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
+  public static async generateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
     const privateKey = new EcPrivateKey();
     privateKey.algorithm = algorithm;
     privateKey.extractable = extractable;
@@ -38,7 +39,7 @@ export class EcCrypto {
     privateKey.data = keys.privateKey;
     publicKey.data = keys.publicKey;
 
-    const res: CryptoKeyPair = {
+    const res = {
       privateKey,
       publicKey,
     };
@@ -61,12 +62,9 @@ export class EcCrypto {
     const signature = signer.sign(options);
     const ecSignature = AsnParser.parse(signature, core.asn1.EcDsaSignature);
 
-    const pointSize = this.getPointSize(key.algorithm.namedCurve);
-    const r = this.addPadding(pointSize, Buffer.from(ecSignature.r));
-    const s = this.addPadding(pointSize, Buffer.from(ecSignature.s));
-
-    const signatureRaw = new Uint8Array(Buffer.concat([r, s])).buffer;
-    return signatureRaw;
+    const signatureRaw = core.EcUtils.encodeSignature(ecSignature, core.EcCurves.get(key.algorithm.namedCurve).size);
+    
+    return signatureRaw.buffer;
   }
 
   public static async verify(algorithm: EcdsaParams, key: EcPublicKey, signature: Uint8Array, data: Uint8Array): Promise<boolean> {
@@ -82,9 +80,10 @@ export class EcCrypto {
     };
 
     const ecSignature = new core.asn1.EcDsaSignature();
-    const pointSize = this.getPointSize(key.algorithm.namedCurve);
-    ecSignature.r = this.removePadding(signature.slice(0, pointSize));
-    ecSignature.s = this.removePadding(signature.slice(pointSize, pointSize + pointSize));
+    const namedCurve = core.EcCurves.get(key.algorithm.namedCurve);
+    const signaturePoint = core.EcUtils.decodeSignature(signature, namedCurve.size);
+    ecSignature.r = BufferSourceConverter.toArrayBuffer(signaturePoint.r);
+    ecSignature.s = BufferSourceConverter.toArrayBuffer(signaturePoint.s);
 
     const ecSignatureRaw = Buffer.from(AsnSerializer.serialize(ecSignature));
     const ok = signer.verify(options, ecSignatureRaw);
@@ -215,38 +214,8 @@ export class EcCrypto {
       case "P-521":
         return "secp521r1";
       default:
-        throw new core.OperationError(`Cannot convert WebCrypto named curve to NodeJs. Unknown name '${curve}'`);
+        return curve;
     }
-  }
-
-  private static getPointSize(namedCurve: string) {
-    switch (namedCurve) {
-      case "P-256":
-      case "K-256":
-        return 32;
-      case "P-384":
-        return 48;
-      case "P-521":
-        return 66;
-      default:
-        throw new Error(`Cannot get size for the named curve '${namedCurve}'`);
-    }
-  }
-
-  private static addPadding(pointSize: number, bytes: Buffer) {
-    const res = Buffer.alloc(pointSize);
-    res.set(Buffer.from(bytes), pointSize - bytes.length);
-    return res;
-  }
-
-  private static removePadding(bytes: Uint8Array) {
-    for (let i = 0; i < bytes.length; i++) {
-      if (!bytes[i]) {
-        continue;
-      }
-      return bytes.slice(i).buffer;
-    }
-    return new ArrayBuffer(0);
   }
 
 }

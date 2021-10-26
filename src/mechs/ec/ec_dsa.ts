@@ -6,9 +6,9 @@ import { EcPublicKey } from "./public_key";
 
 export class EcdsaProvider extends core.EcdsaProvider {
 
-  public namedCurves = ["P-256", "P-384", "P-521", "K-256"];
+  public namedCurves = core.EcCurves.names;
 
-  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
+  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
     const keys = await EcCrypto.generateKey(
       {
         ...algorithm,

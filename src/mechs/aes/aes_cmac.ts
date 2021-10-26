@@ -125,12 +125,12 @@ export class AesCmacProvider extends core.AesCmacProvider {
     return setCryptoKey(key);
   }
 
-  public async onSign(algorithm: AesCmacParams, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public async onSign(algorithm: core.AesCmacParams, key: AesCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const result = aesCmac(getCryptoKey(key).data, Buffer.from(data));
     return new Uint8Array(result).buffer;
   }
 
-  public async onVerify(algorithm: AesCmacParams, key: AesCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
+  public async onVerify(algorithm: core.AesCmacParams, key: AesCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
     const signature2 = await this.sign(algorithm, key, data);
     return Buffer.from(signature).compare(Buffer.from(signature2)) === 0;
   }

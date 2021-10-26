@@ -12,7 +12,7 @@ export class EdCrypto {
   public static publicKeyUsages = ["verify"];
   public static privateKeyUsages = ["sign", "deriveKey", "deriveBits"];
 
-  public static async generateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
+  public static async generateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
     const privateKey = new EdPrivateKey();
     privateKey.algorithm = algorithm;
     privateKey.extractable = extractable;
@@ -38,7 +38,7 @@ export class EdCrypto {
     privateKey.data = keys.privateKey;
     publicKey.data = keys.publicKey;
 
-    const res: CryptoKeyPair = {
+    const res = {
       privateKey,
       publicKey,
     };
