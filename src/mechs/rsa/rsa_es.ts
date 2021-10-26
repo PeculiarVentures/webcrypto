@@ -14,7 +14,7 @@ export class RsaEsProvider extends core.ProviderCrypto {
     privateKey: ["decrypt", "unwrapKey"] as core.KeyUsages,
   };
 
-  public async onGenerateKey(algorithm: RsaKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
+  public async onGenerateKey(algorithm: RsaKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
     const keys = await RsaCrypto.generateKey(
       {
         ...algorithm,

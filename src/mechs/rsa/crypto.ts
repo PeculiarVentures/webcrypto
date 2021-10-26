@@ -18,7 +18,7 @@ export class RsaCrypto {
   public static publicKeyUsages = ["verify", "encrypt", "wrapKey"];
   public static privateKeyUsages = ["sign", "decrypt", "unwrapKey"];
 
-  public static async generateKey(algorithm: RsaHashedKeyGenParams | RsaKeyGenParams, extractable: boolean, keyUsages: string[]): Promise<CryptoKeyPair> {
+  public static async generateKey(algorithm: RsaHashedKeyGenParams | RsaKeyGenParams, extractable: boolean, keyUsages: string[]): Promise<core.CryptoKeyPair> {
     const privateKey = new RsaPrivateKey();
     privateKey.algorithm = algorithm as RsaHashedKeyAlgorithm;
     privateKey.extractable = extractable;
@@ -50,7 +50,7 @@ export class RsaCrypto {
     privateKey.data = keys.privateKey;
     publicKey.data = keys.publicKey;
 
-    const res: CryptoKeyPair = {
+    const res = {
       privateKey,
       publicKey,
     };
