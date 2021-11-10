@@ -17,6 +17,6 @@ export class CryptoKey extends core.CryptoKey {
   @JsonProp({ type: JsonPropTypes.String })
   protected kty = "oct";
 
-  @JsonProp({ type: JsonPropTypes.String })
+  @JsonProp({ type: JsonPropTypes.String, optional: true })
   protected alg = "";
 }
