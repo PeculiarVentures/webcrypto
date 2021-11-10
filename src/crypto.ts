@@ -10,7 +10,7 @@ export class Crypto extends core.Crypto {
     if (!ArrayBuffer.isView(array)) {
       throw new TypeError("Failed to execute 'getRandomValues' on 'Crypto': parameter 1 is not of type 'ArrayBufferView'");
     }
-    const buffer = Buffer.from(array.buffer);
+    const buffer = Buffer.from(array.buffer, array.byteOffset, array.byteLength);
     crypto.randomFillSync(buffer);
     return array;
   }
