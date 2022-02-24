@@ -55,6 +55,8 @@ npm install @peculiar/webcrypto
 | PBKDF2            |             |         |       X       |             |                 |                   |    X    |
 | DES-CBC<sup>2</sup>|      X      |         |       X       |             |        X        |         X         |         |
 | DES-EDE3-CBC<sup>2</sup>|      X      |         |       X       |             |        X        |         X         |         |
+| shake128<sup>2</sup>|             |    X    |               |             |                 |                   |         |
+| shake256<sup>2</sup>|             |    X    |               |             |                 |                   |         |
 
 <sup>1</sup> Mechanism supports extended list of named curves `P-256`, `P-384`, `P-521`, `K-256`, 
 `brainpoolP160r1`, `brainpoolP160t1`, `brainpoolP192r1`, `brainpoolP192t1`, `brainpoolP224r1`, `brainpoolP224t1`, `brainpoolP256r1`, `brainpoolP256t1`, `brainpoolP320r1`, `brainpoolP320t1`, `brainpoolP384r1`, `brainpoolP384t1`, `brainpoolP512r1`, and `brainpoolP512t1`
