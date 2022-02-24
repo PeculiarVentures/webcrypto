@@ -11,6 +11,7 @@ import {
   Pbkdf2Provider,
   RsaEsProvider, RsaOaepProvider, RsaPssProvider, RsaSsaProvider,
   Sha1Provider, Sha256Provider, Sha384Provider, Sha512Provider,
+  Shake128Provider, Shake256Provider,
 } from "./mechs";
 
 export class SubtleCrypto extends core.SubtleCrypto {
@@ -63,6 +64,13 @@ export class SubtleCrypto extends core.SubtleCrypto {
     //#endregion
 
     const nodeMajorVersion = /^v(\d+)/.exec(process.version)?.[1];
+    if (nodeMajorVersion && parseInt(nodeMajorVersion, 10) >= 12) {
+      //#region SHAKE
+      this.providers.set(new Shake128Provider());
+      this.providers.set(new Shake256Provider());
+      //#endregion
+    }
+
     if (nodeMajorVersion && parseInt(nodeMajorVersion, 10) >= 14) {
       //#region EdDSA
       this.providers.set(new EdDsaProvider());

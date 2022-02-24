@@ -226,4 +226,22 @@ context("Crypto", () => {
     assert.strictEqual(hmacKey.algorithm.name, "HMAC");
   });
 
+  context("shake digest", () => {
+
+    const data = Buffer.from("test data");
+
+    it("shake128", async () => {
+      const hash = await crypto.subtle.digest("shake128", data);
+
+      assert.strictEqual(Buffer.from(hash).toString("hex"), "ae3bdcf04986a8e7ddd99ac948254693");
+    });
+
+    it("shake256", async () => {
+      const hash = await crypto.subtle.digest("shake256", data);
+      
+      assert.strictEqual(Buffer.from(hash).toString("hex"), "be15253026b9a85e01ae54b1939284e8e514fbdad2a3bd5c1c0f437e60548e26");
+    });
+
+  });
+
 });
