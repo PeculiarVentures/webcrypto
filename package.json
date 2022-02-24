@@ -47,7 +47,9 @@
     "x25519",
     "ed25519",
     "x448",
-    "ed448"
+    "ed448",
+    "shake128",
+    "shake256"
   ],
   "author": "PeculiarVentures",
   "contributors": [
@@ -61,20 +63,20 @@
   "banner": "// Copyright (c) 2021, Peculiar Ventures, All rights reserved.",
   "devDependencies": {
     "@peculiar/webcrypto-test": "^1.0.7",
-    "@types/mocha": "^9.0.0",
+    "@types/mocha": "^9.1.0",
     "@types/node": "^16.11.10",
-    "@typescript-eslint/eslint-plugin": "^5.4.0",
-    "@typescript-eslint/parser": "^5.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.12.1",
+    "@typescript-eslint/parser": "^5.12.1",
     "coveralls": "^3.1.1",
-    "eslint": "^8.3.0",
-    "eslint-plugin-import": "^2.25.3",
-    "mocha": "^9.1.3",
+    "eslint": "^8.9.0",
+    "eslint-plugin-import": "^2.25.4",
+    "mocha": "^9.2.1",
     "nyc": "^15.1.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.60.1",
-    "rollup-plugin-typescript2": "^0.31.1",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.2"
+    "rollup": "^2.68.0",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "ts-node": "^10.5.0",
+    "typescript": "^4.5.5"
   },
   "dependencies": {
     "@peculiar/asn1-schema": "^2.0.44",
