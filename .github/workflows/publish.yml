@@ -52,10 +52,10 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
 
       - name: Install global dependencies
-        run: npm i standard-version -g
+        run: npm i standard-version yarn -g
 
       - name: Install dependencies
-        run: npm i
+        run: yarn
 
       - name: Get Prev Version
         shell: bash -ex {0}
@@ -76,6 +76,7 @@ jobs:
       - name: Publish
         if: env.PREV_VERSION != env.CURRENT_VERSION
         run: |
+          npm run build
           npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
