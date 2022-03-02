@@ -5,9 +5,9 @@ import { CryptoKey } from "../../keys";
 export class HmacCryptoKey extends CryptoKey {
 
   @JsonProp({ name: "k", converter: JsonBase64UrlConverter })
-  public data!: Buffer;
+  public override data!: Buffer;
 
-  public algorithm!: HmacKeyAlgorithm;
+  public override algorithm!: HmacKeyAlgorithm;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -16,7 +16,7 @@ export class HmacCryptoKey extends CryptoKey {
     return `HS${hash.replace("SHA-", "")}`;
   }
 
-  protected set alg(value: string) {
+  protected override set alg(value: string) {
     // nothing, cause set is needed for json-schema, but is not used by module
   }
 

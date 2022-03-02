@@ -4,15 +4,15 @@ import * as core from "webcrypto-core";
 export class CryptoKey extends core.CryptoKey {
   public data: Buffer = Buffer.alloc(0);
 
-  public algorithm: KeyAlgorithm = { name: "" };
+  public override algorithm: KeyAlgorithm = { name: "" };
 
   @JsonProp({ name: "ext", type: JsonPropTypes.Boolean, optional: true })
-  public extractable = false;
+  public override extractable = false;
 
-  public type: KeyType = "secret";
+  public override type: KeyType = "secret";
 
   @JsonProp({ name: "key_ops", type: JsonPropTypes.String, repeated: true, optional: true })
-  public usages: KeyUsage[] = [];
+  public override usages: KeyUsage[] = [];
 
   @JsonProp({ type: JsonPropTypes.String })
   protected kty = "oct";

@@ -5,7 +5,7 @@ import { EdCrypto } from "./crypto";
 
 export class EcdhEsProvider extends core.EcdhEsProvider {
   
-  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
+  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const keys = await EdCrypto.generateKey(
       {
         name: this.name,

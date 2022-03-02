@@ -2,7 +2,7 @@ import { CryptoKey } from "../../keys";
 
 export class HkdfCryptoKey extends CryptoKey {
 
-  public data!: Buffer;
+  public override data!: Buffer;
 
-  public algorithm!: KeyAlgorithm;
+  public override algorithm!: KeyAlgorithm;
 }

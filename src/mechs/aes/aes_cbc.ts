@@ -34,7 +34,7 @@ export class AesCbcProvider extends core.AesCbcProvider {
     return setCryptoKey(key);
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(getCryptoKey(key) instanceof AesCryptoKey)) {
       throw new TypeError("key: Is not a AesCryptoKey");
