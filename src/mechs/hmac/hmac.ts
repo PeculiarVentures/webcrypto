@@ -21,7 +21,7 @@ export class HmacProvider extends core.HmacProvider {
     return setCryptoKey(key);
   }
 
-  public async onSign(algorithm: Algorithm, key: HmacCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public override async onSign(algorithm: Algorithm, key: HmacCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const hash = key.algorithm.hash.name.replace("-", "");
     const hmac = crypto.createHmac(hash, getCryptoKey(key).data)
       .update(Buffer.from(data)).digest();
@@ -29,7 +29,7 @@ export class HmacProvider extends core.HmacProvider {
     return new Uint8Array(hmac).buffer;
   }
 
-  public async onVerify(algorithm: Algorithm, key: HmacCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
+  public override async onVerify(algorithm: Algorithm, key: HmacCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
     const hash = key.algorithm.hash.name.replace("-", "");
     const hmac = crypto.createHmac(hash, getCryptoKey(key).data)
       .update(Buffer.from(data)).digest();
@@ -74,7 +74,7 @@ export class HmacProvider extends core.HmacProvider {
     }
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(getCryptoKey(key) instanceof HmacCryptoKey)) {
       throw new TypeError("key: Is not HMAC CryptoKey");

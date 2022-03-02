@@ -44,7 +44,7 @@ export class DesEde3CbcProvider extends core.DesProvider {
     return setCryptoKey(key);
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(getCryptoKey(key) instanceof DesCryptoKey)) {
       throw new TypeError("key: Is not a DesCryptoKey");

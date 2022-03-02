@@ -14,7 +14,7 @@ export class RsaEsProvider extends core.ProviderCrypto {
     privateKey: ["decrypt", "unwrapKey"] as core.KeyUsages,
   };
 
-  public async onGenerateKey(algorithm: RsaKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
+  public override async onGenerateKey(algorithm: RsaKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const keys = await RsaCrypto.generateKey(
       {
         ...algorithm,
@@ -29,7 +29,7 @@ export class RsaEsProvider extends core.ProviderCrypto {
     };
   }
 
-  public checkGenerateKeyParams(algorithm: RsaKeyGenParams) {
+  public override checkGenerateKeyParams(algorithm: RsaKeyGenParams) {
     // public exponent
     this.checkRequiredProperty(algorithm, "publicExponent");
     if (!(algorithm.publicExponent && algorithm.publicExponent instanceof Uint8Array)) {
@@ -52,28 +52,28 @@ export class RsaEsProvider extends core.ProviderCrypto {
     }
   }
 
-  public async onEncrypt(algorithm: Algorithm, key: RsaPublicKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public override async onEncrypt(algorithm: Algorithm, key: RsaPublicKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const options = this.toCryptoOptions(key);
     const enc = crypto.publicEncrypt(options, new Uint8Array(data));
     return new Uint8Array(enc).buffer;
   }
 
-  public async onDecrypt(algorithm: Algorithm, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public override async onDecrypt(algorithm: Algorithm, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const options = this.toCryptoOptions(key);
     const dec = crypto.privateDecrypt(options, new Uint8Array(data));
     return new Uint8Array(dec).buffer;
   }
 
-  public async onExportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {
+  public override async onExportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {
     return RsaCrypto.exportKey(format, getCryptoKey(key));
   }
 
-  public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
+  public override async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const key = await RsaCrypto.importKey(format, keyData, { ...algorithm, name: this.name }, extractable, keyUsages);
     return setCryptoKey(key);
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     const internalKey = getCryptoKey(key);
     if (!(internalKey instanceof RsaPrivateKey || internalKey instanceof RsaPublicKey)) {

@@ -6,7 +6,7 @@ import { getJwkAlgorithm } from "./helper";
 
 export class RsaPublicKey extends AsymmetricKey {
   public readonly type: "public" = "public";
-  public algorithm!: RsaHashedKeyAlgorithm;
+  public override algorithm!: RsaHashedKeyAlgorithm;
 
   public getKey() {
     const keyInfo = AsnParser.parse(this.data, core.asn1.PublicKeyInfo);

@@ -43,7 +43,7 @@ export class HkdfProvider extends core.HkdfProvider {
     return Buffer.concat(blocks).slice(0, byteLength);
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(getCryptoKey(key) instanceof HkdfCryptoKey)) {
       throw new TypeError("key: Is not HKDF CryptoKey");

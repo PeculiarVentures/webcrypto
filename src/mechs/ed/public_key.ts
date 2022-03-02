@@ -8,7 +8,7 @@ import { getOidByNamedCurve } from "./helper";
 export class EdPublicKey extends AsymmetricKey implements IJsonConvertible {
 
   public readonly type: "public" = "public";
-  public algorithm!: EcKeyAlgorithm;
+  public override algorithm!: EcKeyAlgorithm;
 
   public getKey() {
     const keyInfo = AsnParser.parse(this.data, core.asn1.PublicKeyInfo);

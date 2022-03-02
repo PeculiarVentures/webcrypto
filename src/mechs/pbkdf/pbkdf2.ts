@@ -31,7 +31,7 @@ export class Pbkdf2Provider extends core.Pbkdf2Provider {
     throw new core.OperationError("format: Must be 'raw'");
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(getCryptoKey(key) instanceof PbkdfCryptoKey)) {
       throw new TypeError("key: Is not PBKDF CryptoKey");

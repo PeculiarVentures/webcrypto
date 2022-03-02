@@ -11,6 +11,9 @@
     "plugin:import/warnings",
     "plugin:import/typescript"
   ],
+  "ignorePatterns": [
+    "build/**/*"
+  ],
   "rules": {
     "@typescript-eslint/ban-ts-ignore": 0,
     "@typescript-eslint/camelcase": 0,

@@ -6,7 +6,7 @@ import { RsaPublicKey } from "./public_key";
 
 export class RsaSsaProvider extends core.RsaSsaProvider {
 
-  public async onGenerateKey(algorithm: RsaHashedKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
+  public async onGenerateKey(algorithm: RsaHashedKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<globalThis.CryptoKeyPair> {
     const keys = await RsaCrypto.generateKey(
       {
         ...algorithm,
@@ -38,7 +38,7 @@ export class RsaSsaProvider extends core.RsaSsaProvider {
     return setCryptoKey(key);
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     const internalKey = getCryptoKey(key);
     if (!(internalKey instanceof RsaPrivateKey || internalKey instanceof RsaPublicKey)) {

@@ -6,9 +6,9 @@ import { EcPublicKey } from "./public_key";
 
 export class EcdsaProvider extends core.EcdsaProvider {
 
-  public namedCurves = core.EcCurves.names;
+  public override namedCurves = core.EcCurves.names;
 
-  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKeyPair> {
+  public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const keys = await EcCrypto.generateKey(
       {
         ...algorithm,
@@ -40,7 +40,7 @@ export class EcdsaProvider extends core.EcdsaProvider {
     return setCryptoKey(key);
   }
 
-  public checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
+  public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     const internalKey = getCryptoKey(key);
     if (!(internalKey instanceof EcPrivateKey || internalKey instanceof EcPublicKey)) {
