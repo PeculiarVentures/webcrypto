@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import {BufferSourceConverter} from "pvtsutils";
+import { BufferSourceConverter } from "pvtsutils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { ShaCrypto } from "../sha";
@@ -64,7 +64,7 @@ export class EcCrypto {
     const ecSignature = AsnParser.parse(signature, core.asn1.EcDsaSignature);
 
     const signatureRaw = core.EcUtils.encodeSignature(ecSignature, core.EcCurves.get(key.algorithm.namedCurve).size);
-    
+
     return signatureRaw.buffer;
   }
 
