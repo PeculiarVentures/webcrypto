@@ -181,6 +181,12 @@ export class RsaCrypto {
         return "RSA-SHA384";
       case "SHA-512":
         return "RSA-SHA512";
+      case "SHA3-256":
+        return "RSA-SHA3-256";
+      case "SHA3-384":
+        return "RSA-SHA3-384";
+      case "SHA3-512":
+        return "RSA-SHA3-512";
       default:
         throw new core.OperationError("algorithm.hash: Is not recognized");
     }

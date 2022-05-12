@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
+import { ShaCrypto } from "../sha";
 import { setCryptoKey, getCryptoKey } from "../storage";
 import { HmacCryptoKey } from "./key";
 
@@ -22,16 +23,16 @@ export class HmacProvider extends core.HmacProvider {
   }
 
   public override async onSign(algorithm: Algorithm, key: HmacCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
-    const hash = key.algorithm.hash.name.replace("-", "");
-    const hmac = crypto.createHmac(hash, getCryptoKey(key).data)
+    const cryptoAlg = ShaCrypto.getAlgorithmName(key.algorithm.hash);
+    const hmac = crypto.createHmac(cryptoAlg, getCryptoKey(key).data)
       .update(Buffer.from(data)).digest();
 
     return new Uint8Array(hmac).buffer;
   }
 
   public override async onVerify(algorithm: Algorithm, key: HmacCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
-    const hash = key.algorithm.hash.name.replace("-", "");
-    const hmac = crypto.createHmac(hash, getCryptoKey(key).data)
+    const cryptoAlg = ShaCrypto.getAlgorithmName(key.algorithm.hash);
+    const hmac = crypto.createHmac(cryptoAlg, getCryptoKey(key).data)
       .update(Buffer.from(data)).digest();
 
     return hmac.compare(Buffer.from(signature)) === 0;

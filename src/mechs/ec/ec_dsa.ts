@@ -8,6 +8,11 @@ export class EcdsaProvider extends core.EcdsaProvider {
 
   public override namedCurves = core.EcCurves.names;
 
+  public override hashAlgorithms = [
+    "SHA-1", "SHA-256", "SHA-384", "SHA-512", 
+    "shake128", "shake256", 
+    "SHA3-256", "SHA3-384", "SHA3-512"];
+
   public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const keys = await EcCrypto.generateKey(
       {

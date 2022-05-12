@@ -1,9 +1,10 @@
 import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import {BufferSourceConverter} from "pvtsutils";
+import { BufferSourceConverter } from "pvtsutils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
+import { ShaCrypto } from "../sha";
 import { getOidByNamedCurve } from "./helper";
 import { EcPrivateKey } from "./private_key";
 import { EcPublicKey } from "./public_key";
@@ -48,7 +49,7 @@ export class EcCrypto {
   }
 
   public static async sign(algorithm: EcdsaParams, key: EcPrivateKey, data: Uint8Array): Promise<ArrayBuffer> {
-    const cryptoAlg = (algorithm.hash as Algorithm).name.replace("-", "");
+    const cryptoAlg = ShaCrypto.getAlgorithmName(algorithm.hash as Algorithm);
     const signer = crypto.createSign(cryptoAlg);
     signer.update(Buffer.from(data));
 
@@ -63,12 +64,12 @@ export class EcCrypto {
     const ecSignature = AsnParser.parse(signature, core.asn1.EcDsaSignature);
 
     const signatureRaw = core.EcUtils.encodeSignature(ecSignature, core.EcCurves.get(key.algorithm.namedCurve).size);
-    
+
     return signatureRaw.buffer;
   }
 
   public static async verify(algorithm: EcdsaParams, key: EcPublicKey, signature: Uint8Array, data: Uint8Array): Promise<boolean> {
-    const cryptoAlg = (algorithm.hash as Algorithm).name.replace("-", "");
+    const cryptoAlg = ShaCrypto.getAlgorithmName(algorithm.hash as Algorithm);
     const signer = crypto.createVerify(cryptoAlg);
     signer.update(Buffer.from(data));
 
