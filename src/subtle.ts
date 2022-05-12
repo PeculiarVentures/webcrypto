@@ -1,3 +1,4 @@
+import * as crypto from "crypto";
 import * as process from "process";
 import * as core from "webcrypto-core";
 import {
@@ -12,6 +13,7 @@ import {
   RsaEsProvider, RsaOaepProvider, RsaPssProvider, RsaSsaProvider,
   Sha1Provider, Sha256Provider, Sha384Provider, Sha512Provider,
   Shake128Provider, Shake256Provider,
+  Sha3256Provider, Sha3384Provider, Sha3512Provider,
 } from "./mechs";
 
 export class SubtleCrypto extends core.SubtleCrypto {
@@ -69,6 +71,17 @@ export class SubtleCrypto extends core.SubtleCrypto {
       this.providers.set(new Shake128Provider());
       this.providers.set(new Shake256Provider());
       //#endregion
+    }
+
+    const hashes = crypto.getHashes();
+    if (hashes.includes("sha3-256")) {
+      this.providers.set(new Sha3256Provider());
+    }
+    if (hashes.includes("sha3-384")) {
+      this.providers.set(new Sha3384Provider());
+    }
+    if (hashes.includes("sha3-512")) {
+      this.providers.set(new Sha3512Provider());
     }
 
     if (nodeMajorVersion && parseInt(nodeMajorVersion, 10) >= 14) {
