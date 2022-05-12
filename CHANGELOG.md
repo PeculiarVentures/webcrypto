@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/PeculiarVentures/webcrypto/compare/v1.3.3...v1.4.0) (2022-05-12)
+
+
+### Features
+
+* implement SHA3 256/384/512 ([8b1347d](https://github.com/PeculiarVentures/webcrypto/commit/8b1347df434ba1d8d973e0c08d61c0dc54f38432))
+
 ### [1.3.3](https://github.com/PeculiarVentures/webcrypto/compare/v1.3.2...v1.3.3) (2022-03-25)
 
 
