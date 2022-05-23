@@ -1,0 +1,50 @@
+{
+  "name": "@peculiar/webcrypto-core",
+  "version": "3.0.0",
+  "description": "Common layer to be used by crypto libraries based on WebCrypto API for input validation.",
+  "author": "PeculiarVentures",
+  "contributors": [
+    "Miroshin Stepan<microshine@mail.ru>"
+  ],
+  "homepage": "https://github.com/PeculiarVentures/webcrypto/tree/master/packages/core#readme",
+  "license": "MIT",
+  "main": "build/index.js",
+  "module": "build/index.es.js",
+  "types": "build/index.d.ts",
+  "files": [
+    "build",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeculiarVentures/webcrypto.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/webcrypto/issues"
+  },
+  "keywords": [
+    "webcrypto",
+    "crypto",
+    "polyfill",
+    "aes",
+    "rsa",
+    "sha",
+    "sha3",
+    "ec",
+    "shake"
+  ],
+  "dependencies": {
+    "@peculiar/asn1-schema": "^2.1.7",
+    "@peculiar/json-schema": "^1.1.12",
+    "@peculiar/webcrypto-types": "^3.0.0",
+    "pvtsutils": "^1.3.2",
+    "tslib": "^2.4.0"
+  }
+}

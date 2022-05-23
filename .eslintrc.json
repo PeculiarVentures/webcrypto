@@ -23,12 +23,19 @@
     "@typescript-eslint/semi": 1,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "semi": "off",
-    "import/order": ["error", {
-      "groups": ["builtin", "external", "internal"],
-      "alphabetize": {
-        "order": "asc",
-        "caseInsensitive": true
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal"
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
       }
-      }]
+    ]
   }
 }

@@ -1,19 +1,23 @@
 {
+  "extends": "./tsconfig.compile.json",
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "lib": [
-      "dom"
-    ],
-    "removeComments": true,
-    "importHelpers": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "noImplicitOverride": true
-  },
-  "exclude": [
-    "build/**/*",
-    "index.d.ts"
-  ]
+    "baseUrl": ".",
+    "paths": {
+      "@peculiar/webcrypto-types": [
+        "./packages/types/src"
+      ],
+      "@peculiar/webcrypto-core": [
+        "./packages/core/src"
+      ],
+      "@peculiar/webcrypto": [
+        "./packages/node/src"
+      ],
+      "@peculiar/webcrypto-test": [
+        "./packages/test/src"
+      ],
+      "@peculiar/webcrypto-pkcs11": [
+        "./packages/pkcs11/src"
+      ],
+    }
+  }
 }
