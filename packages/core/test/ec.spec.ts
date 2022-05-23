@@ -54,10 +54,10 @@ context("EC", () => {
       public onGenerateKey(algorithm: types.EcKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<types.CryptoKeyPair> {
         throw new Error("Method not implemented.");
       }
-      public onExportKey(format: types.KeyFormat, key: core.BaseCryptoKey): Promise<types.JsonWebKey | ArrayBuffer> {
+      public onExportKey(format: types.KeyFormat, key: core.CryptoKey): Promise<types.JsonWebKey | ArrayBuffer> {
         throw new Error("Method not implemented.");
       }
-      public onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+      public onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
         throw new Error("Method not implemented.");
       }
     }
@@ -115,7 +115,7 @@ context("EC", () => {
 
         it("error if `public` is not public CryptoKey", () => {
           assert.throws(() => {
-            const key = new core.BaseCryptoKey();
+            const key = new core.CryptoKey();
             key.type = "secret";
             provider.checkAlgorithmParams({ public: key } as any);
           }, Error);
@@ -123,7 +123,7 @@ context("EC", () => {
 
         it("error if `public` is wrong CryptoKey alg", () => {
           assert.throws(() => {
-            const key = new core.BaseCryptoKey();
+            const key = new core.CryptoKey();
             key.type = "public";
             key.algorithm = { name: "ECDSA" };
             provider.checkAlgorithmParams({ public: key } as any);
@@ -131,7 +131,7 @@ context("EC", () => {
         });
 
         it("correct `public`", () => {
-          const key = new core.BaseCryptoKey();
+          const key = new core.CryptoKey();
           key.type = "public";
           key.algorithm = { name: "ECDH" };
           provider.checkAlgorithmParams({ public: key } as any);
@@ -171,16 +171,16 @@ context("EC", () => {
 
   context("ECDH-ES", () => {
     class TestEcdhEsProvider extends core.EcdhEsProvider {
-      public async onDeriveBits(algorithm: types.EcdhKeyDeriveParams, baseKey: core.BaseCryptoKey, length: number, ...args: any[]): Promise<ArrayBuffer> {
+      public async onDeriveBits(algorithm: types.EcdhKeyDeriveParams, baseKey: core.CryptoKey, length: number, ...args: any[]): Promise<ArrayBuffer> {
         return null as any;
       }
       public async onGenerateKey(algorithm: types.EcKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<types.CryptoKeyPair> {
         return null as any;
       }
-      public async onExportKey(format: types.KeyFormat, key: core.BaseCryptoKey, ...args: any[]): Promise<ArrayBuffer | types.JsonWebKey> {
+      public async onExportKey(format: types.KeyFormat, key: core.CryptoKey, ...args: any[]): Promise<ArrayBuffer | types.JsonWebKey> {
         return null as any;
       }
-      public async onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<core.BaseCryptoKey> {
+      public async onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<core.CryptoKey> {
         return null as any;
       }
     }
@@ -199,19 +199,19 @@ context("EC", () => {
 
   context("EdDSA", () => {
     class TestEdDsaProvider extends core.EdDsaProvider {
-      public async onSign(algorithm: types.EcdsaParams, key: core.BaseCryptoKey, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer> {
+      public async onSign(algorithm: types.EcdsaParams, key: core.CryptoKey, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer> {
         return null as any;
       }
-      public async onVerify(algorithm: types.EcdsaParams, key: core.BaseCryptoKey, signature: ArrayBuffer, data: ArrayBuffer, ...args: any[]): Promise<boolean> {
+      public async onVerify(algorithm: types.EcdsaParams, key: core.CryptoKey, signature: ArrayBuffer, data: ArrayBuffer, ...args: any[]): Promise<boolean> {
         return true;
       }
       public async onGenerateKey(algorithm: types.EcKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<types.CryptoKeyPair> {
         return null as any;
       }
-      public onExportKey(format: types.KeyFormat, key: core.BaseCryptoKey, ...args: any[]): Promise<ArrayBuffer | types.JsonWebKey> {
+      public onExportKey(format: types.KeyFormat, key: core.CryptoKey, ...args: any[]): Promise<ArrayBuffer | types.JsonWebKey> {
         return null as any;
       }
-      public onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<core.BaseCryptoKey> {
+      public onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<core.CryptoKey> {
         return null as any;
       }
     }

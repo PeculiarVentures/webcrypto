@@ -5,37 +5,37 @@ import * as assert from "assert";
 // tslint:disable:max-classes-per-file
 
 class RsaSsaProvider extends core.RsaSsaProvider {
-  public onSign(algorithm: core.RsaSsaParams, key: core.BaseCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public onSign(algorithm: core.RsaSsaParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     throw new Error("Method not implemented.");
   }
-  public onVerify(algorithm: core.RsaSsaParams, key: core.BaseCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
+  public onVerify(algorithm: core.RsaSsaParams, key: core.CryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
     throw new Error("Method not implemented.");
   }
   public onGenerateKey(algorithm: types.RsaHashedKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<types.CryptoKeyPair> {
     throw new Error("Method not implemented.");
   }
-  public onExportKey(format: types.KeyFormat, key: core.BaseCryptoKey): Promise<ArrayBuffer | types.JsonWebKey> {
+  public onExportKey(format: types.KeyFormat, key: core.CryptoKey): Promise<ArrayBuffer | types.JsonWebKey> {
     throw new Error("Method not implemented.");
   }
-  public onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     throw new Error("Method not implemented.");
   }
 }
 
 class RsaOaepProvider extends core.RsaOaepProvider {
-  public onEncrypt(algorithm: types.RsaOaepParams, key: core.BaseCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public onEncrypt(algorithm: types.RsaOaepParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     throw new Error("Method not implemented.");
   }
-  public onDecrypt(algorithm: types.RsaOaepParams, key: core.BaseCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public onDecrypt(algorithm: types.RsaOaepParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     throw new Error("Method not implemented.");
   }
   public onGenerateKey(algorithm: types.RsaHashedKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<types.CryptoKeyPair> {
     throw new Error("Method not implemented.");
   }
-  public onExportKey(format: types.KeyFormat, key: core.BaseCryptoKey): Promise<ArrayBuffer | types.JsonWebKey> {
+  public onExportKey(format: types.KeyFormat, key: core.CryptoKey): Promise<ArrayBuffer | types.JsonWebKey> {
     throw new Error("Method not implemented.");
   }
-  public onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     throw new Error("Method not implemented.");
   }
 }

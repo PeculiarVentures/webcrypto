@@ -11,4 +11,4 @@ export * from "./one_asymmetric_key";
 export * from "./ed_private_key";
 export * from "./ed_public_key";
 export * from "./rfc8410";
-export * as converters from "./converters";
+export * from "./converters";

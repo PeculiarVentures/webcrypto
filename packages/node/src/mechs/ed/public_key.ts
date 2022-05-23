@@ -13,7 +13,7 @@ export class EdPublicKey extends AsymmetricKey implements jsonSchema.IJsonConver
   public override algorithm!: types.EcKeyAlgorithm;
 
   public getKey() {
-    const keyInfo = asn1Schema.AsnParser.parse(this.data, schema.PublicKeyInfo);
+    const keyInfo = asn1Schema.AsnParser.parse(this.data, core.asn1.PublicKeyInfo);
     return keyInfo.publicKey;
   }
 
@@ -40,7 +40,7 @@ export class EdPublicKey extends AsymmetricKey implements jsonSchema.IJsonConver
       throw new core.OperationError(`Cannot get property from JWK. Property 'x' is required`);
     }
 
-    const keyInfo = new schema.PublicKeyInfo();
+    const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = getOidByNamedCurve(json.crv);
     keyInfo.publicKey = pvtsutils.Convert.FromBase64Url(json.x);
 

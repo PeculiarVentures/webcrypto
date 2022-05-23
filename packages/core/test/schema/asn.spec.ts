@@ -22,17 +22,17 @@ context("ASN1", () => {
       };
 
       it("parse", () => {
-        const keyInfo = AsnParser.parse(bytes, core.PrivateKeyInfo);
-        const key = AsnParser.parse(keyInfo.privateKey, core.RsaPrivateKey);
+        const keyInfo = AsnParser.parse(bytes, core.asn1.PrivateKeyInfo);
+        const key = AsnParser.parse(keyInfo.privateKey, core.asn1.RsaPrivateKey);
 
         const jsonKey = JsonSerializer.toJSON(key);
         assert.deepEqual(jsonKey, json);
       });
 
       it("serialize", () => {
-        const key = JsonParser.fromJSON(json, { targetSchema: core.RsaPrivateKey });
+        const key = JsonParser.fromJSON(json, { targetSchema: core.asn1.RsaPrivateKey });
 
-        const keyInfo = new core.PrivateKeyInfo();
+        const keyInfo = new core.asn1.PrivateKeyInfo();
         keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
         keyInfo.privateKeyAlgorithm.parameters = null;
         keyInfo.privateKey = AsnSerializer.serialize(key);
@@ -52,17 +52,17 @@ context("ASN1", () => {
       };
 
       it("parse", () => {
-        const keyInfo = AsnParser.parse(bytes, core.PublicKeyInfo);
-        const key = AsnParser.parse(keyInfo.publicKey, core.RsaPublicKey);
+        const keyInfo = AsnParser.parse(bytes, core.asn1.PublicKeyInfo);
+        const key = AsnParser.parse(keyInfo.publicKey, core.asn1.RsaPublicKey);
 
         const jsonKey = JsonSerializer.toJSON(key);
         assert.deepEqual(jsonKey, json);
       });
 
       it("serialize", () => {
-        const key = JsonParser.fromJSON(json, { targetSchema: core.RsaPublicKey });
+        const key = JsonParser.fromJSON(json, { targetSchema: core.asn1.RsaPublicKey });
 
-        const keyInfo = new core.PublicKeyInfo();
+        const keyInfo = new core.asn1.PublicKeyInfo();
         keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
         keyInfo.publicKeyAlgorithm.parameters = null;
         keyInfo.publicKey = AsnSerializer.serialize(key);
@@ -87,20 +87,20 @@ context("ASN1", () => {
       };
 
       it("parse", () => {
-        const keyInfo = AsnParser.parse(bytes, core.PrivateKeyInfo);
-        const key = AsnParser.parse(keyInfo.privateKey, core.EcPrivateKey);
+        const keyInfo = AsnParser.parse(bytes, core.asn1.PrivateKeyInfo);
+        const key = AsnParser.parse(keyInfo.privateKey, core.asn1.EcPrivateKey);
 
         const jsonKey = JsonSerializer.toJSON(key);
         assert.deepEqual(jsonKey, json);
       });
 
       it("serialize", () => {
-        const keyInfo = new core.PrivateKeyInfo();
+        const keyInfo = new core.asn1.PrivateKeyInfo();
         keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
         keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(
-          new core.ObjectIdentifier("1.2.840.10045.3.1.7"),
+          new core.asn1.ObjectIdentifier("1.2.840.10045.3.1.7"),
         );
-        const key = JsonParser.fromJSON(json, { targetSchema: core.EcPrivateKey });
+        const key = JsonParser.fromJSON(json, { targetSchema: core.asn1.EcPrivateKey });
         keyInfo.privateKey = AsnSerializer.serialize(key);
 
         const asnKeyInfo = Buffer.from(AsnSerializer.serialize(keyInfo));

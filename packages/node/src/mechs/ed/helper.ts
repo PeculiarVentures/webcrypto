@@ -1,19 +1,18 @@
 import * as core from "@peculiar/webcrypto-core";
-import * as schema from "packages/core/src/schema";
 
 const edOIDs: { [key: string]: string; } = {
   // Ed448
-  [schema.idEd448]: "Ed448",
-  "ed448": schema.idEd448,
+  [core.asn1.idEd448]: "Ed448",
+  "ed448": core.asn1.idEd448,
   // X448
-  [schema.idX448]: "X448",
-  "x448": schema.idX448,
+  [core.asn1.idX448]: "X448",
+  "x448": core.asn1.idX448,
   // Ed25519
-  [schema.idEd25519]: "Ed25519",
-  "ed25519": schema.idEd25519,
+  [core.asn1.idEd25519]: "Ed25519",
+  "ed25519": core.asn1.idEd25519,
   // X25519
-  [schema.idX25519]: "X25519",
-  "x25519": schema.idX25519,
+  [core.asn1.idX25519]: "X25519",
+  "x25519": core.asn1.idX25519,
 };
 
 export function getNamedCurveByOid(oid: string) {

@@ -1,6 +1,6 @@
 import * as types from "@peculiar/webcrypto-types";
 import { Convert } from "pvtsutils";
-import { BaseCryptoKey } from "../crypto_key";
+import { CryptoKey } from "../crypto_key";
 import { ProviderCrypto } from "../provider";
 
 export abstract class RsaProvider extends ProviderCrypto {
@@ -37,7 +37,7 @@ export abstract class RsaProvider extends ProviderCrypto {
   }
 
   public abstract override onGenerateKey(algorithm: types.RsaHashedKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<types.CryptoKeyPair>;
-  public abstract override onExportKey(format: types.KeyFormat, key: BaseCryptoKey, ...args: any[]): Promise<types.JsonWebKey | ArrayBuffer>;
-  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<BaseCryptoKey>;
+  public abstract override onExportKey(format: types.KeyFormat, key: CryptoKey, ...args: any[]): Promise<types.JsonWebKey | ArrayBuffer>;
+  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<CryptoKey>;
 
 }

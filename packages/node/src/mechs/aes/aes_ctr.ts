@@ -6,7 +6,7 @@ import { AesCryptoKey } from "./key";
 
 export class AesCtrProvider extends core.AesCtrProvider {
 
-  public async onGenerateKey(algorithm: types.AesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public async onGenerateKey(algorithm: types.AesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     const key = await AesCrypto.generateKey(
       {
         name: this.name,
@@ -30,12 +30,12 @@ export class AesCtrProvider extends core.AesCtrProvider {
     return AesCrypto.exportKey(format, getCryptoKey(key) as AesCryptoKey);
   }
 
-  public async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<core.BaseCryptoKey> {
+  public async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<core.CryptoKey> {
     const res = await AesCrypto.importKey(format, keyData, { name: algorithm.name }, extractable, keyUsages);
     return setCryptoKey(res);
   }
 
-  public override checkCryptoKey(key: core.BaseCryptoKey, keyUsage?: types.KeyUsage) {
+  public override checkCryptoKey(key: core.CryptoKey, keyUsage?: types.KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(getCryptoKey(key) instanceof AesCryptoKey)) {
       throw new TypeError("key: Is not a AesCryptoKey");

@@ -11,8 +11,8 @@ export class EdPrivateKey extends AsymmetricKey implements jsonSchema.IJsonConve
   public override algorithm!: types.EcKeyAlgorithm;
 
   public getKey() {
-    const keyInfo = asn1Schema.AsnParser.parse(this.data, schema.PrivateKeyInfo);
-    return asn1Schema.AsnParser.parse(keyInfo.privateKey, schema.CurvePrivateKey);
+    const keyInfo = asn1Schema.AsnParser.parse(this.data, core.asn1.PrivateKeyInfo);
+    return asn1Schema.AsnParser.parse(keyInfo.privateKey, core.asn1.CurvePrivateKey);
   }
 
   public toJSON() {
@@ -33,9 +33,9 @@ export class EdPrivateKey extends AsymmetricKey implements jsonSchema.IJsonConve
       throw new core.OperationError(`Cannot get named curve from JWK. Property 'crv' is required`);
     }
 
-    const keyInfo = new schema.PrivateKeyInfo();
+    const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = getOidByNamedCurve(json.crv);
-    const key = jsonSchema.JsonParser.fromJSON(json, { targetSchema: schema.CurvePrivateKey });
+    const key = jsonSchema.JsonParser.fromJSON(json, { targetSchema: core.asn1.CurvePrivateKey });
     keyInfo.privateKey = asn1Schema.AsnSerializer.serialize(key);
 
     this.data = Buffer.from(asn1Schema.AsnSerializer.serialize(keyInfo));

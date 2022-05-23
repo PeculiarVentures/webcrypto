@@ -1,6 +1,6 @@
 import * as types from "@peculiar/webcrypto-types";
 import { BufferSourceConverter } from "pvtsutils";
-import { BaseCryptoKey } from "../crypto_key";
+import { CryptoKey } from "../crypto_key";
 import { ProviderCrypto } from "../provider";
 
 export abstract class HkdfProvider extends ProviderCrypto {
@@ -35,7 +35,7 @@ export abstract class HkdfProvider extends ProviderCrypto {
     }
   }
 
-  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<BaseCryptoKey>;
-  public abstract override onDeriveBits(algorithm: types.HkdfParams, baseKey: BaseCryptoKey, length: number, ...args: any[]): Promise<ArrayBuffer>;
+  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<CryptoKey>;
+  public abstract override onDeriveBits(algorithm: types.HkdfParams, baseKey: CryptoKey, length: number, ...args: any[]): Promise<ArrayBuffer>;
 
 }

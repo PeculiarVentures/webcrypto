@@ -3,7 +3,7 @@ import { BufferSource, BufferSourceConverter, Convert } from "pvtsutils";
 import { AlgorithmError } from "./errors";
 import { ProviderCrypto } from "./provider";
 import { ProviderStorage } from "./storage";
-import { BaseCryptoKey } from './crypto_key';
+import { CryptoKey } from './crypto_key';
 
 export class SubtleCrypto implements types.SubtleCrypto {
 
@@ -241,8 +241,8 @@ export class SubtleCrypto implements types.SubtleCrypto {
     return provider;
   }
 
-  protected checkCryptoKey(key: types.CryptoKey): asserts key is BaseCryptoKey {
-    if (!(key instanceof BaseCryptoKey)) {
+  protected checkCryptoKey(key: types.CryptoKey): asserts key is CryptoKey {
+    if (!(key instanceof CryptoKey)) {
       throw new TypeError(`Key is not of type 'CryptoKey'`);
     }
   }

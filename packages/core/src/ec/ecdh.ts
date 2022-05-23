@@ -1,6 +1,6 @@
 import * as types from "@peculiar/webcrypto-types";
 import { OperationError } from "../errors";
-import { BaseCryptoKey } from "../crypto_key";
+import { CryptoKey } from "../crypto_key";
 import { EllipticProvider } from "./base";
 
 export abstract class EcdhProvider extends EllipticProvider {
@@ -17,7 +17,7 @@ export abstract class EcdhProvider extends EllipticProvider {
   public override checkAlgorithmParams(algorithm: types.EcdhKeyDeriveParams) {
     // public
     this.checkRequiredProperty(algorithm, "public");
-    if (!(algorithm.public instanceof BaseCryptoKey)) {
+    if (!(algorithm.public instanceof CryptoKey)) {
       throw new TypeError("public: Is not a CryptoKey");
     }
     if (algorithm.public.type !== "public") {
@@ -28,6 +28,6 @@ export abstract class EcdhProvider extends EllipticProvider {
     }
   }
 
-  public abstract override onDeriveBits(algorithm: types.EcdhKeyDeriveParams, baseKey: BaseCryptoKey, length: number, ...args: any[]): Promise<ArrayBuffer>;
+  public abstract override onDeriveBits(algorithm: types.EcdhKeyDeriveParams, baseKey: CryptoKey, length: number, ...args: any[]): Promise<ArrayBuffer>;
 
 }

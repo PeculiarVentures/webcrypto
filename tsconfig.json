@@ -18,6 +18,10 @@
       "@peculiar/webcrypto-pkcs11": [
         "./packages/pkcs11/src"
       ],
-    }
-  }
+    },
+    "skipLibCheck": true, // TODO @peculiar/x509 should use @peculiar/webcrypto-types. Remove this line when it's fixed
+  },
+  "exclude": [
+    "packages/types/test/types.spec.ts"
+  ]
 }

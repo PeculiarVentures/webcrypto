@@ -1,6 +1,7 @@
-import { AsnIntegerConverter, AsnProp, AsnPropTypes } from "@peculiar/asn1-schema";
+import { AsnIntegerConverter, AsnProp, AsnPropTypes, AsnType, AsnTypeTypes } from "@peculiar/asn1-schema";
 import { JsonProp } from "@peculiar/json-schema";
-import { AsnIntegerArrayBufferConverter, JsonBase64UrlArrayBufferConverter } from "../json/converters";
+import { JsonBase64UrlArrayBufferConverter } from "../json/converters";
+import { AsnIntegerArrayBufferConverter } from "./converters";
 
 // RFC 3437
 // https://tools.ietf.org/html/rfc3447#appendix-A.1.2
@@ -18,6 +19,7 @@ import { AsnIntegerArrayBufferConverter, JsonBase64UrlArrayBufferConverter } fro
 //   otherPrimeInfos   OtherPrimeInfos OPTIONAL
 // }
 
+@AsnType({ type: AsnTypeTypes.Sequence })
 export class RsaPrivateKey {
 
   @AsnProp({ type: AsnPropTypes.Integer, converter: AsnIntegerConverter })

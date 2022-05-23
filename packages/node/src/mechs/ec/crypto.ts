@@ -1,7 +1,6 @@
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "@peculiar/webcrypto-core";
-import * as schema from "packages/core/src/schema";
 import * as types from "@peculiar/webcrypto-types";
 import * as crypto from "crypto";
 import { BufferSourceConverter } from "pvtsutils";
@@ -63,7 +62,7 @@ export class EcCrypto {
     };
 
     const signature = signer.sign(options);
-    const ecSignature = AsnParser.parse(signature, schema.EcDsaSignature);
+    const ecSignature = AsnParser.parse(signature, core.asn1.EcDsaSignature);
 
     const signatureRaw = core.EcUtils.encodeSignature(ecSignature, core.EcCurves.get(key.algorithm.namedCurve).size);
 
@@ -82,7 +81,7 @@ export class EcCrypto {
       key: key.pem,
     };
 
-    const ecSignature = new schema.EcDsaSignature();
+    const ecSignature = new core.asn1.EcDsaSignature();
     const namedCurve = core.EcCurves.get(key.algorithm.namedCurve);
     const signaturePoint = core.EcUtils.decodeSignature(signature, namedCurve.size);
     ecSignature.r = BufferSourceConverter.toArrayBuffer(signaturePoint.r);
@@ -97,11 +96,11 @@ export class EcCrypto {
     const cryptoAlg = this.getOpenSSLNamedCurve((baseKey.algorithm as types.EcKeyAlgorithm).namedCurve);
 
     const ecdh = crypto.createECDH(cryptoAlg);
-    const asnPrivateKey = AsnParser.parse(baseKey.data, schema.PrivateKeyInfo);
-    const asnEcPrivateKey = AsnParser.parse(asnPrivateKey.privateKey, schema.EcPrivateKey);
+    const asnPrivateKey = AsnParser.parse(baseKey.data, core.asn1.PrivateKeyInfo);
+    const asnEcPrivateKey = AsnParser.parse(asnPrivateKey.privateKey, core.asn1.EcPrivateKey);
     ecdh.setPrivateKey(Buffer.from(asnEcPrivateKey.privateKey));
 
-    const asnPublicKey = AsnParser.parse((algorithm.public as CryptoKey).data, schema.PublicKeyInfo);
+    const asnPublicKey = AsnParser.parse((algorithm.public as CryptoKey).data, core.asn1.PublicKeyInfo);
     const bits = ecdh.computeSecret(Buffer.from(asnPublicKey.publicKey));
 
     return new Uint8Array(bits).buffer.slice(0, length >> 3);
@@ -115,7 +114,7 @@ export class EcCrypto {
       case "spki":
         return new Uint8Array(key.data).buffer;
       case "raw": {
-        const publicKeyInfo = AsnParser.parse(key.data, schema.PublicKeyInfo);
+        const publicKeyInfo = AsnParser.parse(key.data, core.asn1.PublicKeyInfo);
         return publicKeyInfo.publicKey;
       }
       default:
@@ -128,26 +127,26 @@ export class EcCrypto {
       case "jwk": {
         const jwk = keyData as types.JsonWebKey;
         if (jwk.d) {
-          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: schema.EcPrivateKey });
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: core.asn1.EcPrivateKey });
           return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
         } else {
-          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: schema.EcPublicKey });
+          const asnKey = JsonParser.fromJSON(keyData, { targetSchema: core.asn1.EcPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
       }
       case "raw": {
-        const asnKey = new schema.EcPublicKey(keyData as ArrayBuffer);
+        const asnKey = new core.asn1.EcPublicKey(keyData as ArrayBuffer);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "spki": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), schema.PublicKeyInfo);
-        const asnKey = new schema.EcPublicKey(keyInfo.publicKey);
+        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
+        const asnKey = new core.asn1.EcPublicKey(keyInfo.publicKey);
         this.assertKeyParameters(keyInfo.publicKeyAlgorithm.parameters, algorithm.namedCurve);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), schema.PrivateKeyInfo);
-        const asnKey = AsnParser.parse(keyInfo.privateKey, schema.EcPrivateKey);
+        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        const asnKey = AsnParser.parse(keyInfo.privateKey, core.asn1.EcPrivateKey);
         this.assertKeyParameters(keyInfo.privateKeyAlgorithm.parameters, algorithm.namedCurve);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
@@ -163,7 +162,7 @@ export class EcCrypto {
 
     let namedCurveIdentifier = "";
     try {
-      namedCurveIdentifier = AsnParser.parse(parameters, schema.ObjectIdentifier).value;
+      namedCurveIdentifier = AsnParser.parse(parameters, core.asn1.ObjectIdentifier).value;
     } catch (e) {
       throw new core.CryptoError("Cannot read key info parameters");
     }
@@ -173,10 +172,10 @@ export class EcCrypto {
     }
   }
 
-  protected static async importPrivateKey(asnKey: schema.EcPrivateKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
-    const keyInfo = new schema.PrivateKeyInfo();
+  protected static async importPrivateKey(asnKey: core.asn1.EcPrivateKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
+    const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
-    keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(new schema.ObjectIdentifier(getOidByNamedCurve(algorithm.namedCurve)));
+    keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(new core.asn1.ObjectIdentifier(getOidByNamedCurve(algorithm.namedCurve)));
     keyInfo.privateKey = AsnSerializer.serialize(asnKey);
 
     const key = new EcPrivateKey();
@@ -189,11 +188,11 @@ export class EcCrypto {
     return key;
   }
 
-  protected static async importPublicKey(asnKey: schema.EcPublicKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
-    const keyInfo = new schema.PublicKeyInfo();
+  protected static async importPublicKey(asnKey: core.asn1.EcPublicKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
+    const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
     const namedCurve = getOidByNamedCurve(algorithm.namedCurve);
-    keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(new schema.ObjectIdentifier(namedCurve));
+    keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(new core.asn1.ObjectIdentifier(namedCurve));
     keyInfo.publicKey = asnKey.value;
 
     const key = new EcPublicKey();

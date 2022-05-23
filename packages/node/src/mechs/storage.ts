@@ -14,7 +14,7 @@ export function getCryptoKey(key: types.CryptoKey) {
 }
 
 export function setCryptoKey(value: InternalCryptoKey) {
-  const key = core.BaseCryptoKey.create(value.algorithm, value.type, value.extractable, value.usages);
+  const key = core.CryptoKey.create(value.algorithm, value.type, value.extractable, value.usages);
   Object.freeze(key);
 
   keyStorage.set(key, value);

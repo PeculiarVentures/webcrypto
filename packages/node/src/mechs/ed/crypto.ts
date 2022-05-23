@@ -97,7 +97,7 @@ export class EdCrypto {
       case "spki":
         return new Uint8Array(key.data).buffer;
       case "raw": {
-        const publicKeyInfo = asn1Schema.AsnParser.parse(key.data, core.PublicKeyInfo);
+        const publicKeyInfo = asn1Schema.AsnParser.parse(key.data, core.asn1.PublicKeyInfo);
         return publicKeyInfo.publicKey;
       }
       default:
@@ -110,7 +110,7 @@ export class EdCrypto {
       case "jwk": {
         const jwk = keyData as types.JsonWebKey;
         if (jwk.d) {
-          const asnKey = jsonSchema.JsonParser.fromJSON(keyData, { targetSchema: core.CurvePrivateKey });
+          const asnKey = jsonSchema.JsonParser.fromJSON(keyData, { targetSchema: core.asn1.CurvePrivateKey });
           return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
         } else {
           if (!jwk.x) {
@@ -123,12 +123,12 @@ export class EdCrypto {
         return this.importPublicKey(keyData as ArrayBuffer, algorithm, extractable, keyUsages);
       }
       case "spki": {
-        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.PublicKeyInfo);
+        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
         return this.importPublicKey(keyInfo.publicKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.PrivateKeyInfo);
-        const asnKey = asn1Schema.AsnParser.parse(keyInfo.privateKey, core.CurvePrivateKey);
+        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        const asnKey = asn1Schema.AsnParser.parse(keyInfo.privateKey, core.asn1.CurvePrivateKey);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
       default:
@@ -136,7 +136,7 @@ export class EdCrypto {
     }
   }
 
-  protected static importPrivateKey(asnKey: core.CurvePrivateKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
+  protected static importPrivateKey(asnKey: core.asn1.CurvePrivateKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
     const key = new EdPrivateKey();
     key.fromJSON({
       crv: algorithm.namedCurve,

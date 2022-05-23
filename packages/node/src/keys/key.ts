@@ -2,7 +2,7 @@ import { JsonProp, JsonPropTypes } from "@peculiar/json-schema";
 import * as core from "@peculiar/webcrypto-core";
 import * as types from "@peculiar/webcrypto-types";
 
-export class CryptoKey extends core.BaseCryptoKey {
+export class CryptoKey extends core.CryptoKey {
   public data: Buffer = Buffer.alloc(0);
 
   public override algorithm: types.KeyAlgorithm = { name: "" };

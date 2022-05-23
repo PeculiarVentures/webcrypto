@@ -7,7 +7,7 @@ import { HkdfCryptoKey } from "./key";
 
 export class HkdfProvider extends core.HkdfProvider {
 
-  public async onImportKey(format: types.KeyFormat, keyData: ArrayBuffer, algorithm: types.HmacImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public async onImportKey(format: types.KeyFormat, keyData: ArrayBuffer, algorithm: types.HmacImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     if (format.toLowerCase() !== "raw") {
       throw new core.OperationError("Operation not supported");
     }
@@ -44,7 +44,7 @@ export class HkdfProvider extends core.HkdfProvider {
     return Buffer.concat(blocks).slice(0, byteLength);
   }
 
-  public override checkCryptoKey(key: core.BaseCryptoKey, keyUsage?: types.KeyUsage) {
+  public override checkCryptoKey(key: core.CryptoKey, keyUsage?: types.KeyUsage) {
     super.checkCryptoKey(key, keyUsage);
     if (!(getCryptoKey(key) instanceof HkdfCryptoKey)) {
       throw new TypeError("key: Is not HKDF CryptoKey");

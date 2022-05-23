@@ -8,7 +8,7 @@ import { HmacCryptoKey } from "./key";
 
 export class HmacProvider extends core.HmacProvider {
 
-  public async onGenerateKey(algorithm: types.PreparedHashedAlgorithm<types.HmacKeyGenParams>, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public async onGenerateKey(algorithm: types.PreparedHashedAlgorithm<types.HmacKeyGenParams>, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     const length = (algorithm.length || this.getDefaultLength(algorithm.hash.name)) >> 3 << 3;
     const key = new HmacCryptoKey();
     key.algorithm = {
@@ -39,7 +39,7 @@ export class HmacProvider extends core.HmacProvider {
     return hmac.compare(Buffer.from(signature)) === 0;
   }
 
-  public async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.HmacImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.HmacImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     let key: HmacCryptoKey;
 
     switch (format.toLowerCase()) {

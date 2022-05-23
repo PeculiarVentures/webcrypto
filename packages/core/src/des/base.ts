@@ -1,6 +1,6 @@
 import * as types from "@peculiar/webcrypto-types";
 import { OperationError } from "../errors";
-import { BaseCryptoKey } from "../crypto_key";
+import { CryptoKey } from "../crypto_key";
 import { ProviderCrypto } from "../provider";
 import { BufferSource } from "pvtsutils";
 
@@ -56,10 +56,10 @@ export abstract class DesProvider extends ProviderCrypto {
     this.checkGenerateKeyParams(algorithm);
   }
 
-  public abstract override onGenerateKey(algorithm: DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<BaseCryptoKey>;
-  public abstract override onExportKey(format: types.KeyFormat, key: BaseCryptoKey, ...args: any[]): Promise<types.JsonWebKey | ArrayBuffer>;
-  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: DesImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<BaseCryptoKey>;
-  public abstract override onEncrypt(algorithm: DesParams, key: BaseCryptoKey, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer>;
-  public abstract override onDecrypt(algorithm: DesParams, key: BaseCryptoKey, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer>;
+  public abstract override onGenerateKey(algorithm: DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<CryptoKey>;
+  public abstract override onExportKey(format: types.KeyFormat, key: CryptoKey, ...args: any[]): Promise<types.JsonWebKey | ArrayBuffer>;
+  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: DesImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<CryptoKey>;
+  public abstract override onEncrypt(algorithm: DesParams, key: CryptoKey, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer>;
+  public abstract override onDecrypt(algorithm: DesParams, key: CryptoKey, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer>;
 
 }

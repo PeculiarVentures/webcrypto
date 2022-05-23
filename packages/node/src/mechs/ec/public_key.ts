@@ -12,8 +12,8 @@ export class EcPublicKey extends AsymmetricKey implements jsonSchema.IJsonConver
   public override algorithm!: types.EcKeyAlgorithm;
 
   public getKey() {
-    const keyInfo = asn1Schema.AsnParser.parse(this.data, schema.PublicKeyInfo);
-    return new schema.EcPublicKey(keyInfo.publicKey);
+    const keyInfo = asn1Schema.AsnParser.parse(this.data, core.asn1.PublicKeyInfo);
+    return new core.asn1.EcPublicKey(keyInfo.publicKey);
   }
 
   public toJSON() {
@@ -34,12 +34,12 @@ export class EcPublicKey extends AsymmetricKey implements jsonSchema.IJsonConver
       throw new core.OperationError(`Cannot get named curve from JWK. Property 'crv' is required`);
     }
 
-    const key = jsonSchema.JsonParser.fromJSON(json, { targetSchema: schema.EcPublicKey });
+    const key = jsonSchema.JsonParser.fromJSON(json, { targetSchema: core.asn1.EcPublicKey });
 
-    const keyInfo = new schema.PublicKeyInfo();
+    const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
     keyInfo.publicKeyAlgorithm.parameters = asn1Schema.AsnSerializer.serialize(
-      new schema.ObjectIdentifier(getOidByNamedCurve(json.crv)),
+      new core.asn1.ObjectIdentifier(getOidByNamedCurve(json.crv)),
     );
     keyInfo.publicKey = asn1Schema.AsnSerializer.toASN(key).valueHex;
 

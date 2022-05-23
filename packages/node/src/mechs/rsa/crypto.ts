@@ -77,21 +77,21 @@ export class RsaCrypto {
       case "jwk": {
         const jwk = keyData as types.JsonWebKey;
         if (jwk.d) {
-          const asnKey = jsonSchema.JsonParser.fromJSON(keyData, { targetSchema: schema.RsaPrivateKey });
+          const asnKey = jsonSchema.JsonParser.fromJSON(keyData, { targetSchema: core.asn1.RsaPrivateKey });
           return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
         } else {
-          const asnKey = jsonSchema.JsonParser.fromJSON(keyData, { targetSchema: schema.RsaPublicKey });
+          const asnKey = jsonSchema.JsonParser.fromJSON(keyData, { targetSchema: core.asn1.RsaPublicKey });
           return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
         }
       }
       case "spki": {
-        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), schema.PublicKeyInfo);
-        const asnKey = asn1Schema.AsnParser.parse(keyInfo.publicKey, schema.RsaPublicKey);
+        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
+        const asnKey = asn1Schema.AsnParser.parse(keyInfo.publicKey, core.asn1.RsaPublicKey);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), schema.PrivateKeyInfo);
-        const asnKey = asn1Schema.AsnParser.parse(keyInfo.privateKey, schema.RsaPrivateKey);
+        const keyInfo = asn1Schema.AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        const asnKey = asn1Schema.AsnParser.parse(keyInfo.privateKey, core.asn1.RsaPrivateKey);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
       default:
@@ -137,8 +137,8 @@ export class RsaCrypto {
     }
   }
 
-  protected static importPrivateKey(asnKey: schema.RsaPrivateKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
-    const keyInfo = new schema.PrivateKeyInfo();
+  protected static importPrivateKey(asnKey: core.asn1.RsaPrivateKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
+    const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
     keyInfo.privateKeyAlgorithm.parameters = null;
     keyInfo.privateKey = asn1Schema.AsnSerializer.serialize(asnKey);
@@ -155,8 +155,8 @@ export class RsaCrypto {
     return key;
   }
 
-  protected static importPublicKey(asnKey: schema.RsaPublicKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
-    const keyInfo = new schema.PublicKeyInfo();
+  protected static importPublicKey(asnKey: core.asn1.RsaPublicKey, algorithm: types.RsaHashedImportParams, extractable: boolean, keyUsages: types.KeyUsage[]) {
+    const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
     keyInfo.publicKeyAlgorithm.parameters = null;
     keyInfo.publicKey = asn1Schema.AsnSerializer.serialize(asnKey);

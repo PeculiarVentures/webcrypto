@@ -76,7 +76,7 @@ context("ProviderCrypto", () => {
 
   context("sign", () => {
 
-    const correctKey = core.BaseCryptoKey.create(
+    const correctKey = core.CryptoKey.create(
       { name: "custom-alg" },
       "secret",
       false,
@@ -108,7 +108,7 @@ context("ProviderCrypto", () => {
       await assert.rejects(
         crypto.sign(
           { name: "custom-alg" },
-          {} as core.BaseCryptoKey,
+          {} as core.CryptoKey,
           new ArrayBuffer(0),
         ),
         TypeError,
@@ -119,7 +119,7 @@ context("ProviderCrypto", () => {
       await assert.rejects(
         crypto.sign(
           { name: "custom-alg" },
-          core.BaseCryptoKey.create(
+          core.CryptoKey.create(
             { name: "wrong" },
             "secret",
             true,
@@ -135,7 +135,7 @@ context("ProviderCrypto", () => {
       await assert.rejects(
         crypto.sign(
           { name: "custom-alg" },
-          core.BaseCryptoKey.create(
+          core.CryptoKey.create(
             { name: "custom-alg" },
             "secret",
             true,
@@ -153,7 +153,7 @@ context("ProviderCrypto", () => {
 
     it("error if length is not multiple 8", () => {
       const algorithm: types.Algorithm = { name: "custom-alg" };
-      const key = core.BaseCryptoKey.create(algorithm, "secret", false, ["deriveBits"]);
+      const key = core.CryptoKey.create(algorithm, "secret", false, ["deriveBits"]);
       assert.throws(() => {
         crypto.checkDeriveBits(algorithm, key, 7);
       }, core.OperationError);

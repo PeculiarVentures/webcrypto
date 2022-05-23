@@ -12,35 +12,35 @@ context("SubtleCrypto", () => {
       return new ArrayBuffer(0);
     }
 
-    public override async onGenerateKey(algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+    public override async onGenerateKey(algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
       return key;
     }
 
-    public override async onSign(algorithm: types.Algorithm, sKey: core.BaseCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+    public override async onSign(algorithm: types.Algorithm, sKey: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
       return new ArrayBuffer(0);
     }
 
-    public override async onVerify(algorithm: types.Algorithm, sKey: core.BaseCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
+    public override async onVerify(algorithm: types.Algorithm, sKey: core.CryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
       return true;
     }
 
-    public override async onEncrypt(algorithm: types.Algorithm, sKey: core.BaseCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+    public override async onEncrypt(algorithm: types.Algorithm, sKey: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
       return new ArrayBuffer(0);
     }
 
-    public override async onDecrypt(algorithm: types.Algorithm, sKey: core.BaseCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+    public override async onDecrypt(algorithm: types.Algorithm, sKey: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
       return new ArrayBuffer(0);
     }
 
-    public override async onDeriveBits(algorithm: types.Algorithm, sKey: core.BaseCryptoKey, length: number): Promise<ArrayBuffer> {
+    public override async onDeriveBits(algorithm: types.Algorithm, sKey: core.CryptoKey, length: number): Promise<ArrayBuffer> {
       return new ArrayBuffer(0);
     }
 
-    public override async onExportKey(format: types.KeyFormat, sKey: core.BaseCryptoKey): Promise<types.JsonWebKey | ArrayBuffer> {
+    public override async onExportKey(format: types.KeyFormat, sKey: core.CryptoKey): Promise<types.JsonWebKey | ArrayBuffer> {
       return new ArrayBuffer(0);
     }
 
-    public override async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+    public override async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
       return key;
     }
 
@@ -56,7 +56,7 @@ context("SubtleCrypto", () => {
   }
 
   const subtle = new TestSubtleCrypto();
-  const key = new core.BaseCryptoKey();
+  const key = new core.CryptoKey();
   key.algorithm = { name: "TEST" };
   key.type = "secret",
     key.usages = ["sign", "verify", "deriveKey", "deriveBits", "encrypt", "decrypt", "wrapKey", "unwrapKey"];

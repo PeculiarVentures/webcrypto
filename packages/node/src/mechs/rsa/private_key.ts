@@ -10,8 +10,8 @@ export class RsaPrivateKey extends AsymmetricKey {
   public override algorithm!: types.RsaHashedKeyAlgorithm;
 
   public getKey() {
-    const keyInfo = asn1Schema.AsnParser.parse(this.data, core.PrivateKeyInfo);
-    return asn1Schema.AsnParser.parse(keyInfo.privateKey, core.RsaPrivateKey);
+    const keyInfo = asn1Schema.AsnParser.parse(this.data, core.asn1.PrivateKeyInfo);
+    return asn1Schema.AsnParser.parse(keyInfo.privateKey, core.asn1.RsaPrivateKey);
   }
 
   public toJSON() {
@@ -28,9 +28,9 @@ export class RsaPrivateKey extends AsymmetricKey {
   }
 
   public fromJSON(json: types.JsonWebKey) {
-    const key = jsonSchema.JsonParser.fromJSON(json, { targetSchema: core.RsaPrivateKey });
+    const key = jsonSchema.JsonParser.fromJSON(json, { targetSchema: core.asn1.RsaPrivateKey });
 
-    const keyInfo = new core.PrivateKeyInfo();
+    const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.113549.1.1.1";
     keyInfo.privateKeyAlgorithm.parameters = null;
     keyInfo.privateKey = asn1Schema.AsnSerializer.serialize(key);

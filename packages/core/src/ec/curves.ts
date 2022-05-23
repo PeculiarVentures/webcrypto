@@ -1,5 +1,5 @@
 import { AsnConvert } from "@peculiar/asn1-schema";
-import * as schema from "packages/core/src/schema";
+import * as asn1 from "../schema/asn1";
 
 export interface EcCurveParams {
   /**
@@ -28,7 +28,7 @@ export class EcCurves {
   private constructor() { }
 
   public static register(item: EcCurveParams) {
-    const oid = new schema.ObjectIdentifier();
+    const oid = new asn1.ObjectIdentifier();
     oid.value = item.id;
     const raw = AsnConvert.serialize(oid);
 
@@ -61,21 +61,21 @@ export class EcCurves {
 
 }
 
-EcCurves.register({ name: "P-256", id: schema.idSecp256r1, size: 256 });
-EcCurves.register({ name: "P-384", id: schema.idSecp384r1, size: 384 });
-EcCurves.register({ name: "P-521", id: schema.idSecp521r1, size: 521 });
-EcCurves.register({ name: "K-256", id: schema.idSecp256k1, size: 256 });
-EcCurves.register({ name: "brainpoolP160r1", id: schema.idBrainpoolP160r1, size: 160 });
-EcCurves.register({ name: "brainpoolP160t1", id: schema.idBrainpoolP160t1, size: 160 });
-EcCurves.register({ name: "brainpoolP192r1", id: schema.idBrainpoolP192r1, size: 192 });
-EcCurves.register({ name: "brainpoolP192t1", id: schema.idBrainpoolP192t1, size: 192 });
-EcCurves.register({ name: "brainpoolP224r1", id: schema.idBrainpoolP224r1, size: 224 });
-EcCurves.register({ name: "brainpoolP224t1", id: schema.idBrainpoolP224t1, size: 224 });
-EcCurves.register({ name: "brainpoolP256r1", id: schema.idBrainpoolP256r1, size: 256 });
-EcCurves.register({ name: "brainpoolP256t1", id: schema.idBrainpoolP256t1, size: 256 });
-EcCurves.register({ name: "brainpoolP320r1", id: schema.idBrainpoolP320r1, size: 320 });
-EcCurves.register({ name: "brainpoolP320t1", id: schema.idBrainpoolP320t1, size: 320 });
-EcCurves.register({ name: "brainpoolP384r1", id: schema.idBrainpoolP384r1, size: 384 });
-EcCurves.register({ name: "brainpoolP384t1", id: schema.idBrainpoolP384t1, size: 384 });
-EcCurves.register({ name: "brainpoolP512r1", id: schema.idBrainpoolP512r1, size: 512 });
-EcCurves.register({ name: "brainpoolP512t1", id: schema.idBrainpoolP512t1, size: 512 });
+EcCurves.register({ name: "P-256", id: asn1.idSecp256r1, size: 256 });
+EcCurves.register({ name: "P-384", id: asn1.idSecp384r1, size: 384 });
+EcCurves.register({ name: "P-521", id: asn1.idSecp521r1, size: 521 });
+EcCurves.register({ name: "K-256", id: asn1.idSecp256k1, size: 256 });
+EcCurves.register({ name: "brainpoolP160r1", id: asn1.idBrainpoolP160r1, size: 160 });
+EcCurves.register({ name: "brainpoolP160t1", id: asn1.idBrainpoolP160t1, size: 160 });
+EcCurves.register({ name: "brainpoolP192r1", id: asn1.idBrainpoolP192r1, size: 192 });
+EcCurves.register({ name: "brainpoolP192t1", id: asn1.idBrainpoolP192t1, size: 192 });
+EcCurves.register({ name: "brainpoolP224r1", id: asn1.idBrainpoolP224r1, size: 224 });
+EcCurves.register({ name: "brainpoolP224t1", id: asn1.idBrainpoolP224t1, size: 224 });
+EcCurves.register({ name: "brainpoolP256r1", id: asn1.idBrainpoolP256r1, size: 256 });
+EcCurves.register({ name: "brainpoolP256t1", id: asn1.idBrainpoolP256t1, size: 256 });
+EcCurves.register({ name: "brainpoolP320r1", id: asn1.idBrainpoolP320r1, size: 320 });
+EcCurves.register({ name: "brainpoolP320t1", id: asn1.idBrainpoolP320t1, size: 320 });
+EcCurves.register({ name: "brainpoolP384r1", id: asn1.idBrainpoolP384r1, size: 384 });
+EcCurves.register({ name: "brainpoolP384t1", id: asn1.idBrainpoolP384t1, size: 384 });
+EcCurves.register({ name: "brainpoolP512r1", id: asn1.idBrainpoolP512r1, size: 512 });
+EcCurves.register({ name: "brainpoolP512t1", id: asn1.idBrainpoolP512t1, size: 512 });

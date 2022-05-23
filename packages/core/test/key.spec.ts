@@ -5,10 +5,10 @@ context("CryptoKey", () => {
 
   context("isKeyType", () => {
     it("correct key type", () => {
-      assert.equal(core.BaseCryptoKey.isKeyType("secret"), true);
+      assert.equal(core.CryptoKey.isKeyType("secret"), true);
     });
     it("incorrect key type", () => {
-      assert.equal(core.BaseCryptoKey.isKeyType("Secret"), false);
+      assert.equal(core.CryptoKey.isKeyType("Secret"), false);
     });
   });
 

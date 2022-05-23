@@ -1,5 +1,5 @@
 import * as types from "@peculiar/webcrypto-types";
-import { BaseCryptoKey } from "../crypto_key";
+import { CryptoKey } from "../crypto_key";
 import { ProviderCrypto } from "../provider";
 
 export abstract class HmacProvider extends ProviderCrypto {
@@ -49,8 +49,8 @@ export abstract class HmacProvider extends ProviderCrypto {
     this.checkHashAlgorithm(algorithm.hash as types.Algorithm, this.hashAlgorithms);
   }
 
-  public abstract override onGenerateKey(algorithm: types.PreparedHashedAlgorithm<types.HmacKeyGenParams>, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<BaseCryptoKey>;
-  public abstract override onExportKey(format: types.KeyFormat, key: BaseCryptoKey, ...args: any[]): Promise<types.JsonWebKey | ArrayBuffer>;
-  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.HmacImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<BaseCryptoKey>;
+  public abstract override onGenerateKey(algorithm: types.PreparedHashedAlgorithm<types.HmacKeyGenParams>, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<CryptoKey>;
+  public abstract override onExportKey(format: types.KeyFormat, key: CryptoKey, ...args: any[]): Promise<types.JsonWebKey | ArrayBuffer>;
+  public abstract override onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.HmacImportParams, extractable: boolean, keyUsages: types.KeyUsage[], ...args: any[]): Promise<CryptoKey>;
 
 }

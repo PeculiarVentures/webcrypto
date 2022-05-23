@@ -13,7 +13,7 @@ export class DesEde3CbcProvider extends core.DesProvider {
   public ivSize = 8;
   public name = "DES-EDE3-CBC";
 
-  public async onGenerateKey(algorithm: core.DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public async onGenerateKey(algorithm: core.DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     const key = await DesCrypto.generateKey(
       {
         name: this.name,
@@ -37,7 +37,7 @@ export class DesEde3CbcProvider extends core.DesProvider {
     return DesCrypto.exportKey(format, getCryptoKey(key) as DesCryptoKey);
   }
 
-  public async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public async onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.Algorithm, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     const key = await DesCrypto.importKey(format, keyData, { name: this.name, length: this.keySizeBits }, extractable, keyUsages);
     if (key.data.length !== (this.keySizeBits >> 3)) {
       throw new core.OperationError("keyData: Wrong key size");

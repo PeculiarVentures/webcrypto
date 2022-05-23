@@ -21,7 +21,7 @@ export class EcdhEsProvider extends core.EcdhEsProvider {
     };
   }
 
-  public async onDeriveBits(algorithm: types.EcdhKeyDeriveParams, baseKey: core.BaseCryptoKey, length: number): Promise<ArrayBuffer> {
+  public async onDeriveBits(algorithm: types.EcdhKeyDeriveParams, baseKey: core.CryptoKey, length: number): Promise<ArrayBuffer> {
     const bits = await EdCrypto.deriveBits({ ...algorithm, public: getCryptoKey(algorithm.public) }, getCryptoKey(baseKey), length);
     return bits;
   }
@@ -30,7 +30,7 @@ export class EcdhEsProvider extends core.EcdhEsProvider {
     return EdCrypto.exportKey(format, getCryptoKey(key));
   }
 
-  public async onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.BaseCryptoKey> {
+  public async onImportKey(format: types.KeyFormat, keyData: ArrayBuffer | types.JsonWebKey, algorithm: types.EcKeyImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     const key = await EdCrypto.importKey(format, keyData, { ...algorithm, name: this.name }, extractable, keyUsages);
     return setCryptoKey(key);
   }
