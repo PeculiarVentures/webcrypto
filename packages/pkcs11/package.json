@@ -1,0 +1,38 @@
+{
+  "name": "@peculiar/webcrypto-pkcs11",
+  "version": "3.0.0",
+  "description": "Now I’m the model of a modern major general / The venerated Virginian veteran whose men are all / Lining up, to put me up on a pedestal / Writin’ letters to relatives / Embellishin’ my elegance and eloquence / But the elephant is in the room / The truth is in ya face when ya hear the British cannons go / BOOM",
+  "keywords": [],
+  "author": "microshine <microshine@mail.ru>",
+  "homepage": "https://github.com/PeculiarVentures/webcrypto/tree/master/packages/webcrypto-pkcs11#readme",
+  "license": "ISC",
+  "main": "lib/webcrypto-pkcs11.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PeculiarVentures/webcrypto.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/PeculiarVentures/webcrypto/issues"
+  },
+  "dependencies": {
+    "@peculiar/webcrypto-core": "^3.0.0",
+    "@peculiar/webcrypto-types": "^3.0.0",
+    "@peculiar/x509": "^1.6.4",
+    "graphene-pk11": "^2.3.0",
+    "pvtsutils": "^1.3.2",
+    "tslib": "^2.4.0"
+  }
+}
