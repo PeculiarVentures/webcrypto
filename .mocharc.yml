@@ -4,5 +4,5 @@ require:
 extension:
   - ts
 spec:
-  - "packages/**/*.ts"
+  - "packages/**/*.spec.ts"
 exit: true
