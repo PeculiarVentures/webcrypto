@@ -46,7 +46,6 @@ context("SubtleCrypto", () => {
 
   }
 
-  // tslint:disable-next-line:max-classes-per-file
   class TestSubtleCrypto extends core.SubtleCrypto {
     constructor() {
       super();

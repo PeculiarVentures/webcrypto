@@ -8,7 +8,6 @@ class TestShake128Provider extends core.Shake128Provider {
   }
 }
 
-// tslint:disable-next-line: max-classes-per-file
 class TestShake256Provider extends core.Shake256Provider {
   public async onDigest(algorithm: Required<core.ShakeParams>, data: ArrayBuffer): Promise<ArrayBuffer> {
     return new ArrayBuffer(algorithm.length);

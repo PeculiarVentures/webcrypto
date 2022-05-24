@@ -4,9 +4,7 @@ import { Convert } from "pvtsutils";
 
 context("PemConverter", () => {
 
-  // tslint:disable-next-line:max-line-length
   const bytes = Convert.FromHex("30819f300d06092a864886f70d010101050003818d0030818902818100f615b745314ffe4669255dfe68953184bb8e5db54eecd35b4c51ee899ce7e60aaf19cc765d924f94be93d6809ba506fab26b9f8ef0cf6ab2aec1942da222992f8dad2e621845f014f9e831a529665faf0a9b8ca97356a602ce8d17cd3469aafa2de82546773540fa480510d1906c78c87b81850c26fdaeccce37cd5fdeba7e050203010001");
-  // tslint:disable-next-line:prefer-template
   const vector = "-----BEGIN PUBLIC KEY-----\n" +
     "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQD2FbdFMU/+RmklXf5olTGEu45d\n" +
     "tU7s01tMUe6JnOfmCq8ZzHZdkk+UvpPWgJulBvqya5+O8M9qsq7BlC2iIpkvja0u\n" +
@@ -41,7 +39,6 @@ context("PemConverter", () => {
   });
 
   context("isPEM", () => {
-    // tslint:disable-next-line:prefer-template
     const pem = "-----BEGIN CERTIFICATE------\n" +
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\n" +
       "-----END CERTIFICATE------";
@@ -55,7 +52,6 @@ context("PemConverter", () => {
     });
 
     it("return false if correct PEM", () => {
-      // tslint:disable-next-line:prefer-template
       const wrongPem = "----- BEGIN CERTIFICATE ------\n" +
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/\n" +
         "----- END CERTIFICATE ------";

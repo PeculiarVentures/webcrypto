@@ -2,8 +2,6 @@ import * as core from "@peculiar/webcrypto-core";
 import * as types from "@peculiar/webcrypto-types";
 import * as assert from "assert";
 
-// tslint:disable:max-classes-per-file
-
 class RsaSsaProvider extends core.RsaSsaProvider {
   public onSign(algorithm: core.RsaSsaParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     throw new Error("Method not implemented.");

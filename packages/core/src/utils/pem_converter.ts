@@ -57,7 +57,6 @@ export class PemConverter {
    * @param data Data
    */
   public static isPEM(data: string) {
-    // tslint:disable-next-line:max-line-length
     return /-----BEGIN .+-----[A-Za-z0-9+\/\+\=\s\n]+-----END .+-----/i.test(data);
   }
 

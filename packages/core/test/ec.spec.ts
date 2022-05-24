@@ -3,8 +3,6 @@ import * as types from "@peculiar/webcrypto-types";
 import * as assert from "assert";
 import { Convert } from "pvtsutils";
 
-// tslint:disable:max-classes-per-file
-
 context("EC", () => {
 
   context("EcUtils", () => {

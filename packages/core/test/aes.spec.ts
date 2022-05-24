@@ -1,8 +1,6 @@
 import * as assert from "assert";
 import * as core from "@peculiar/webcrypto-core";
 
-// tslint:disable:max-classes-per-file
-
 context("AES", () => {
 
   context("AES-CBC", () => {
