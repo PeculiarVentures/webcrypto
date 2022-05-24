@@ -5,7 +5,7 @@ import { setCryptoKey, getCryptoKey } from "../storage";
 import { DesCrypto } from "./crypto";
 import { DesCryptoKey } from "./key";
 
-export type DesCbcParams = core.DesParams;
+export type DesCbcParams = types.DesParams;
 
 export class DesCbcProvider extends core.DesProvider {
 
@@ -13,7 +13,7 @@ export class DesCbcProvider extends core.DesProvider {
   public ivSize = 8;
   public name = "DES-CBC";
 
-  public async onGenerateKey(algorithm: core.DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
+  public async onGenerateKey(algorithm: types.DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     const key = await DesCrypto.generateKey(
       {
         name: this.name,

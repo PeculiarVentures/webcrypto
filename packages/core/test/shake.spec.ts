@@ -3,13 +3,13 @@ import * as core from "@peculiar/webcrypto-core";
 import * as types from "@peculiar/webcrypto-types";
 
 class TestShake128Provider extends core.Shake128Provider {
-  public async onDigest(algorithm: Required<core.ShakeParams>, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public async onDigest(algorithm: Required<types.ShakeParams>, data: ArrayBuffer): Promise<ArrayBuffer> {
     return new ArrayBuffer(algorithm.length);
   }
 }
 
 class TestShake256Provider extends core.Shake256Provider {
-  public async onDigest(algorithm: Required<core.ShakeParams>, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public async onDigest(algorithm: Required<types.ShakeParams>, data: ArrayBuffer): Promise<ArrayBuffer> {
     return new ArrayBuffer(algorithm.length);
   }
 }

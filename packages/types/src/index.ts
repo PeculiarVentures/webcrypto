@@ -195,6 +195,9 @@ export interface CryptoKey {
   readonly usages: KeyUsage[];
 }
 
+export type DigestAlgorithms = AlgorithmIdentifier | ShakeParams;
+export type SignAlgorithms = AlgorithmIdentifier | RsaPssParams | EcdsaParams;
+
 /**
  * This Web Crypto API export interface provides a number of low-level cryptographic functions.
  * It is accessed via the Crypto.subtle properties available in a window context (via Window.crypto).
@@ -205,7 +208,7 @@ export interface SubtleCrypto {
   decrypt(algorithm: AlgorithmIdentifier | RsaOaepParams | AesCtrParams | AesCbcParams | AesGcmParams, key: CryptoKey, data: BufferSource): Promise<any>;
   deriveBits(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | HkdfParams | Pbkdf2Params, baseKey: CryptoKey, length: number): Promise<ArrayBuffer>;
   deriveKey(algorithm: AlgorithmIdentifier | EcdhKeyDeriveParams | HkdfParams | Pbkdf2Params, baseKey: CryptoKey, derivedKey: AlgorithmIdentifier | AesDerivedKeyParams | HmacImportParams | HkdfParams | Pbkdf2Params, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
-  digest(algorithm: AlgorithmIdentifier, data: BufferSource): Promise<ArrayBuffer>;
+  digest(algorithm: DigestAlgorithms, data: BufferSource): Promise<ArrayBuffer>;
   encrypt(algorithm: AlgorithmIdentifier | RsaOaepParams | AesCtrParams | AesCbcParams | AesGcmParams, key: CryptoKey, data: BufferSource): Promise<any>;
   exportKey(format: "jwk", key: CryptoKey): Promise<JsonWebKey>;
   exportKey(format: Exclude<KeyFormat, "jwk">, key: CryptoKey): Promise<ArrayBuffer>;
@@ -216,9 +219,9 @@ export interface SubtleCrypto {
   importKey(format: "jwk", keyData: JsonWebKey, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
   importKey(format: Exclude<KeyFormat, "jwk">, keyData: BufferSource, algorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
   importKey(format: KeyFormat, keyData: BufferSource | JsonWebKey, algorithm: AlgorithmIdentifier, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
-  sign(algorithm: AlgorithmIdentifier | RsaPssParams | EcdsaParams, key: CryptoKey, data: BufferSource): Promise<ArrayBuffer>;
+  sign(algorithm: SignAlgorithms, key: CryptoKey, data: BufferSource): Promise<ArrayBuffer>;
   unwrapKey(format: KeyFormat, wrappedKey: BufferSource, unwrappingKey: CryptoKey, unwrapAlgorithm: AlgorithmIdentifier | RsaOaepParams | AesCtrParams | AesCbcParams | AesGcmParams, unwrappedKeyAlgorithm: AlgorithmIdentifier | RsaHashedImportParams | EcKeyImportParams | HmacImportParams | AesKeyAlgorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey>;
-  verify(algorithm: AlgorithmIdentifier | RsaPssParams | EcdsaParams, key: CryptoKey, signature: BufferSource, data: BufferSource): Promise<boolean>;
+  verify(algorithm: SignAlgorithms, key: CryptoKey, signature: BufferSource, data: BufferSource): Promise<boolean>;
   wrapKey(format: KeyFormat, key: CryptoKey, wrappingKey: CryptoKey, wrapAlgorithm: AlgorithmIdentifier | RsaOaepParams | AesCtrParams | AesCbcParams | AesGcmParams): Promise<ArrayBuffer>;
 }
 
@@ -380,3 +383,28 @@ export type PreparedHashedAlgorithm<T extends Algorithm = Algorithm> = Omit<T, "
 export interface AesCmacParams extends Algorithm {
   length: number;
 }
+
+export interface ShakeParams extends Algorithm {
+  /**
+   * Output length in bytes
+   */
+  length?: number;
+}
+
+export interface DesKeyAlgorithm extends KeyAlgorithm {
+  length: number;
+}
+
+export interface DesParams extends Algorithm {
+  iv: BufferSource;
+}
+
+export interface DesKeyGenParams extends Algorithm {
+  length: number;
+}
+
+export interface DesDerivedKeyParams extends Algorithm {
+  length: number;
+}
+
+export interface DesImportParams extends Algorithm { }

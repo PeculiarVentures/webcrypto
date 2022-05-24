@@ -1,26 +1,19 @@
 import { ProviderCrypto } from "../provider";
 import * as types from "@peculiar/webcrypto-types";
 
-export interface ShakeParams extends types.Algorithm {
-  /**
-   * Output length in bytes
-   */
-  length?: number;
-}
-
 export abstract class ShakeProvider extends ProviderCrypto {
 
   public usages = [];
   public defaultLength = 0;
 
-  public override digest(algorithm: types.Algorithm, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer>;
+  public override digest(algorithm: types.ShakeParams, data: ArrayBuffer, ...args: any[]): Promise<ArrayBuffer>;
   public override digest(...args: any[]): Promise<ArrayBuffer> {
     args[0] = { length: this.defaultLength, ...args[0] };
 
     return super.digest.apply(this, args as unknown as any);
   }
 
-  public override checkDigest(algorithm: ShakeParams, data: ArrayBuffer): void {
+  public override checkDigest(algorithm: types.ShakeParams, data: ArrayBuffer): void {
     super.checkDigest(algorithm, data);
 
     const length = algorithm.length || 0;
@@ -32,6 +25,6 @@ export abstract class ShakeProvider extends ProviderCrypto {
     }
   }
 
-  public abstract override onDigest(algorithm: Required<ShakeParams>, data: ArrayBuffer): Promise<ArrayBuffer>;
+  public abstract override onDigest(algorithm: Required<types.ShakeParams>, data: ArrayBuffer): Promise<ArrayBuffer>;
 
 }

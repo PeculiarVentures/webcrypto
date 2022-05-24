@@ -23,7 +23,7 @@ export class SubtleCrypto implements types.SubtleCrypto {
     return "SubtleCrypto";
   }
 
-  public async digest(algorithm: types.AlgorithmIdentifier, data: BufferSource, ...args: any[]): Promise<ArrayBuffer>;
+  public async digest(algorithm: types.AlgorithmIdentifier | types.ShakeParams, data: BufferSource, ...args: any[]): Promise<ArrayBuffer>;
   public async digest(...args: any[]): Promise<ArrayBuffer> {
     this.checkRequiredArguments(args, 2, "digest");
     const [algorithm, data, ...params] = args;
@@ -52,7 +52,7 @@ export class SubtleCrypto implements types.SubtleCrypto {
     return result;
   }
 
-  public async sign(algorithm: types.AlgorithmIdentifier, key: types.CryptoKey, data: BufferSource, ...args: any[]): Promise<ArrayBuffer>;
+  public async sign(algorithm: types.SignAlgorithms, key: types.CryptoKey, data: BufferSource, ...args: any[]): Promise<ArrayBuffer>;
   public async sign(...args: any[]): Promise<ArrayBuffer> {
     this.checkRequiredArguments(args, 3, "sign");
     const [algorithm, key, data, ...params] = args;
@@ -67,7 +67,7 @@ export class SubtleCrypto implements types.SubtleCrypto {
     return result;
   }
 
-  public async verify(algorithm: types.AlgorithmIdentifier, key: types.CryptoKey, signature: BufferSource, data: BufferSource, ...args: any[]): Promise<boolean>;
+  public async verify(algorithm: types.SignAlgorithms, key: types.CryptoKey, signature: BufferSource, data: BufferSource, ...args: any[]): Promise<boolean>;
   public async verify(...args: any[]): Promise<boolean> {
     this.checkRequiredArguments(args, 4, "verify");
     const [algorithm, key, signature, data, ...params] = args;

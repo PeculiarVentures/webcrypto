@@ -7,19 +7,19 @@ class DesTestProvider extends core.DesProvider {
   public ivSize = 8;
   public name = "DES-TEST";
 
-  public onGenerateKey(algorithm: import("../src/des").DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
+  public onGenerateKey(algorithm: types.DesKeyGenParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     throw new Error("Method not implemented.");
   }
   public onExportKey(format: types.KeyFormat, key: core.CryptoKey): Promise<types.JsonWebKey | ArrayBuffer> {
     throw new Error("Method not implemented.");
   }
-  public onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: import("../src/des").DesImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
+  public onImportKey(format: types.KeyFormat, keyData: types.JsonWebKey | ArrayBuffer, algorithm: types.DesImportParams, extractable: boolean, keyUsages: types.KeyUsage[]): Promise<core.CryptoKey> {
     throw new Error("Method not implemented.");
   }
-  public onEncrypt(algorithm: import("../src/des").DesParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public onEncrypt(algorithm: types.DesParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     throw new Error("Method not implemented.");
   }
-  public onDecrypt(algorithm: import("../src/des").DesParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
+  public onDecrypt(algorithm: types.DesParams, key: core.CryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     throw new Error("Method not implemented.");
   }
 }

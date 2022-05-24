@@ -1,7 +1,7 @@
 import * as types from "@peculiar/webcrypto-types";
 import { BufferSourceConverter } from "pvtsutils";
 import { AlgorithmError, CryptoError, OperationError, RequiredPropertyError, UnsupportedOperationError } from "./errors";
-import { isJWK } from "./utils";
+import { assertJWK } from "./utils";
 
 export interface IProviderCheckOptions {
   keyUsage?: boolean;
@@ -256,9 +256,7 @@ export abstract class ProviderCrypto {
       throw new TypeError("keyData: Cannot be empty on empty on key importing");
     }
     if (format === "jwk") {
-      if (!isJWK(keyData)) {
-        throw new TypeError("keyData: Is not JsonWebToken");
-      }
+      assertJWK(keyData, "keyData");
     } else if (!BufferSourceConverter.isBufferSource(keyData)) {
       throw new TypeError("keyData: Is not ArrayBufferView or ArrayBuffer");
     }

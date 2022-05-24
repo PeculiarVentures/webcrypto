@@ -1,13 +1,14 @@
-import { JsonProp } from "@peculiar/json-schema";
+import * as jsonSchema from "@peculiar/json-schema";
 import * as core from "@peculiar/webcrypto-core";
+import * as types from "@peculiar/webcrypto-types";
 import { JsonBase64UrlConverter } from "../../converters";
 import { SymmetricKey } from "../../keys";
 
 export class DesCryptoKey extends SymmetricKey {
 
-  public override algorithm!: core.DesKeyAlgorithm;
+  public override algorithm!: types.DesKeyAlgorithm;
 
-  @JsonProp({ name: "k", converter: JsonBase64UrlConverter })
+  @jsonSchema.JsonProp({ name: "k", converter: JsonBase64UrlConverter })
   public override data!: Buffer;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
