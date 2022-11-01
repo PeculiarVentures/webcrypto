@@ -91,7 +91,7 @@ export class EcCrypto {
     return ok;
   }
 
-  public static async deriveBits(algorithm: EcdhKeyDeriveParams, baseKey: CryptoKey, length: number): Promise<ArrayBuffer> {
+  public static async deriveBits(algorithm: EcdhKeyDeriveParams, baseKey: CryptoKey, length: number | null): Promise<ArrayBuffer> {
     const cryptoAlg = this.getOpenSSLNamedCurve((baseKey.algorithm as EcKeyAlgorithm).namedCurve);
 
     const ecdh = crypto.createECDH(cryptoAlg);
@@ -101,6 +101,10 @@ export class EcCrypto {
 
     const asnPublicKey = AsnParser.parse((algorithm.public as CryptoKey).data, core.asn1.PublicKeyInfo);
     const bits = ecdh.computeSecret(Buffer.from(asnPublicKey.publicKey));
+
+    if (length === null) {
+      return bits;
+    }
 
     return new Uint8Array(bits).buffer.slice(0, length >> 3);
   }
