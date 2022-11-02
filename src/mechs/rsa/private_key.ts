@@ -5,7 +5,7 @@ import { AsymmetricKey } from "../../keys";
 import { getJwkAlgorithm } from "./helper";
 
 export class RsaPrivateKey extends AsymmetricKey {
-  public readonly type: "private" = "private";
+  public readonly type = "private" as const;
   public override algorithm!: RsaHashedKeyAlgorithm;
 
   public getKey() {
