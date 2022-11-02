@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.0...v1.4.1) (2022-11-02)
+
+
+### Bug Fixes
+
+* ECDH with null length ([48f5a8c](https://github.com/PeculiarVentures/webcrypto/commit/48f5a8c19d81732a89b897fad0e6ac0e084c6333))
+
 ## [1.4.0](https://github.com/PeculiarVentures/webcrypto/compare/v1.3.3...v1.4.0) (2022-05-12)
 
 
