@@ -5,7 +5,7 @@ import { AsymmetricKey } from "../../keys";
 import { getOidByNamedCurve } from "./helper";
 
 export class EcPrivateKey extends AsymmetricKey implements IJsonConvertible {
-  public readonly type: "private" = "private";
+  public readonly type = "private" as const;
   public override algorithm!: EcKeyAlgorithm;
 
   public getKey() {

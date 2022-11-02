@@ -6,7 +6,7 @@ import { getOidByNamedCurve } from "./helper";
 
 export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
 
-  public readonly type: "public" = "public";
+  public readonly type = "public" as const;
   public override algorithm!: EcKeyAlgorithm;
 
   public getKey() {
@@ -39,7 +39,7 @@ export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
     keyInfo.publicKeyAlgorithm.parameters = AsnSerializer.serialize(
       new core.asn1.ObjectIdentifier(getOidByNamedCurve(json.crv)),
     );
-    keyInfo.publicKey = AsnSerializer.toASN(key).valueHex;
+    keyInfo.publicKey = (AsnSerializer.toASN(key) as any).valueHex;
 
     this.data = Buffer.from(AsnSerializer.serialize(keyInfo));
 
