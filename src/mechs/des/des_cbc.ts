@@ -1,8 +1,8 @@
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { DesCrypto } from "./crypto";
 import { DesCryptoKey } from "./key";
+import { CryptoKey } from "../../keys";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 export type DesCbcParams = core.DesParams;
 

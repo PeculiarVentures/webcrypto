@@ -3,11 +3,11 @@ import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import { BufferSourceConverter } from "pvtsutils";
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
-import { ShaCrypto } from "../sha";
 import { getOidByNamedCurve } from "./helper";
 import { EcPrivateKey } from "./private_key";
 import { EcPublicKey } from "./public_key";
+import { CryptoKey } from "../../keys";
+import { ShaCrypto } from "../sha";
 
 export class EcCrypto {
 

@@ -1,8 +1,8 @@
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import { AsymmetricKey } from "../../keys/asymmetric";
 import { getJwkAlgorithm } from "./helper";
+import { AsymmetricKey } from "../../keys/asymmetric";
 
 export class RsaPublicKey extends AsymmetricKey {
   public readonly type = "public" as const;

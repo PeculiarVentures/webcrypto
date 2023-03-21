@@ -1,8 +1,8 @@
 import crypto from "crypto";
 import * as core from "webcrypto-core";
 import { BufferSourceConverter, CryptoKey } from "webcrypto-core";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { HkdfCryptoKey } from "./key";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class HkdfProvider extends core.HkdfProvider {
 

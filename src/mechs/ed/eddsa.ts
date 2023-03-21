@@ -1,9 +1,9 @@
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
-import { getCryptoKey, setCryptoKey } from "../storage";
 import { EdCrypto } from "./crypto";
 import { EdPrivateKey } from "./private_key";
 import { EdPublicKey } from "./public_key";
+import { CryptoKey } from "../../keys";
+import { getCryptoKey, setCryptoKey } from "../storage";
 
 export class EdDsaProvider extends core.EdDsaProvider {
 

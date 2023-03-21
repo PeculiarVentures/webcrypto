@@ -1,8 +1,8 @@
 import * as core from "webcrypto-core";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class RsaSsaProvider extends core.RsaSsaProvider {
 

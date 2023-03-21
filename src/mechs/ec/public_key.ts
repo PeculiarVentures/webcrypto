@@ -1,8 +1,8 @@
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { IJsonConvertible, JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import { AsymmetricKey } from "../../keys/asymmetric";
 import { getOidByNamedCurve } from "./helper";
+import { AsymmetricKey } from "../../keys/asymmetric";
 
 export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
 

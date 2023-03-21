@@ -1,9 +1,9 @@
 import crypto from "crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
+import { HmacCryptoKey } from "./key";
 import { ShaCrypto } from "../sha";
 import { setCryptoKey, getCryptoKey } from "../storage";
-import { HmacCryptoKey } from "./key";
 
 export class HmacProvider extends core.HmacProvider {
 

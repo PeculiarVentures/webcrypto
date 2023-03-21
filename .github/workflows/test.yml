@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [14.x, 16.x, 18.x]
 
     steps:
       - uses: actions/checkout@v2
@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install global dependencies
-        run: npm i yarn -g
+        run: npm i yarn nyc coveralls -g
 
       - name: Install dependencies
         run: yarn

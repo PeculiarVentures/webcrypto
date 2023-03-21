@@ -30,7 +30,10 @@ export class SubtleCrypto extends core.SubtleCrypto {
     //#endregion
 
     //#region DES
-    this.providers.set(new DesCbcProvider());
+    const ciphers = crypto.getCiphers();
+    if (ciphers.includes("des-cbc")) {
+      this.providers.set(new DesCbcProvider());
+    }
     this.providers.set(new DesEde3CbcProvider());
     //#endregion
 

@@ -2,9 +2,9 @@ import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
+import { CryptoKey } from "../../keys";
 
 interface INodeCryptoSignOptions {
   key: string;
