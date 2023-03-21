@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.2](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.0...v1.4.2) (2023-03-21)
+
+
+### Bug Fixes
+
+* disable DES-CBC for Node v18 ([1ebf900](https://github.com/PeculiarVentures/webcrypto/commit/1ebf9006e67102b16aada2e54d5a32419d8cc3b8))
+* ECDH with null length ([48f5a8c](https://github.com/PeculiarVentures/webcrypto/commit/48f5a8c19d81732a89b897fad0e6ac0e084c6333))
+* publish ([e2f61b8](https://github.com/PeculiarVentures/webcrypto/commit/e2f61b8b5619767a4bd82d91631a4a15e4e5de92))
+
 ## [1.4.0](https://github.com/PeculiarVentures/webcrypto/compare/v1.3.3...v1.4.0) (2022-05-12)
 
 
