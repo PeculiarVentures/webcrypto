@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import * as core from "webcrypto-core";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { PbkdfCryptoKey } from "./key";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class Pbkdf2Provider extends core.Pbkdf2Provider {
 

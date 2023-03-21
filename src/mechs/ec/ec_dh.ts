@@ -1,9 +1,9 @@
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { EcCrypto } from "./crypto";
 import { EcPrivateKey } from "./private_key";
 import { EcPublicKey } from "./public_key";
+import { CryptoKey } from "../../keys";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class EcdhProvider extends core.EcdhProvider {
 

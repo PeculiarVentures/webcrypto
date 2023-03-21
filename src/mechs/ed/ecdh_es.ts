@@ -1,7 +1,7 @@
 import * as core from "webcrypto-core";
+import { EdCrypto } from "./crypto";
 import { CryptoKey } from "../../keys";
 import { getCryptoKey, setCryptoKey } from "../storage";
-import { EdCrypto } from "./crypto";
 
 export class EcdhEsProvider extends core.EcdhEsProvider {
   

@@ -3,9 +3,9 @@ import { AsnParser } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
-import { CryptoKey } from "../../keys";
 import { EdPrivateKey } from "./private_key";
 import { EdPublicKey } from "./public_key";
+import { CryptoKey } from "../../keys";
 
 export class EdCrypto {
 

@@ -1,7 +1,7 @@
 import * as core from "webcrypto-core";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { AesCrypto } from "./crypto";
 import { AesCryptoKey } from "./key";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class AesCtrProvider extends core.AesCtrProvider {
 

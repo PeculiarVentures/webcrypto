@@ -1,8 +1,8 @@
 import * as core from "webcrypto-core";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { EcCrypto } from "./crypto";
 import { EcPrivateKey } from "./private_key";
 import { EcPublicKey } from "./public_key";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class EcdsaProvider extends core.EcdsaProvider {
 

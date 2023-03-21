@@ -1,8 +1,8 @@
 import * as crypto from "crypto";
 import * as core from "webcrypto-core";
-import { setCryptoKey, getCryptoKey } from "../storage";
 import { AesCrypto } from "./crypto";
 import { AesCryptoKey } from "./key";
+import { setCryptoKey, getCryptoKey } from "../storage";
 
 /**
  * AES-CMAC implementation source code from https://github.com/allan-stewart/node-aes-cmac
