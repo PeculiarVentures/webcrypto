@@ -39,7 +39,7 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install global dependencies
-        run: npm i yarn -g
+        run: npm i yarn nyc coveralls -g
 
       - name: Install dependencies
         run: yarn
