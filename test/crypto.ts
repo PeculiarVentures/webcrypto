@@ -1,5 +1,6 @@
-import assert from "assert";
-import process from "process";
+import assert from "node:assert";
+import nodeCrypto from "node:crypto";
+import process from "node:process";
 import { WebcryptoTest } from "@peculiar/webcrypto-test";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
@@ -10,7 +11,11 @@ const nodeMajorVersion = parseInt(/^v(\d+)/.exec(process.version)![1], 10);
 
 const crypto = new Crypto();
 
-WebcryptoTest.check(crypto as any, {});
+const ciphers = nodeCrypto.getCiphers();
+
+WebcryptoTest.check(crypto as any, {
+  DESCBC: !ciphers.includes("des-cbc"),
+});
 context("Crypto", () => {
 
   context("getRandomValues", () => {
