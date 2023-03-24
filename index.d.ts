@@ -1,7 +1,7 @@
 export declare class Crypto implements globalThis.Crypto {
   public subtle: SubtleCrypto;
   public getRandomValues<T extends ArrayBufferView | null>(array: T): T;
-  public randomUUID(): string;
+  randomUUID(): `${string}-${string}-${string}-${string}-${string}`;
 }
 
 export declare class CryptoKey implements globalThis.CryptoKey {
