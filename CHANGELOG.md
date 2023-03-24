@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.3](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.2...v1.4.3) (2023-03-24)
+
+
+### Bug Fixes
+
+* type declaration for Crypto ([335c2cb](https://github.com/PeculiarVentures/webcrypto/commit/335c2cb45236a4832b4b5cccb869f19f458bfc2b))
+
 ### [1.4.2](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.0...v1.4.2) (2023-03-21)
 
 
