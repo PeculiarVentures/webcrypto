@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import crypto from "crypto";
 import * as core from "webcrypto-core";
 import { PbkdfCryptoKey } from "./key";

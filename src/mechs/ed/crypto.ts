@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import crypto from "crypto";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
@@ -141,14 +142,14 @@ export class EdCrypto {
       crv: algorithm.namedCurve,
       d: Convert.ToBase64Url(asnKey.d),
     });
-    
+
     key.algorithm = Object.assign({}, algorithm) as EcKeyAlgorithm;
     key.extractable = extractable;
     key.usages = keyUsages;
-    
+
     return key;
   }
-  
+
   protected static async importPublicKey(asnKey: ArrayBuffer, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]) {
     const key = new EdPublicKey();
     key.fromJSON({

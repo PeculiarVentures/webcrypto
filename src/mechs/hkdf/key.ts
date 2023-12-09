@@ -1,3 +1,4 @@
+import type { Buffer } from "buffer";
 import { CryptoKey } from "../../keys";
 
 export class HkdfCryptoKey extends CryptoKey {
