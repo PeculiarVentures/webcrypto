@@ -9,7 +9,7 @@ const banner = [
 ].join("\n");
 const input = "src/index.ts";
 const external = [
-  ...["crypto", "process"],
+  ...["crypto", "process", "buffer"],
   ...Object.keys(pkg.dependencies || {}),
 ];
 
