@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import { JsonProp, JsonPropTypes } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
 

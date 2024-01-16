@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import crypto from "crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";

@@ -1,3 +1,4 @@
+import type { Buffer } from "buffer";
 import { JsonProp } from "@peculiar/json-schema";
 import { JsonBase64UrlConverter } from "../../converters";
 import { CryptoKey } from "../../keys";

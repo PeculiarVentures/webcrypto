@@ -1,3 +1,4 @@
+import { Buffer } from "buffer";
 import assert from "node:assert";
 import nodeCrypto from "node:crypto";
 import process from "node:process";
