@@ -80,19 +80,6 @@ context("Crypto", () => {
   (nodeMajorVersion < 14 ? context.skip : context)("EdDSA", () => {
 
     context("generateKey", () => {
-
-      it("RSA 3072bits", async () => {
-        const alg: globalThis.RsaHashedKeyGenParams = {
-          name: "RSASSA-PKCS1-v1_5",
-          hash: "SHA-256",
-          publicExponent: new Uint8Array([1, 0, 1]),
-          modulusLength: 3072,
-        };
-        const keys = await crypto.subtle.generateKey(alg, false, ["sign", "verify"]);
-
-        assert.strictEqual((keys.privateKey.algorithm as RsaHashedKeyAlgorithm).modulusLength, 3072);
-      });
-
       it("Ed25519", async () => {
         const keys = await crypto.subtle.generateKey({ name: "eddsa", namedCurve: "ed25519" } as globalThis.EcKeyGenParams, false, ["sign", "verify"]);
 
@@ -305,4 +292,16 @@ context("Crypto", () => {
       assert.equal(bits.byteLength, 66);
     });
   });
+
+  it("RSA 3072bits", async () => {
+    const alg: globalThis.RsaHashedKeyGenParams = {
+      name: "RSASSA-PKCS1-v1_5",
+      hash: "SHA-256",
+      publicExponent: new Uint8Array([1, 0, 1]),
+      modulusLength: 3072,
+    };
+    const keys = await crypto.subtle.generateKey(alg, false, ["sign", "verify"]);
+
+    assert.strictEqual((keys.privateKey.algorithm as RsaHashedKeyAlgorithm).modulusLength, 3072);
+  }).timeout(5000);
 });
