@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.4](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.3...v1.4.4) (2024-01-16)
+
+
+### Bug Fixes
+
+* import Buffer before use ([09d7d33](https://github.com/PeculiarVentures/webcrypto/commit/09d7d33a07f99c2c0daa1e5c79008132571ac66a))
+* use Buffer from 'buffer' ([8b09641](https://github.com/PeculiarVentures/webcrypto/commit/8b09641603ba3a7ebd0ff947186126dcf271c4fd))
+
 ### [1.4.3](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.2...v1.4.3) (2023-03-24)
 
 
