@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/webcrypto",
-  "version": "1.4.4",
+  "version": "1.4.5",
   "description": "A WebCrypto Polyfill for NodeJS",
   "repository": {
     "type": "git",
