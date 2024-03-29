@@ -16,6 +16,7 @@ const ciphers = nodeCrypto.getCiphers();
 
 WebcryptoTest.check(crypto as any, {
   DESCBC: !ciphers.includes("des-cbc"),
+  RSAESPKCS1: nodeMajorVersion >= 20,
 });
 context("Crypto", () => {
 
