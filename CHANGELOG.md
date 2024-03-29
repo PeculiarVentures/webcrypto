@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.6](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.5...v1.4.6) (2024-03-29)
+
+
+### Bug Fixes
+
+* pass tag length for aes decipher ([870ebef](https://github.com/PeculiarVentures/webcrypto/commit/870ebefe7b65da6f1db3ddb8d3539ec88a0ebb4a))
+
 ### [1.4.5](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.4...v1.4.5) (2024-01-22)
 
 ### [1.4.4](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.3...v1.4.4) (2024-01-16)
