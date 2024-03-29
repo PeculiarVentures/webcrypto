@@ -47,8 +47,13 @@ jobs:
       - name: Run linter
         run: npm run lint
 
-      - name: Run test with coverage
+      - name: Run test with coverage for Node.js < 20
+        if: ${{ matrix.node-version < 20 }}
         run: npm run coverage
+
+      - name: Run test with coverage for Node.js >= 20
+        if: ${{ matrix.node-version >= 20 }}
+        run: node --security-revert=CVE-2023-46809 ./node_modules/.bin/nyc npm run test
 
       - name: Coveralls
         uses: coverallsapp/github-action@master
