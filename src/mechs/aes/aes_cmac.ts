@@ -1,5 +1,5 @@
 import { Buffer } from "buffer";
-import * as crypto from "crypto";
+import crypto from "crypto";
 import * as core from "webcrypto-core";
 import { AesCrypto } from "./crypto";
 import { AesCryptoKey } from "./key";

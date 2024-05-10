@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import crypto from "crypto";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
 import { RsaCrypto } from "./crypto";
