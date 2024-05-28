@@ -8,6 +8,7 @@ import {
   EcdsaProvider, HkdfProvider,
   EdDsaProvider,
   EcdhEsProvider,
+  Ed25519Provider, X25519Provider,
   HmacProvider,
   Pbkdf2Provider,
   RsaEsProvider, RsaOaepProvider, RsaPssProvider, RsaSsaProvider,
@@ -95,6 +96,9 @@ export class SubtleCrypto extends core.SubtleCrypto {
       //#region ECDH-ES
       this.providers.set(new EcdhEsProvider());
       //#endregion
+
+      this.providers.set(new Ed25519Provider());
+      this.providers.set(new X25519Provider());
     }
   }
 }
