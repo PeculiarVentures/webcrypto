@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.6...v1.5.0) (2024-05-28)
+
+
+### Features
+
+* Add support for Ed25519 and X25519 algorithms ([a0cf289](https://github.com/PeculiarVentures/webcrypto/commit/a0cf28914d6e0e11567a24ea3508c3ca231bd754))
+
 ### [1.4.6](https://github.com/PeculiarVentures/webcrypto/compare/v1.4.5...v1.4.6) (2024-03-29)
 
 
