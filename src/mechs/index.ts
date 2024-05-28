@@ -3,6 +3,7 @@ export * from "./des";
 export * from "./rsa";
 export * from "./ec";
 export * from "./ed";
+export * from "./ed25519";
 export * from "./sha";
 export * from "./pbkdf";
 export * from "./hmac";
