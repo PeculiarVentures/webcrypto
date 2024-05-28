@@ -14,6 +14,7 @@
   ],
   "main": "build/webcrypto.js",
   "module": "build/webcrypto.es.js",
+  "react-native": "build/webcrypto.es.js",
   "types": "index.d.ts",
   "scripts": {
     "test": "mocha",

@@ -1,4 +1,4 @@
-import * as crypto from "crypto";
+import crypto from "crypto";
 import * as process from "process";
 import * as core from "webcrypto-core";
 import {
