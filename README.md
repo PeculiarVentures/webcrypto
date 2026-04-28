@@ -1,9 +1,16 @@
-# @peculiar/webcrypto
+<h1 align="center">
+  @peculiar/webcrypto
+</h1>
 
-[![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://raw.githubusercontent.com/PeculiarVentures/webcrypto/master/LICENSE.md)
-![test](https://github.com/PeculiarVentures/webcrypto/workflows/test/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/PeculiarVentures/webcrypto/badge.svg?branch=master)](https://coveralls.io/github/PeculiarVentures/webcrypto?branch=master)
-[![npm version](https://badge.fury.io/js/%40peculiar%2Fwebcrypto.svg)](https://badge.fury.io/js/%40peculiar%2Fwebcrypto)
+<div align="center">
+
+![NPM License](https://img.shields.io/npm/l/@peculiar/webcrypto)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/webcrypto/test.yml?label=test)
+[![npm version](https://img.shields.io/npm/v/@peculiar/webcrypto.svg)](https://www.npmjs.com/package/@peculiar/webcrypto)
+![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/webcrypto)
+[![npm downloads](https://img.shields.io/npm/dm/@peculiar/webcrypto.svg)](https://www.npmjs.com/package/@peculiar/webcrypto)
+
+</div>
 
 We wanted to be able to write Javascript that used crypto on both the client and the server but we did not want to rely on Javascript implementations of crypto. The only native cryptography available in browser is [Web Crypto](http://caniuse.com/#search=cryptography), this resulted in us creating a `@peculiar/webcrypto`.
 
