@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "lib": [
-      "dom"
-    ],
+    "target": "es2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
     "removeComments": true,
     "importHelpers": true,
+    "types": [
+      "node",
+      "vitest/globals",
+    ],
     "strict": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
