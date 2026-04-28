@@ -1,103 +1,49 @@
-name: publish
+name: Release
 
 on:
-  pull_request:
-    branches:
-      - master
-    types: [closed]
+  push:
+    tags:
+      - "v*"
 
-env:
-  CI: true
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+permissions:
+  id-token: write
+  contents: write
+  packages: write
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
-      - name: Pull Request Merged
-        if: github.event.pull_request.merged == false
-        run: |
-          echo 'The pull request has not been merged'
-          exit 1
+      - name: Checkout code
+        uses: actions/checkout@v6
 
-      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
-          fetch-depth: 0
-
-      - name: Set git config
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20.x
+          node-version: "24"
+          cache: "npm"
           registry-url: "https://registry.npmjs.org"
 
-      - name: Setup .npmrc
-        shell: bash
-        run: |
-          npm set //registry.npmjs.org/:_authToken=$NODE_AUTH_TOKEN
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-
-      - name: Ensure access
-        shell: bash
-        run: npm whoami --registry https://registry.npmjs.org/
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-
-      - name: Install global dependencies
-        run: npm i standard-version yarn -g
-
       - name: Install dependencies
-        run: yarn
+        run: npm ci
 
-      - name: Get Prev Version
-        shell: bash -ex {0}
-        run: |
-          PREV_VERSION=$(node -p 'require("./package.json").version')
-          echo "::set-env name=PREV_VERSION::${PREV_VERSION}"
+      - name: Run tests
+        run: npm run test
 
-      - name: Bump version
-        run: |
-          standard-version
+      - name: Build
+        run: npm run build
 
-      - name: Get Current Version
-        shell: bash -ex {0}
-        run: |
-          CURRENT_VERSION=$(node -p 'require("./package.json").version')
-          echo "::set-env name=CURRENT_VERSION::${CURRENT_VERSION}"
+      - name: Publish to NPM
+        run: npm publish --provenance --access public
 
-      - name: Publish
-        if: env.PREV_VERSION != env.CURRENT_VERSION
-        run: |
-          npm run build
-          npm publish
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          generate_release_notes: true
+          draft: false
+          prerelease: false
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.6.0
-        if: env.PREV_VERSION != env.CURRENT_VERSION
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-          tags: true
-
-      - name: Create comment
-        uses: actions/github-script@0.8.0
-        if: env.PREV_VERSION != env.CURRENT_VERSION
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          script: |
-            github.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'NPM package v${{ env.CURRENT_VERSION }} has been published 🎉'
-            })
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
