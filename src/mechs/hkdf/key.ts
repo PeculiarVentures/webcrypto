@@ -1,8 +1,8 @@
-import type { Buffer } from "buffer";
+import type { Buffer } from "node:buffer";
 import { CryptoKey } from "../../keys";
 
 export class HkdfCryptoKey extends CryptoKey {
-  public override data!: Buffer;
+  public declare data: Buffer;
 
-  public override algorithm!: KeyAlgorithm;
+  public declare algorithm: KeyAlgorithm;
 }

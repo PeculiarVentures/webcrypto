@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+import { Buffer } from "node:buffer";
 import { IJsonConverter } from "@peculiar/json-schema";
 import { Convert } from "pvtsutils";
 

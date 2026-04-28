@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+import { Buffer } from "node:buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
@@ -7,7 +7,7 @@ import { getJwkAlgorithm } from "./helper";
 
 export class RsaPrivateKey extends AsymmetricKey {
   public readonly type = "private" as const;
-  public override algorithm!: RsaHashedKeyAlgorithm;
+  public declare algorithm: RsaHashedKeyAlgorithm;
 
   public getKey() {
     const keyInfo = AsnParser.parse(this.data, core.asn1.PrivateKeyInfo);

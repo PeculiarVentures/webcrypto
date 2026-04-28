@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { getCryptoKey, setCryptoKey } from "../storage";

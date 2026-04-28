@@ -1,4 +1,4 @@
-import type { Buffer } from "buffer";
+import type { Buffer } from "node:buffer";
 import { JsonProp } from "@peculiar/json-schema";
 import { JsonBase64UrlConverter } from "../../converters";
 import { CryptoKey } from "../../keys";
@@ -7,9 +7,9 @@ export class HmacCryptoKey extends CryptoKey {
   @JsonProp({
     name: "k", converter: JsonBase64UrlConverter,
   })
-  public override data!: Buffer;
+  public declare data: Buffer;
 
-  public override algorithm!: HmacKeyAlgorithm;
+  public declare algorithm: HmacKeyAlgorithm;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore

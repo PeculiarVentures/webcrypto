@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { Ed25519CryptoKey } from "./crypto_key";
 
 export class Ed25519PublicKey extends Ed25519CryptoKey {

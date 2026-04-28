@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
 import { setCryptoKey, getCryptoKey } from "../storage";

@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
@@ -82,7 +82,7 @@ export class Ed25519Crypto {
           // public key
           const pubKey = crypto.createPublicKey({
             format: "jwk",
-            key: jwk as crypto.JsonWebKey,
+            key: jwk as JsonWebKey,
           });
           const pem = pubKey.export({
             format: "pem", type: "spki",

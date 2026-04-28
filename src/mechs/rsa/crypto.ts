@@ -1,5 +1,5 @@
-import { Buffer } from "buffer";
-import crypto from "crypto";
+import { Buffer } from "node:buffer";
+import crypto from "node:crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";

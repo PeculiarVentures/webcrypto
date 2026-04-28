@@ -1,5 +1,5 @@
-import { Buffer } from "buffer";
-import crypto from "crypto";
+import { Buffer } from "node:buffer";
+import crypto from "node:crypto";
 import * as core from "webcrypto-core";
 import { SubtleCrypto } from "./subtle";
 

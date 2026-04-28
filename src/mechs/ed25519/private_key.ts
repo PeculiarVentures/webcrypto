@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import * as core from "webcrypto-core";
 import { Ed25519CryptoKey } from "./crypto_key";

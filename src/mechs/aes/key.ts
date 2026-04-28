@@ -1,16 +1,16 @@
-import type { Buffer } from "buffer";
+import type { Buffer } from "node:buffer";
 import { JsonProp } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
 import { JsonBase64UrlConverter } from "../../converters";
 import { SymmetricKey } from "../../keys";
 
 export class AesCryptoKey extends SymmetricKey {
-  public override algorithm!: AesKeyAlgorithm;
+  public declare algorithm: AesKeyAlgorithm;
 
   @JsonProp({
     name: "k", converter: JsonBase64UrlConverter,
   })
-  public override data!: Buffer;
+  public declare data: Buffer;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
