@@ -1,9 +1,9 @@
 import * as core from "webcrypto-core";
+import { getCryptoKey, setCryptoKey } from "../storage";
 import { Ed25519Crypto } from "./crypto";
 import { Ed25519CryptoKey } from "./crypto_key";
 import { Ed25519PrivateKey } from "./private_key";
 import { Ed25519PublicKey } from "./public_key";
-import { getCryptoKey, setCryptoKey } from "../storage";
 
 export class Ed25519Provider extends core.Ed25519Provider {
   public override async onGenerateKey(algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {

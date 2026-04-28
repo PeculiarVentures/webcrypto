@@ -1,9 +1,9 @@
 import { Buffer } from "buffer";
 import crypto from "crypto";
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { AesCrypto } from "./crypto";
 import { AesCryptoKey } from "./key";
-import { setCryptoKey, getCryptoKey } from "../storage";
 
 /**
  * AES-CMAC implementation source code from https://github.com/allan-stewart/node-aes-cmac
@@ -78,7 +78,9 @@ function generateSubkeys(key: Buffer) {
     subkey2 = xor(subkey2, rb);
   }
 
-  return { subkey1, subkey2 };
+  return {
+    subkey1, subkey2,
+  };
 }
 
 function aesCmac(key: Buffer, message: Buffer) {
@@ -113,7 +115,6 @@ function aesCmac(key: Buffer, message: Buffer) {
 }
 
 export class AesCmacProvider extends core.AesCmacProvider {
-
   public async onGenerateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const key = await AesCrypto.generateKey(
       {

@@ -24,8 +24,8 @@ export default [
           compilerOptions: {
             module: "ES2015",
             removeComments: true,
-          }
-        }
+          },
+        },
       }),
     ],
     external: [...external],

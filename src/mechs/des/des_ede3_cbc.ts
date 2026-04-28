@@ -1,13 +1,12 @@
 import * as core from "webcrypto-core";
-import { DesCrypto } from "./crypto";
-import { DesCryptoKey } from "./key";
 import { CryptoKey } from "../../keys";
 import { setCryptoKey, getCryptoKey } from "../storage";
+import { DesCrypto } from "./crypto";
+import { DesCryptoKey } from "./key";
 
 export type DesEde3CbcParams = core.DesParams;
 
 export class DesEde3CbcProvider extends core.DesProvider {
-
   public keySizeBits = 192;
   public ivSize = 8;
   public name = "DES-EDE3-CBC";
@@ -37,7 +36,9 @@ export class DesEde3CbcProvider extends core.DesProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKey> {
-    const key = await DesCrypto.importKey(format, keyData, { name: this.name, length: this.keySizeBits }, extractable, keyUsages);
+    const key = await DesCrypto.importKey(format, keyData, {
+      name: this.name, length: this.keySizeBits,
+    }, extractable, keyUsages);
     if (key.data.length !== (this.keySizeBits >> 3)) {
       throw new core.OperationError("keyData: Wrong key size");
     }
@@ -50,5 +51,4 @@ export class DesEde3CbcProvider extends core.DesProvider {
       throw new TypeError("key: Is not a DesCryptoKey");
     }
   }
-
 }

@@ -1,12 +1,13 @@
 import { Buffer } from "buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
-import { IJsonConvertible, JsonParser, JsonSerializer } from "@peculiar/json-schema";
+import {
+  IJsonConvertible, JsonParser, JsonSerializer,
+} from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import { getOidByNamedCurve } from "./helper";
 import { AsymmetricKey } from "../../keys/asymmetric";
+import { getOidByNamedCurve } from "./helper";
 
 export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
-
   public readonly type = "public" as const;
   public override algorithm!: EcKeyAlgorithm;
 
@@ -30,7 +31,7 @@ export class EcPublicKey extends AsymmetricKey implements IJsonConvertible {
 
   public fromJSON(json: JsonWebKey) {
     if (!json.crv) {
-      throw new core.OperationError(`Cannot get named curve from JWK. Property 'crv' is required`);
+      throw new core.OperationError("Cannot get named curve from JWK. Property 'crv' is required");
     }
 
     const key = JsonParser.fromJSON(json, { targetSchema: core.asn1.EcPublicKey });

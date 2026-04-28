@@ -1,11 +1,11 @@
 import { Buffer } from "buffer";
 import crypto from "crypto";
 import * as core from "webcrypto-core";
+import { ShaCrypto } from "../sha/crypto";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
-import { ShaCrypto } from "../sha/crypto";
-import { setCryptoKey, getCryptoKey } from "../storage";
 
 /**
  * Source code for decrypt, encrypt, mgf1 functions is from asmcrypto module
@@ -15,7 +15,6 @@ import { setCryptoKey, getCryptoKey } from "../storage";
  */
 
 export class RsaOaepProvider extends core.RsaOaepProvider {
-
   public async onGenerateKey(algorithm: RsaHashedKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const keys = await RsaCrypto.generateKey(
       {
@@ -25,10 +24,10 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
       extractable,
       keyUsages);
 
-      return {
-        privateKey: setCryptoKey(keys.privateKey as RsaPrivateKey),
-        publicKey: setCryptoKey(keys.publicKey as RsaPublicKey),
-      };
+    return {
+      privateKey: setCryptoKey(keys.privateKey as RsaPrivateKey),
+      publicKey: setCryptoKey(keys.publicKey as RsaPublicKey),
+    };
   }
 
   public async onEncrypt(algorithm: RsaOaepParams, key: RsaPublicKey, data: ArrayBuffer): Promise<ArrayBuffer> {
@@ -148,7 +147,9 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const key = await RsaCrypto.importKey(format, keyData, { ...algorithm, name: this.name }, extractable, keyUsages);
+    const key = await RsaCrypto.importKey(format, keyData, {
+      ...algorithm, name: this.name,
+    }, extractable, keyUsages);
     return setCryptoKey(key);
   }
 
@@ -192,5 +193,4 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
 
     return mask;
   }
-
 }

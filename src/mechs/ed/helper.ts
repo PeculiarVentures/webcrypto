@@ -1,18 +1,18 @@
 import * as core from "webcrypto-core";
 
-const edOIDs: { [key: string]: string } = {
+const edOIDs: Record<string, string> = {
   // Ed448
   [core.asn1.idEd448]: "Ed448",
-  "ed448": core.asn1.idEd448,
+  ed448: core.asn1.idEd448,
   // X448
   [core.asn1.idX448]: "X448",
-  "x448": core.asn1.idX448,
+  x448: core.asn1.idX448,
   // Ed25519
   [core.asn1.idEd25519]: "Ed25519",
-  "ed25519": core.asn1.idEd25519,
+  ed25519: core.asn1.idEd25519,
   // X25519
   [core.asn1.idX25519]: "X25519",
-  "x25519": core.asn1.idX25519,
+  x25519: core.asn1.idX25519,
 };
 
 export function getNamedCurveByOid(oid: string) {

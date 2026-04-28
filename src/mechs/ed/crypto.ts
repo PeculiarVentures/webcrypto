@@ -4,12 +4,11 @@ import { AsnParser } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
+import { CryptoKey } from "../../keys";
 import { EdPrivateKey } from "./private_key";
 import { EdPublicKey } from "./public_key";
-import { CryptoKey } from "../../keys";
 
 export class EdCrypto {
-
   public static publicKeyUsages = ["verify"];
   public static privateKeyUsages = ["sign", "deriveKey", "deriveBits"];
 
@@ -51,9 +50,7 @@ export class EdCrypto {
     if (!key.pem) {
       key.pem = `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`;
     }
-    const options = {
-      key: key.pem,
-    };
+    const options = { key: key.pem };
     const signature = crypto.sign(null, Buffer.from(data), options);
 
     return core.BufferSourceConverter.toArrayBuffer(signature);
@@ -63,9 +60,7 @@ export class EdCrypto {
     if (!key.pem) {
       key.pem = `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`;
     }
-    const options = {
-      key: key.pem,
-    };
+    const options = { key: key.pem };
     const ok = crypto.verify(null, Buffer.from(data), options, Buffer.from(signature));
     return ok;
   }
@@ -163,5 +158,4 @@ export class EdCrypto {
 
     return key;
   }
-
 }

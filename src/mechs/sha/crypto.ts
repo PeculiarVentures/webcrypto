@@ -2,7 +2,6 @@ import { Buffer } from "buffer";
 import crypto from "crypto";
 
 export class ShaCrypto {
-
   /**
    * Returns size of the hash algorithm in bits
    * @param algorithm Hash algorithm
@@ -58,5 +57,4 @@ export class ShaCrypto {
       .update(Buffer.from(data)).digest();
     return new Uint8Array(hash).buffer;
   }
-
 }

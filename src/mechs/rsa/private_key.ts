@@ -2,8 +2,8 @@ import { Buffer } from "buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import { getJwkAlgorithm } from "./helper";
 import { AsymmetricKey } from "../../keys";
+import { getJwkAlgorithm } from "./helper";
 
 export class RsaPrivateKey extends AsymmetricKey {
   public readonly type = "private" as const;
@@ -37,5 +37,4 @@ export class RsaPrivateKey extends AsymmetricKey {
 
     this.data = Buffer.from(AsnSerializer.serialize(keyInfo));
   }
-
 }
