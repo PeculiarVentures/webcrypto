@@ -4,7 +4,7 @@
   "description": "A WebCrypto Polyfill for NodeJS",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PeculiarVentures/webcrypto.git"
+    "url": "https://github.com/PeculiarVentures/webcrypto"
   },
   "files": [
     "build/**/*.{ts,js}",
