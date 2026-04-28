@@ -4,8 +4,9 @@ import { JsonBase64UrlConverter } from "../../converters";
 import { CryptoKey } from "../../keys";
 
 export class HmacCryptoKey extends CryptoKey {
-
-  @JsonProp({ name: "k", converter: JsonBase64UrlConverter })
+  @JsonProp({
+    name: "k", converter: JsonBase64UrlConverter,
+  })
   public override data!: Buffer;
 
   public override algorithm!: HmacKeyAlgorithm;
@@ -20,5 +21,4 @@ export class HmacCryptoKey extends CryptoKey {
   protected override set alg(value: string) {
     // nothing, cause set is needed for json-schema, but is not used by module
   }
-
 }

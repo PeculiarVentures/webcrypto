@@ -8,5 +8,4 @@ export class Sha3384Provider extends core.ProviderCrypto {
   public override async onDigest(algorithm: Algorithm, data: ArrayBuffer): Promise<ArrayBuffer> {
     return ShaCrypto.digest(algorithm, data);
   }
-
 }

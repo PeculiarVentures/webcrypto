@@ -1,14 +1,13 @@
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
-import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class RsaPssProvider extends core.RsaPssProvider {
-
   public override hashAlgorithms = [
-    "SHA-1", "SHA-256", "SHA-384", "SHA-512", 
-    "shake128", "shake256", 
+    "SHA-1", "SHA-256", "SHA-384", "SHA-512",
+    "shake128", "shake256",
     "SHA3-256", "SHA3-384", "SHA3-512"];
 
   public async onGenerateKey(algorithm: RsaHashedKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
@@ -20,10 +19,10 @@ export class RsaPssProvider extends core.RsaPssProvider {
       extractable,
       keyUsages);
 
-      return {
-        privateKey: setCryptoKey(keys.privateKey as RsaPrivateKey),
-        publicKey: setCryptoKey(keys.publicKey as RsaPublicKey),
-      };
+    return {
+      privateKey: setCryptoKey(keys.privateKey as RsaPrivateKey),
+      publicKey: setCryptoKey(keys.publicKey as RsaPublicKey),
+    };
   }
 
   public async onSign(algorithm: RsaPssParams, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
@@ -39,7 +38,9 @@ export class RsaPssProvider extends core.RsaPssProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const key = await RsaCrypto.importKey(format, keyData, {...algorithm, name: this.name}, extractable, keyUsages);
+    const key = await RsaCrypto.importKey(format, keyData, {
+      ...algorithm, name: this.name,
+    }, extractable, keyUsages);
     return setCryptoKey(key);
   }
 
@@ -50,5 +51,4 @@ export class RsaPssProvider extends core.RsaPssProvider {
       throw new TypeError("key: Is not RSA CryptoKey");
     }
   }
-
 }

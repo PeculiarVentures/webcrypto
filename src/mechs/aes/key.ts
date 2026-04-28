@@ -5,10 +5,11 @@ import { JsonBase64UrlConverter } from "../../converters";
 import { SymmetricKey } from "../../keys";
 
 export class AesCryptoKey extends SymmetricKey {
-
   public override algorithm!: AesKeyAlgorithm;
 
-  @JsonProp({name: "k", converter: JsonBase64UrlConverter})
+  @JsonProp({
+    name: "k", converter: JsonBase64UrlConverter,
+  })
   public override data!: Buffer;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -35,5 +36,4 @@ export class AesCryptoKey extends SymmetricKey {
   public override set alg(value: string) {
     // nothing, cause set is needed for json-schema, but is not used by module
   }
-
 }

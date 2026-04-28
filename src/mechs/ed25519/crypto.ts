@@ -2,10 +2,10 @@ import crypto from "crypto";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
+import { CryptoKey } from "../../keys";
 import { Ed25519CryptoKey } from "./crypto_key";
 import { Ed25519PrivateKey } from "./private_key";
 import { Ed25519PublicKey } from "./public_key";
-import { CryptoKey } from "../../keys";
 
 export class Ed25519Crypto {
   public static privateKeyUsages: KeyUsage[] = ["sign", "deriveBits", "deriveKey"];
@@ -24,9 +24,7 @@ export class Ed25519Crypto {
       },
     });
 
-    const keyAlg = {
-      name: type === "ed25519" ? "Ed25519" : "X25519",
-    };
+    const keyAlg = { name: type === "ed25519" ? "Ed25519" : "X25519" };
     const privateKeyUsages = keyUsages.filter((usage) => this.privateKeyUsages.includes(usage));
     const publicKeyUsages = keyUsages.filter((usage) => this.publicKeyUsages.includes(usage));
     return {
@@ -86,7 +84,9 @@ export class Ed25519Crypto {
             format: "jwk",
             key: jwk as crypto.JsonWebKey,
           });
-          const pem = pubKey.export({ format: "pem", type: "spki" }) as string;
+          const pem = pubKey.export({
+            format: "pem", type: "spki",
+          }) as string;
           return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
         } else {
           throw new core.OperationError("keyData: Cannot import JWK. 'd' or 'x' must be presented");
@@ -110,7 +110,9 @@ export class Ed25519Crypto {
             x: Convert.ToBase64Url(raw),
           },
         });
-        const pem = key.export({ format: "pem", type: "spki" }) as string;
+        const pem = key.export({
+          format: "pem", type: "spki",
+        }) as string;
         return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
       }
       default:

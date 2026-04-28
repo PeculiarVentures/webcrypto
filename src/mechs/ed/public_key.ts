@@ -3,11 +3,10 @@ import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { IJsonConvertible } from "@peculiar/json-schema";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
-import { getOidByNamedCurve } from "./helper";
 import { AsymmetricKey } from "../../keys/asymmetric";
+import { getOidByNamedCurve } from "./helper";
 
 export class EdPublicKey extends AsymmetricKey implements IJsonConvertible {
-
   public readonly type = "public" as const;
   public override algorithm!: EcKeyAlgorithm;
 
@@ -26,17 +25,15 @@ export class EdPublicKey extends AsymmetricKey implements IJsonConvertible {
       ext: this.extractable,
     };
 
-    return Object.assign(json, {
-      x: Convert.ToBase64Url(key)
-    });
+    return Object.assign(json, { x: Convert.ToBase64Url(key) });
   }
 
   public fromJSON(json: JsonWebKey) {
     if (!json.crv) {
-      throw new core.OperationError(`Cannot get named curve from JWK. Property 'crv' is required`);
+      throw new core.OperationError("Cannot get named curve from JWK. Property 'crv' is required");
     }
     if (!json.x) {
-      throw new core.OperationError(`Cannot get property from JWK. Property 'x' is required`);
+      throw new core.OperationError("Cannot get property from JWK. Property 'x' is required");
     }
 
     const keyInfo = new core.asn1.PublicKeyInfo();

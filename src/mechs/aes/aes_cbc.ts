@@ -1,10 +1,9 @@
 import * as core from "webcrypto-core";
+import { getCryptoKey, setCryptoKey } from "../storage";
 import { AesCrypto } from "./crypto";
 import { AesCryptoKey } from "./key";
-import { getCryptoKey, setCryptoKey } from "../storage";
 
 export class AesCbcProvider extends core.AesCbcProvider {
-
   public async onGenerateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const key = await AesCrypto.generateKey(
       {

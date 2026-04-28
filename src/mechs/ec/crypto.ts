@@ -4,14 +4,13 @@ import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import { BufferSourceConverter } from "pvtsutils";
 import * as core from "webcrypto-core";
+import { CryptoKey } from "../../keys";
+import { ShaCrypto } from "../sha";
 import { getOidByNamedCurve } from "./helper";
 import { EcPrivateKey } from "./private_key";
 import { EcPublicKey } from "./public_key";
-import { CryptoKey } from "../../keys";
-import { ShaCrypto } from "../sha";
 
 export class EcCrypto {
-
   public static publicKeyUsages = ["verify"];
   public static privateKeyUsages = ["sign", "deriveKey", "deriveBits"];
 
@@ -57,9 +56,7 @@ export class EcCrypto {
     if (!key.pem) {
       key.pem = `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`;
     }
-    const options = {
-      key: key.pem,
-    };
+    const options = { key: key.pem };
 
     const signature = signer.sign(options);
     const ecSignature = AsnParser.parse(signature, core.asn1.EcDsaSignature);
@@ -77,9 +74,7 @@ export class EcCrypto {
     if (!key.pem) {
       key.pem = `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`;
     }
-    const options = {
-      key: key.pem,
-    };
+    const options = { key: key.pem };
 
     const ecSignature = new core.asn1.EcDsaSignature();
     const namedCurve = core.EcCurves.get(key.algorithm.namedCurve);
@@ -167,7 +162,7 @@ export class EcCrypto {
     let namedCurveIdentifier = "";
     try {
       namedCurveIdentifier = AsnParser.parse(parameters, core.asn1.ObjectIdentifier).value;
-    } catch (e) {
+    } catch {
       throw new core.CryptoError("Cannot read key info parameters");
     }
 
@@ -223,5 +218,4 @@ export class EcCrypto {
         return curve;
     }
   }
-
 }

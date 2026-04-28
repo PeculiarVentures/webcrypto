@@ -3,9 +3,9 @@ import crypto from "crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
+import { CryptoKey } from "../../keys";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
-import { CryptoKey } from "../../keys";
 
 interface INodeCryptoSignOptions {
   key: string;
@@ -15,7 +15,6 @@ interface INodeCryptoSignOptions {
 }
 
 export class RsaCrypto {
-
   public static publicKeyUsages = ["verify", "encrypt", "wrapKey"];
   public static privateKeyUsages = ["sign", "decrypt", "unwrapKey"];
 
@@ -201,9 +200,7 @@ export class RsaCrypto {
     if (!key.pem) {
       key.pem = `-----BEGIN PRIVATE KEY-----\n${key.data.toString("base64")}\n-----END PRIVATE KEY-----`;
     }
-    const options: INodeCryptoSignOptions = {
-      key: key.pem,
-    };
+    const options: INodeCryptoSignOptions = { key: key.pem };
     if (algorithm.name.toUpperCase() === "RSA-PSS") {
       options.padding = crypto.constants.RSA_PKCS1_PSS_PADDING;
       options.saltLength = (algorithm as RsaPssParams).saltLength;
@@ -221,9 +218,7 @@ export class RsaCrypto {
     if (!key.pem) {
       key.pem = `-----BEGIN PUBLIC KEY-----\n${key.data.toString("base64")}\n-----END PUBLIC KEY-----`;
     }
-    const options: INodeCryptoSignOptions = {
-      key: key.pem,
-    };
+    const options: INodeCryptoSignOptions = { key: key.pem };
     if (algorithm.name.toUpperCase() === "RSA-PSS") {
       options.padding = crypto.constants.RSA_PKCS1_PSS_PADDING;
       options.saltLength = (algorithm as RsaPssParams).saltLength;
@@ -256,5 +251,4 @@ export class RsaCrypto {
 
     return new Uint8Array(crypto.privateDecrypt(options, data)).buffer;
   }
-
 }

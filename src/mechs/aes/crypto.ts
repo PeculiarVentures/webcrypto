@@ -1,12 +1,11 @@
 import { Buffer } from "buffer";
-import crypto, {  CipherGCMTypes } from "crypto";
+import crypto, { CipherGCMTypes } from "crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import { AesCryptoKey } from "./key";
 import { CryptoKey } from "../../keys";
+import { AesCryptoKey } from "./key";
 
 export class AesCrypto {
-
   public static AES_KW_IV = Buffer.from("A6A6A6A6A6A6A6A6", "hex");
 
   public static async generateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<AesCryptoKey> {
@@ -136,9 +135,12 @@ export class AesCrypto {
   }
 
   public static async encryptAesGCM(algorithm: AesGcmParams, key: AesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv(`aes-${key.algorithm.length}-gcm` as CipherGCMTypes, key.data, Buffer.from(algorithm.iv as ArrayBuffer), {
-      authTagLength: (algorithm.tagLength || 128) >> 3,
-    }); // NodeJs d.ts doesn't support CipherGCMOptions for createCipheriv
+    const cipher = crypto.createCipheriv(
+      `aes-${key.algorithm.length}-gcm` as CipherGCMTypes,
+      key.data,
+      Buffer.from(algorithm.iv as ArrayBuffer),
+      { authTagLength: (algorithm.tagLength || 128) >> 3 },
+    ); // NodeJs d.ts doesn't support CipherGCMOptions for createCipheriv
     if (algorithm.additionalData) {
       cipher.setAAD(Buffer.from(algorithm.additionalData as ArrayBuffer));
     }
@@ -150,9 +152,7 @@ export class AesCrypto {
 
   public static async decryptAesGCM(algorithm: AesGcmParams, key: AesCryptoKey, data: Buffer) {
     const tagLength = (algorithm.tagLength || 128) >> 3;
-    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-gcm` as CipherGCMTypes, key.data, new Uint8Array(algorithm.iv as ArrayBuffer), {
-      authTagLength: tagLength,
-    });
+    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-gcm` as CipherGCMTypes, key.data, new Uint8Array(algorithm.iv as ArrayBuffer), { authTagLength: tagLength });
     const enc = data.slice(0, data.length - tagLength);
     const tag = data.slice(data.length - tagLength);
     if (algorithm.additionalData) {

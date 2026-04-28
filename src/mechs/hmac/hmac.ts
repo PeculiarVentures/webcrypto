@@ -2,12 +2,11 @@ import { Buffer } from "buffer";
 import crypto from "crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
-import { HmacCryptoKey } from "./key";
 import { ShaCrypto } from "../sha";
 import { setCryptoKey, getCryptoKey } from "../storage";
+import { HmacCryptoKey } from "./key";
 
 export class HmacProvider extends core.HmacProvider {
-
   public async onGenerateKey(algorithm: HmacKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     const length = (algorithm.length || this.getDefaultLength((algorithm.hash as Algorithm).name)) >> 3 << 3;
     const key = new HmacCryptoKey();
@@ -82,5 +81,4 @@ export class HmacProvider extends core.HmacProvider {
       throw new TypeError("key: Is not HMAC CryptoKey");
     }
   }
-
 }

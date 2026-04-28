@@ -4,7 +4,6 @@ import * as core from "webcrypto-core";
 import { SubtleCrypto } from "./subtle";
 
 export class Crypto extends core.Crypto {
-
   public subtle = new SubtleCrypto();
 
   public getRandomValues<T extends ArrayBufferView | null>(array: T): T {
@@ -15,5 +14,4 @@ export class Crypto extends core.Crypto {
     crypto.randomFillSync(buffer);
     return array;
   }
-
 }

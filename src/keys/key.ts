@@ -7,17 +7,23 @@ export class CryptoKey extends core.CryptoKey {
 
   public override algorithm: KeyAlgorithm = { name: "" };
 
-  @JsonProp({ name: "ext", type: JsonPropTypes.Boolean, optional: true })
+  @JsonProp({
+    name: "ext", type: JsonPropTypes.Boolean, optional: true,
+  })
   public override extractable = false;
 
   public override type: KeyType = "secret";
 
-  @JsonProp({ name: "key_ops", type: JsonPropTypes.String, repeated: true, optional: true })
+  @JsonProp({
+    name: "key_ops", type: JsonPropTypes.String, repeated: true, optional: true,
+  })
   public override usages: KeyUsage[] = [];
 
   @JsonProp({ type: JsonPropTypes.String })
   protected kty = "oct";
 
-  @JsonProp({ type: JsonPropTypes.String, optional: true })
+  @JsonProp({
+    type: JsonPropTypes.String, optional: true,
+  })
   protected alg = "";
 }

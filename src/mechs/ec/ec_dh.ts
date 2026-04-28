@@ -1,12 +1,11 @@
 import * as core from "webcrypto-core";
+import { CryptoKey } from "../../keys";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { EcCrypto } from "./crypto";
 import { EcPrivateKey } from "./private_key";
 import { EcPublicKey } from "./public_key";
-import { CryptoKey } from "../../keys";
-import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class EcdhProvider extends core.EcdhProvider {
-
   public override namedCurves = core.EcCurves.names;
 
   public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
@@ -29,7 +28,9 @@ export class EcdhProvider extends core.EcdhProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKey> {
-    const key = await EcCrypto.importKey(format, keyData, {...algorithm, name: this.name}, extractable, keyUsages);
+    const key = await EcCrypto.importKey(format, keyData, {
+      ...algorithm, name: this.name,
+    }, extractable, keyUsages);
     return setCryptoKey(key);
   }
 
@@ -42,8 +43,9 @@ export class EcdhProvider extends core.EcdhProvider {
   }
 
   public async onDeriveBits(algorithm: EcdhKeyDeriveParams, baseKey: CryptoKey, length: number): Promise<ArrayBuffer> {
-    const bits = await EcCrypto.deriveBits({...algorithm, public: getCryptoKey(algorithm.public)}, getCryptoKey(baseKey), length);
+    const bits = await EcCrypto.deriveBits({
+      ...algorithm, public: getCryptoKey(algorithm.public),
+    }, getCryptoKey(baseKey), length);
     return bits;
   }
-
 }

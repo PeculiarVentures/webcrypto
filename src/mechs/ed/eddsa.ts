@@ -1,12 +1,11 @@
 import * as core from "webcrypto-core";
+import { CryptoKey } from "../../keys";
+import { getCryptoKey, setCryptoKey } from "../storage";
 import { EdCrypto } from "./crypto";
 import { EdPrivateKey } from "./private_key";
 import { EdPublicKey } from "./public_key";
-import { CryptoKey } from "../../keys";
-import { getCryptoKey, setCryptoKey } from "../storage";
 
 export class EdDsaProvider extends core.EdDsaProvider {
-
   public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const keys = await EdCrypto.generateKey(
       {
@@ -35,8 +34,9 @@ export class EdDsaProvider extends core.EdDsaProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: ArrayBuffer | JsonWebKey, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKey> {
-    const key = await EdCrypto.importKey(format, keyData, { ...algorithm, name: this.name }, extractable, keyUsages);
+    const key = await EdCrypto.importKey(format, keyData, {
+      ...algorithm, name: this.name,
+    }, extractable, keyUsages);
     return setCryptoKey(key);
   }
-
 }

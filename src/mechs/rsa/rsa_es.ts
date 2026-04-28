@@ -1,13 +1,12 @@
 import crypto from "crypto";
 import { Convert } from "pvtsutils";
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
 import { RsaPrivateKey } from "./private_key";
 import { RsaPublicKey } from "./public_key";
-import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class RsaEsProvider extends core.ProviderCrypto {
-
   public name = "RSAES-PKCS1-v1_5";
   public usages = {
     publicKey: ["encrypt", "wrapKey"] as core.KeyUsages,
@@ -69,7 +68,9 @@ export class RsaEsProvider extends core.ProviderCrypto {
   }
 
   public override async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const key = await RsaCrypto.importKey(format, keyData, { ...algorithm, name: this.name }, extractable, keyUsages);
+    const key = await RsaCrypto.importKey(format, keyData, {
+      ...algorithm, name: this.name,
+    }, extractable, keyUsages);
     return setCryptoKey(key);
   }
 

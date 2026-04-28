@@ -1,11 +1,10 @@
 import { Buffer } from "buffer";
 import crypto from "crypto";
 import * as core from "webcrypto-core";
-import { PbkdfCryptoKey } from "./key";
 import { setCryptoKey, getCryptoKey } from "../storage";
+import { PbkdfCryptoKey } from "./key";
 
 export class Pbkdf2Provider extends core.Pbkdf2Provider {
-
   public async onDeriveBits(algorithm: Pbkdf2Params, baseKey: PbkdfCryptoKey, length: number): Promise<ArrayBuffer> {
     return new Promise<ArrayBuffer>((resolve, reject) => {
       const salt = core.BufferSourceConverter.toArrayBuffer(algorithm.salt);
@@ -38,5 +37,4 @@ export class Pbkdf2Provider extends core.Pbkdf2Provider {
       throw new TypeError("key: Is not PBKDF CryptoKey");
     }
   }
-
 }

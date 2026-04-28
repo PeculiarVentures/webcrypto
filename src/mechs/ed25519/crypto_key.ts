@@ -1,7 +1,6 @@
 import { CryptoKey } from "../../keys";
 
 export class Ed25519CryptoKey extends CryptoKey {
-
   constructor(algorithm: Algorithm, extractable: boolean, usages: KeyUsage[], data: string) {
     super();
     this.algorithm = algorithm;

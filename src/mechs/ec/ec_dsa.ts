@@ -1,16 +1,15 @@
 import * as core from "webcrypto-core";
+import { setCryptoKey, getCryptoKey } from "../storage";
 import { EcCrypto } from "./crypto";
 import { EcPrivateKey } from "./private_key";
 import { EcPublicKey } from "./public_key";
-import { setCryptoKey, getCryptoKey } from "../storage";
 
 export class EcdsaProvider extends core.EcdsaProvider {
-
   public override namedCurves = core.EcCurves.names;
 
   public override hashAlgorithms = [
-    "SHA-1", "SHA-256", "SHA-384", "SHA-512", 
-    "shake128", "shake256", 
+    "SHA-1", "SHA-256", "SHA-384", "SHA-512",
+    "shake128", "shake256",
     "SHA3-256", "SHA3-384", "SHA3-512"];
 
   public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
@@ -41,7 +40,9 @@ export class EcdsaProvider extends core.EcdsaProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const key = await EcCrypto.importKey(format, keyData, { ...algorithm, name: this.name }, extractable, keyUsages);
+    const key = await EcCrypto.importKey(format, keyData, {
+      ...algorithm, name: this.name,
+    }, extractable, keyUsages);
     return setCryptoKey(key);
   }
 
@@ -52,5 +53,4 @@ export class EcdsaProvider extends core.EcdsaProvider {
       throw new TypeError("key: Is not EC CryptoKey");
     }
   }
-
 }

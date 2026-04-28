@@ -21,60 +21,60 @@ export class SubtleCrypto extends core.SubtleCrypto {
   constructor() {
     super();
 
-    //#region AES
+    // #region AES
     this.providers.set(new AesCbcProvider());
     this.providers.set(new AesCtrProvider());
     this.providers.set(new AesGcmProvider());
     this.providers.set(new AesCmacProvider());
     this.providers.set(new AesKwProvider());
     this.providers.set(new AesEcbProvider());
-    //#endregion
+    // #endregion
 
-    //#region DES
+    // #region DES
     const ciphers = crypto.getCiphers();
     if (ciphers.includes("des-cbc")) {
       this.providers.set(new DesCbcProvider());
     }
     this.providers.set(new DesEde3CbcProvider());
-    //#endregion
+    // #endregion
 
-    //#region RSA
+    // #region RSA
     this.providers.set(new RsaSsaProvider());
     this.providers.set(new RsaPssProvider());
     this.providers.set(new RsaOaepProvider());
     this.providers.set(new RsaEsProvider());
-    //#endregion
+    // #endregion
 
-    //#region EC
+    // #region EC
     this.providers.set(new EcdsaProvider());
     this.providers.set(new EcdhProvider());
-    //#endregion
+    // #endregion
 
-    //#region SHA
+    // #region SHA
     this.providers.set(new Sha1Provider());
     this.providers.set(new Sha256Provider());
     this.providers.set(new Sha384Provider());
     this.providers.set(new Sha512Provider());
-    //#endregion
+    // #endregion
 
-    //#region PBKDF
+    // #region PBKDF
     this.providers.set(new Pbkdf2Provider());
-    //#endregion
+    // #endregion
 
-    //#region HMAC
+    // #region HMAC
     this.providers.set(new HmacProvider());
-    //#endregion
+    // #endregion
 
-    //#region HKDF
+    // #region HKDF
     this.providers.set(new HkdfProvider());
-    //#endregion
+    // #endregion
 
     const nodeMajorVersion = /^v(\d+)/.exec(process.version)?.[1];
     if (nodeMajorVersion && parseInt(nodeMajorVersion, 10) >= 12) {
-      //#region SHAKE
+      // #region SHAKE
       this.providers.set(new Shake128Provider());
       this.providers.set(new Shake256Provider());
-      //#endregion
+      // #endregion
     }
 
     const hashes = crypto.getHashes();
@@ -89,13 +89,13 @@ export class SubtleCrypto extends core.SubtleCrypto {
     }
 
     if (nodeMajorVersion && parseInt(nodeMajorVersion, 10) >= 14) {
-      //#region EdDSA
+      // #region EdDSA
       this.providers.set(new EdDsaProvider());
-      //#endregion
+      // #endregion
 
-      //#region ECDH-ES
+      // #region ECDH-ES
       this.providers.set(new EcdhEsProvider());
-      //#endregion
+      // #endregion
 
       this.providers.set(new Ed25519Provider());
       this.providers.set(new X25519Provider());

@@ -2,14 +2,13 @@ import { Buffer } from "buffer";
 import crypto from "crypto";
 import * as core from "webcrypto-core";
 import { BufferSourceConverter, CryptoKey } from "webcrypto-core";
-import { HkdfCryptoKey } from "./key";
 import { setCryptoKey, getCryptoKey } from "../storage";
+import { HkdfCryptoKey } from "./key";
 
 export class HkdfProvider extends core.HkdfProvider {
-
   public async onImportKey(format: KeyFormat, keyData: ArrayBuffer, algorithm: HmacImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     if (format.toLowerCase() !== "raw") {
-        throw new core.OperationError("Operation not supported");
+      throw new core.OperationError("Operation not supported");
     }
 
     const key: HkdfCryptoKey = new HkdfCryptoKey();
@@ -28,16 +27,16 @@ export class HkdfProvider extends core.HkdfProvider {
     const info = BufferSourceConverter.toUint8Array(params.info);
 
     const PRK = crypto.createHmac(hash, BufferSourceConverter.toUint8Array(params.salt))
-        .update(BufferSourceConverter.toUint8Array(getCryptoKey(baseKey).data))
-        .digest();
+      .update(BufferSourceConverter.toUint8Array(getCryptoKey(baseKey).data))
+      .digest();
 
     const blocks = [Buffer.alloc(0)];
     const blockCount = Math.ceil(byteLength / hashLength) + 1; // Includes empty buffer
     for (let i = 1; i < blockCount; ++i) {
       blocks.push(
-          crypto.createHmac(hash, PRK)
-            .update(Buffer.concat([blocks[i - 1], info, Buffer.from([i])]))
-            .digest(),
+        crypto.createHmac(hash, PRK)
+          .update(Buffer.concat([blocks[i - 1], info, Buffer.from([i])]))
+          .digest(),
       );
     }
 
@@ -50,5 +49,4 @@ export class HkdfProvider extends core.HkdfProvider {
       throw new TypeError("key: Is not HKDF CryptoKey");
     }
   }
-
 }

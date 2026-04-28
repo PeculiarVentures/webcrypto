@@ -3,11 +3,10 @@ import crypto from "crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
 import { DesParams } from "webcrypto-core";
-import { DesCryptoKey } from "./key";
 import { CryptoKey } from "../../keys";
+import { DesCryptoKey } from "./key";
 
 export class DesCrypto {
-
   public static async generateKey(algorithm: AesKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<DesCryptoKey> {
     const key = new DesCryptoKey();
     key.algorithm = algorithm;
@@ -78,7 +77,7 @@ export class DesCrypto {
   }
 
   public static async encryptDesCBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv(`des-cbc`, key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const cipher = crypto.createCipheriv("des-cbc", key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
     const res = new Uint8Array(enc).buffer;
@@ -86,14 +85,14 @@ export class DesCrypto {
   }
 
   public static async decryptDesCBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const decipher = crypto.createDecipheriv(`des-cbc`, key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const decipher = crypto.createDecipheriv("des-cbc", key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
     return new Uint8Array(dec).buffer;
   }
 
   public static async encryptDesEDE3CBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv(`des-ede3-cbc`, key.data, Buffer.from(algorithm.iv as ArrayBuffer));
+    const cipher = crypto.createCipheriv("des-ede3-cbc", key.data, Buffer.from(algorithm.iv as ArrayBuffer));
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
     const res = new Uint8Array(enc).buffer;
@@ -101,10 +100,9 @@ export class DesCrypto {
   }
 
   public static async decryptDesEDE3CBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const decipher = crypto.createDecipheriv(`des-ede3-cbc`, key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const decipher = crypto.createDecipheriv("des-ede3-cbc", key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
     return new Uint8Array(dec).buffer;
   }
-
 }
