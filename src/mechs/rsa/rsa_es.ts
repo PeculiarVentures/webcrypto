@@ -1,5 +1,7 @@
 import crypto from "node:crypto";
-import { Convert } from "pvtsutils";
+import {
+  convert, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
@@ -34,7 +36,7 @@ export class RsaEsProvider extends core.ProviderCrypto {
     if (!(algorithm.publicExponent && algorithm.publicExponent instanceof Uint8Array)) {
       throw new TypeError("publicExponent: Missing or not a Uint8Array");
     }
-    const publicExponent = Convert.ToBase64(algorithm.publicExponent);
+    const publicExponent = convert.encode("base64", algorithm.publicExponent);
     if (!(publicExponent === "Aw==" || publicExponent === "AQAB")) {
       throw new TypeError("publicExponent: Must be [3] or [1,0,1]");
     }
@@ -53,14 +55,14 @@ export class RsaEsProvider extends core.ProviderCrypto {
 
   public override async onEncrypt(algorithm: Algorithm, key: RsaPublicKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const options = this.toCryptoOptions(key);
-    const enc = crypto.publicEncrypt(options, new Uint8Array(data));
-    return new Uint8Array(enc).buffer;
+    const enc = crypto.publicEncrypt(options, toUint8Array(data));
+    return toArrayBuffer(enc);
   }
 
   public override async onDecrypt(algorithm: Algorithm, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const options = this.toCryptoOptions(key);
-    const dec = crypto.privateDecrypt(options, new Uint8Array(data));
-    return new Uint8Array(dec).buffer;
+    const dec = crypto.privateDecrypt(options, toUint8Array(data));
+    return toArrayBuffer(dec);
   }
 
   public override async onExportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {

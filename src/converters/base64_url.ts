@@ -1,8 +1,8 @@
 import { Buffer } from "node:buffer";
 import { IJsonConverter } from "@peculiar/json-schema";
-import { Convert } from "pvtsutils";
+import { convert } from "@peculiar/utils";
 
 export const JsonBase64UrlConverter: IJsonConverter<Buffer, string> = {
-  fromJSON: (value: string) => Buffer.from(Convert.FromBase64Url(value)),
-  toJSON: (value: Buffer) => Convert.ToBase64Url(value),
+  fromJSON: (value: string) => Buffer.from(convert.decode("base64url", value)),
+  toJSON: (value: Buffer) => convert.encode("base64url", value),
 };

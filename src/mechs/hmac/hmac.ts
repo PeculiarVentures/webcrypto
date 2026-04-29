@@ -1,6 +1,9 @@
 import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
+import {
+  assertBufferSource, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { ShaCrypto } from "../sha";
 import { setCryptoKey, getCryptoKey } from "../storage";
@@ -25,17 +28,17 @@ export class HmacProvider extends core.HmacProvider {
   public override async onSign(algorithm: Algorithm, key: HmacCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const cryptoAlg = ShaCrypto.getAlgorithmName(key.algorithm.hash);
     const hmac = crypto.createHmac(cryptoAlg, getCryptoKey(key).data)
-      .update(Buffer.from(data)).digest();
+      .update(Buffer.from(toUint8Array(data))).digest();
 
-    return new Uint8Array(hmac).buffer;
+    return toArrayBuffer(hmac);
   }
 
   public override async onVerify(algorithm: Algorithm, key: HmacCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
     const cryptoAlg = ShaCrypto.getAlgorithmName(key.algorithm.hash);
     const hmac = crypto.createHmac(cryptoAlg, getCryptoKey(key).data)
-      .update(Buffer.from(data)).digest();
+      .update(Buffer.from(toUint8Array(data))).digest();
 
-    return hmac.compare(Buffer.from(signature)) === 0;
+    return hmac.compare(Buffer.from(toUint8Array(signature))) === 0;
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: HmacImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
@@ -46,8 +49,9 @@ export class HmacProvider extends core.HmacProvider {
         key = JsonParser.fromJSON(keyData, { targetSchema: HmacCryptoKey });
         break;
       case "raw":
+        assertBufferSource(keyData);
         key = new HmacCryptoKey();
-        key.data = Buffer.from(keyData as ArrayBuffer);
+        key.data = Buffer.from(toUint8Array(keyData));
         break;
       default:
         throw new core.OperationError("format: Must be 'jwk' or 'raw'");
@@ -69,7 +73,7 @@ export class HmacProvider extends core.HmacProvider {
       case "jwk":
         return JsonSerializer.toJSON(getCryptoKey(key));
       case "raw":
-        return new Uint8Array(getCryptoKey(key).data).buffer;
+        return toArrayBuffer(getCryptoKey(key).data);
       default:
         throw new core.OperationError("format: Must be 'jwk' or 'raw'");
     }

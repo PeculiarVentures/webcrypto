@@ -1,6 +1,9 @@
 import { Buffer } from "node:buffer";
 import crypto, { CipherGCMTypes } from "node:crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
+import {
+  assertBufferSource, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { AesCryptoKey } from "./key";
@@ -27,7 +30,7 @@ export class AesCrypto {
       case "jwk":
         return JsonSerializer.toJSON(key);
       case "raw":
-        return new Uint8Array(key.data).buffer;
+        return toArrayBuffer(key.data);
       default:
         throw new core.OperationError("format: Must be 'jwk' or 'raw'");
     }
@@ -41,8 +44,9 @@ export class AesCrypto {
         key = JsonParser.fromJSON(keyData, { targetSchema: AesCryptoKey });
         break;
       case "raw":
+        assertBufferSource(keyData);
         key = new AesCryptoKey();
-        key.data = Buffer.from(keyData as ArrayBuffer);
+        key.data = Buffer.from(toUint8Array(keyData));
         break;
       default:
         throw new core.OperationError("format: Must be 'jwk' or 'raw'");
@@ -105,84 +109,84 @@ export class AesCrypto {
   }
 
   public static async encryptAesCBC(algorithm: AesCbcParams, key: AesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv(`aes-${key.algorithm.length}-cbc`, key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const cipher = crypto.createCipheriv(`aes-${key.algorithm.length}-cbc`, key.data, toUint8Array(algorithm.iv));
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
-    const res = new Uint8Array(enc).buffer;
+    const res = toArrayBuffer(enc);
     return res;
   }
 
   public static async decryptAesCBC(algorithm: AesCbcParams, key: AesCryptoKey, data: Buffer) {
-    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-cbc`, key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-cbc`, key.data, toUint8Array(algorithm.iv));
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
-    return new Uint8Array(dec).buffer;
+    return toArrayBuffer(dec);
   }
 
   public static async encryptAesCTR(algorithm: AesCtrParams, key: AesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv(`aes-${key.algorithm.length}-ctr`, key.data, Buffer.from(algorithm.counter as ArrayBuffer));
+    const cipher = crypto.createCipheriv(`aes-${key.algorithm.length}-ctr`, key.data, Buffer.from(toUint8Array(algorithm.counter)));
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
-    const res = new Uint8Array(enc).buffer;
+    const res = toArrayBuffer(enc);
     return res;
   }
 
   public static async decryptAesCTR(algorithm: AesCtrParams, key: AesCryptoKey, data: Buffer) {
-    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-ctr`, key.data, new Uint8Array(algorithm.counter as ArrayBuffer));
+    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-ctr`, key.data, toUint8Array(algorithm.counter));
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
-    return new Uint8Array(dec).buffer;
+    return toArrayBuffer(dec);
   }
 
   public static async encryptAesGCM(algorithm: AesGcmParams, key: AesCryptoKey, data: Buffer) {
     const cipher = crypto.createCipheriv(
       `aes-${key.algorithm.length}-gcm` as CipherGCMTypes,
       key.data,
-      Buffer.from(algorithm.iv as ArrayBuffer),
+      Buffer.from(toUint8Array(algorithm.iv)),
       { authTagLength: (algorithm.tagLength || 128) >> 3 },
     ); // NodeJs d.ts doesn't support CipherGCMOptions for createCipheriv
     if (algorithm.additionalData) {
-      cipher.setAAD(Buffer.from(algorithm.additionalData as ArrayBuffer));
+      cipher.setAAD(Buffer.from(toUint8Array(algorithm.additionalData)));
     }
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final(), cipher.getAuthTag()]);
-    const res = new Uint8Array(enc).buffer;
+    const res = toArrayBuffer(enc);
     return res;
   }
 
   public static async decryptAesGCM(algorithm: AesGcmParams, key: AesCryptoKey, data: Buffer) {
     const tagLength = (algorithm.tagLength || 128) >> 3;
-    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-gcm` as CipherGCMTypes, key.data, new Uint8Array(algorithm.iv as ArrayBuffer), { authTagLength: tagLength });
+    const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-gcm` as CipherGCMTypes, key.data, toUint8Array(algorithm.iv), { authTagLength: tagLength });
     const enc = data.slice(0, data.length - tagLength);
     const tag = data.slice(data.length - tagLength);
     if (algorithm.additionalData) {
-      decipher.setAAD(Buffer.from(algorithm.additionalData as ArrayBuffer));
+      decipher.setAAD(Buffer.from(toUint8Array(algorithm.additionalData)));
     }
     decipher.setAuthTag(tag);
     let dec = decipher.update(enc);
     dec = Buffer.concat([dec, decipher.final()]);
-    return new Uint8Array(dec).buffer;
+    return toArrayBuffer(dec);
   }
 
   public static async encryptAesKW(algorithm: Algorithm, key: AesCryptoKey, data: Buffer) {
     const cipher = crypto.createCipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, this.AES_KW_IV);
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
-    return new Uint8Array(enc).buffer;
+    return toArrayBuffer(enc);
   }
 
   public static async decryptAesKW(algorithm: Algorithm, key: AesCryptoKey, data: Buffer) {
     const decipher = crypto.createDecipheriv(`id-aes${key.algorithm.length}-wrap`, key.data, this.AES_KW_IV);
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
-    return new Uint8Array(dec).buffer;
+    return toArrayBuffer(dec);
   }
 
   public static async encryptAesECB(algorithm: Algorithm, key: AesCryptoKey, data: Buffer) {
     const cipher = crypto.createCipheriv(`aes-${key.algorithm.length}-ecb`, key.data, new Uint8Array(0));
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
-    const res = new Uint8Array(enc).buffer;
+    const res = toArrayBuffer(enc);
     return res;
   }
 
@@ -190,6 +194,6 @@ export class AesCrypto {
     const decipher = crypto.createDecipheriv(`aes-${key.algorithm.length}-ecb`, key.data, new Uint8Array(0));
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
-    return new Uint8Array(dec).buffer;
+    return toArrayBuffer(dec);
   }
 }

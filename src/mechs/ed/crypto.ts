@@ -2,7 +2,9 @@ import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { AsnParser } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import { Convert } from "pvtsutils";
+import {
+  assertBufferSource, convert, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { EdPrivateKey } from "./private_key";
@@ -53,7 +55,7 @@ export class EdCrypto {
     const options = { key: key.pem };
     const signature = crypto.sign(null, Buffer.from(data), options);
 
-    return core.BufferSourceConverter.toArrayBuffer(signature);
+    return toArrayBuffer(signature);
   }
 
   public static async verify(algorithm: EcdsaParams, key: EdPublicKey, signature: Uint8Array, data: Uint8Array): Promise<boolean> {
@@ -81,7 +83,7 @@ export class EdCrypto {
       privateKey,
     });
 
-    return new Uint8Array(bits).buffer.slice(0, length >> 3);
+    return toArrayBuffer(bits).slice(0, length >> 3);
   }
 
   public static async exportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {
@@ -90,7 +92,7 @@ export class EdCrypto {
         return JsonSerializer.toJSON(key);
       case "pkcs8":
       case "spki":
-        return new Uint8Array(key.data).buffer;
+        return toArrayBuffer(key.data);
       case "raw": {
         const publicKeyInfo = AsnParser.parse(key.data, core.asn1.PublicKeyInfo);
         return publicKeyInfo.publicKey;
@@ -111,18 +113,21 @@ export class EdCrypto {
           if (!jwk.x) {
             throw new TypeError("keyData: Cannot get required 'x' filed");
           }
-          return this.importPublicKey(Convert.FromBase64Url(jwk.x), algorithm, extractable, keyUsages);
+          return this.importPublicKey(toArrayBuffer(convert.decode("base64url", jwk.x)), algorithm, extractable, keyUsages);
         }
       }
       case "raw": {
-        return this.importPublicKey(keyData as ArrayBuffer, algorithm, extractable, keyUsages);
+        assertBufferSource(keyData);
+        return this.importPublicKey(toArrayBuffer(keyData), algorithm, extractable, keyUsages);
       }
       case "spki": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
+        assertBufferSource(keyData);
+        const keyInfo = AsnParser.parse(toUint8Array(keyData), core.asn1.PublicKeyInfo);
         return this.importPublicKey(keyInfo.publicKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        assertBufferSource(keyData);
+        const keyInfo = AsnParser.parse(toUint8Array(keyData), core.asn1.PrivateKeyInfo);
         const asnKey = AsnParser.parse(keyInfo.privateKey, core.asn1.CurvePrivateKey);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
@@ -135,7 +140,7 @@ export class EdCrypto {
     const key = new EdPrivateKey();
     key.fromJSON({
       crv: algorithm.namedCurve,
-      d: Convert.ToBase64Url(asnKey.d),
+      d: convert.encode("base64url", asnKey.d),
     });
 
     key.algorithm = Object.assign({}, algorithm) as EcKeyAlgorithm;
@@ -149,7 +154,7 @@ export class EdCrypto {
     const key = new EdPublicKey();
     key.fromJSON({
       crv: algorithm.namedCurve,
-      x: Convert.ToBase64Url(asnKey),
+      x: convert.encode("base64url", asnKey),
     });
 
     key.algorithm = Object.assign({}, algorithm) as EcKeyAlgorithm;

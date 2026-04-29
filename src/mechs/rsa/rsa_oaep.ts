@@ -1,5 +1,6 @@
 import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
+import { toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { ShaCrypto } from "../sha/crypto";
 import { setCryptoKey, getCryptoKey } from "../storage";
@@ -32,7 +33,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
 
   public async onEncrypt(algorithm: RsaOaepParams, key: RsaPublicKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const internalKey = getCryptoKey(key) as RsaPublicKey;
-    const dataView = new Uint8Array(data);
+    const dataView = toUint8Array(data);
     const keySize = Math.ceil(internalKey.algorithm.modulusLength >> 3);
     const hashSize = ShaCrypto.size(internalKey.algorithm.hash) >> 3;
     const dataLength = dataView.byteLength;
@@ -49,7 +50,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
     dataBlock.set(dataView, hashSize + psLength + 1);
 
     const labelHash = crypto.createHash(internalKey.algorithm.hash.name.replace("-", ""))
-      .update(core.BufferSourceConverter.toUint8Array(algorithm.label || new Uint8Array(0)))
+      .update(toUint8Array(algorithm.label || new Uint8Array(0)))
       .digest();
     dataBlock.set(labelHash, 0);
     dataBlock[hashSize + psLength] = 1;
@@ -75,7 +76,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
       padding: crypto.constants.RSA_NO_PADDING,
     }, Buffer.from(message));
 
-    return new Uint8Array(pkcs0).buffer;
+    return toArrayBuffer(pkcs0);
   }
 
   public async onDecrypt(algorithm: RsaOaepParams, key: RsaPrivateKey, data: ArrayBuffer): Promise<ArrayBuffer> {
@@ -95,7 +96,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
     let pkcs0 = crypto.privateDecrypt({
       key: internalKey.pem,
       padding: crypto.constants.RSA_NO_PADDING,
-    }, Buffer.from(data));
+    }, Buffer.from(toUint8Array(data)));
     const z = pkcs0[0];
     const seed = pkcs0.subarray(1, hashSize + 1);
     const dataBlock = pkcs0.subarray(hashSize + 1);
@@ -115,7 +116,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
     }
 
     const labelHash = crypto.createHash(internalKey.algorithm.hash.name.replace("-", ""))
-      .update(core.BufferSourceConverter.toUint8Array(algorithm.label || new Uint8Array(0)))
+      .update(toUint8Array(algorithm.label || new Uint8Array(0)))
       .digest();
     for (let i = 0; i < hashSize; i++) {
       if (labelHash[i] !== dataBlock[i]) {
@@ -139,7 +140,7 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
 
     pkcs0 = dataBlock.subarray(psEnd + 1);
 
-    return new Uint8Array(pkcs0).buffer;
+    return toArrayBuffer(pkcs0);
   }
 
   public async onExportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {
@@ -180,10 +181,10 @@ export class RsaOaepProvider extends core.RsaOaepProvider {
 
       const submask = mask.subarray(i * hashSize);
 
-      let chunk = crypto.createHash(algorithm.name.replace("-", ""))
+      let chunk = toUint8Array(crypto.createHash(algorithm.name.replace("-", ""))
         .update(seed)
         .update(counter)
-        .digest() as Uint8Array;
+        .digest());
       if (chunk.length > submask.length) {
         chunk = chunk.subarray(0, submask.length);
       }

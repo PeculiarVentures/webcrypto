@@ -1,6 +1,8 @@
 import crypto from "node:crypto";
 import { AsnConvert } from "@peculiar/asn1-schema";
-import { Convert } from "pvtsutils";
+import {
+  assertBufferSource, convert, toArrayBuffer,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { Ed25519CryptoKey } from "./crypto_key";
@@ -55,7 +57,7 @@ export class Ed25519Crypto {
       }
       case "raw": {
         const jwk = key.toJWK();
-        return Convert.FromBase64Url(jwk.x!);
+        return toArrayBuffer(convert.decode("base64url", jwk.x!));
       }
       default:
         return Promise.reject(new core.OperationError("format: Must be 'jwk', 'raw', pkcs8' or 'spki'"));
@@ -69,7 +71,7 @@ export class Ed25519Crypto {
         if (jwk.d) {
           // private key
           const privateData = new core.asn1.EdPrivateKey();
-          privateData.value = core.BufferSourceConverter.toArrayBuffer(Buffer.from(jwk.d, "base64url"));
+          privateData.value = toArrayBuffer(convert.decode("base64url", jwk.d));
           const pkcs8 = new core.asn1.PrivateKeyInfo();
           pkcs8.privateKeyAlgorithm.algorithm = algorithm.name.toLowerCase() === "ed25519"
             ? core.asn1.idEd25519
@@ -93,21 +95,24 @@ export class Ed25519Crypto {
         }
       }
       case "pkcs8": {
-        const pem = core.PemConverter.fromBufferSource(keyData as ArrayBuffer, "PRIVATE KEY");
+        assertBufferSource(keyData);
+        const pem = core.PemConverter.fromBufferSource(toArrayBuffer(keyData), "PRIVATE KEY");
         return new Ed25519PrivateKey(algorithm, extractable, keyUsages, pem);
       }
       case "spki": {
-        const pem = core.PemConverter.fromBufferSource(keyData as ArrayBuffer, "PUBLIC KEY");
+        assertBufferSource(keyData);
+        const pem = core.PemConverter.fromBufferSource(toArrayBuffer(keyData), "PUBLIC KEY");
         return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
       }
       case "raw": {
-        const raw = keyData as ArrayBuffer;
+        assertBufferSource(keyData);
+        const raw = toArrayBuffer(keyData);
         const key = crypto.createPublicKey({
           format: "jwk",
           key: {
             kty: "OKP",
             crv: algorithm.name.toLowerCase() === "ed25519" ? "Ed25519" : "X25519",
-            x: Convert.ToBase64Url(raw),
+            x: convert.encode("base64url", raw),
           },
         });
         const pem = key.export({

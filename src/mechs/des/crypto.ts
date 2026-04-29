@@ -1,6 +1,9 @@
 import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
+import {
+  assertBufferSource, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { DesParams } from "webcrypto-core";
 import { CryptoKey } from "../../keys";
@@ -22,7 +25,7 @@ export class DesCrypto {
       case "jwk":
         return JsonSerializer.toJSON(key);
       case "raw":
-        return new Uint8Array(key.data).buffer;
+        return toArrayBuffer(key.data);
       default:
         throw new core.OperationError("format: Must be 'jwk' or 'raw'");
     }
@@ -36,8 +39,9 @@ export class DesCrypto {
         key = JsonParser.fromJSON(keyData, { targetSchema: DesCryptoKey });
         break;
       case "raw":
+        assertBufferSource(keyData);
         key = new DesCryptoKey();
-        key.data = Buffer.from(keyData as ArrayBuffer);
+        key.data = Buffer.from(toUint8Array(keyData));
         break;
       default:
         throw new core.OperationError("format: Must be 'jwk' or 'raw'");
@@ -77,32 +81,32 @@ export class DesCrypto {
   }
 
   public static async encryptDesCBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv("des-cbc", key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const cipher = crypto.createCipheriv("des-cbc", key.data, toUint8Array(algorithm.iv));
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
-    const res = new Uint8Array(enc).buffer;
+    const res = toArrayBuffer(enc);
     return res;
   }
 
   public static async decryptDesCBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const decipher = crypto.createDecipheriv("des-cbc", key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const decipher = crypto.createDecipheriv("des-cbc", key.data, toUint8Array(algorithm.iv));
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
-    return new Uint8Array(dec).buffer;
+    return toArrayBuffer(dec);
   }
 
   public static async encryptDesEDE3CBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv("des-ede3-cbc", key.data, Buffer.from(algorithm.iv as ArrayBuffer));
+    const cipher = crypto.createCipheriv("des-ede3-cbc", key.data, Buffer.from(toUint8Array(algorithm.iv)));
     let enc = cipher.update(data);
     enc = Buffer.concat([enc, cipher.final()]);
-    const res = new Uint8Array(enc).buffer;
+    const res = toArrayBuffer(enc);
     return res;
   }
 
   public static async decryptDesEDE3CBC(algorithm: DesParams, key: DesCryptoKey, data: Buffer) {
-    const decipher = crypto.createDecipheriv("des-ede3-cbc", key.data, new Uint8Array(algorithm.iv as ArrayBuffer));
+    const decipher = crypto.createDecipheriv("des-ede3-cbc", key.data, toUint8Array(algorithm.iv));
     let dec = decipher.update(data);
     dec = Buffer.concat([dec, decipher.final()]);
-    return new Uint8Array(dec).buffer;
+    return toArrayBuffer(dec);
   }
 }
