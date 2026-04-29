@@ -4,9 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "patch | minor | major | 1.2.3"
+        description: "Release type"
         required: true
         default: "patch"
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 permissions:
   contents: write
@@ -39,12 +44,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Validate package contents
+        run: npm pack --dry-run
+
       - name: Configure git
         run: |
-          git config user.name "release-bot"
-          git config user.email "release-bot@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Bump version and create release tag
+      - name: Bump version and create local tag
         id: version
         run: |
           npm version "${{ inputs.version }}" -m "chore(release): v%s"
@@ -56,17 +64,20 @@ jobs:
           echo "release_tag=v$VERSION" >> "$GITHUB_OUTPUT"
           echo "major_tag=v$MAJOR" >> "$GITHUB_OUTPUT"
 
-      - name: Push release commit and immutable tag
+      - name: Publish to npm via Trusted Publisher
+        run: npm publish --access public
+
+      - name: Push commit and tag
         run: |
           git push origin HEAD:${{ github.event.repository.default_branch }}
           git push origin "${{ steps.version.outputs.release_tag }}"
 
-      - name: Update movable major tag
+      - name: Update major tag
         run: |
           git tag -f "${{ steps.version.outputs.major_tag }}" "${{ steps.version.outputs.release_tag }}"
           git push origin "${{ steps.version.outputs.major_tag }}" --force
 
-      - name: Create GitHub Release with generated changelog
+      - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -74,6 +85,3 @@ jobs:
             --verify-tag \
             --title "${{ steps.version.outputs.release_tag }}" \
             --generate-notes
-
-      - name: Publish to npm via Trusted Publisher
-        run: npm publish --access public
