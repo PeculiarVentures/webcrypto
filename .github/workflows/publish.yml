@@ -18,20 +18,26 @@ jobs:
     environment: npm
 
     steps:
-      - uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.RELEASE_BOT_TOKEN }}
 
-      - uses: actions/setup-node@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
           cache: npm
 
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
 
       - name: Configure git
         run: |
@@ -62,7 +68,7 @@ jobs:
 
       - name: Create GitHub Release with generated changelog
         env:
-          GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "${{ steps.version.outputs.release_tag }}" \
             --verify-tag \
@@ -70,4 +76,4 @@ jobs:
             --generate-notes
 
       - name: Publish to npm via Trusted Publisher
-        run: npm publish --provenance --access public
+        run: npm publish --access public
