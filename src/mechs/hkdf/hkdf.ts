@@ -1,5 +1,5 @@
-import { Buffer } from "buffer";
-import crypto from "crypto";
+import { Buffer } from "node:buffer";
+import crypto from "node:crypto";
 import * as core from "webcrypto-core";
 import { BufferSourceConverter, CryptoKey } from "webcrypto-core";
 import { setCryptoKey, getCryptoKey } from "../storage";
@@ -40,7 +40,7 @@ export class HkdfProvider extends core.HkdfProvider {
       );
     }
 
-    return Buffer.concat(blocks).slice(0, byteLength);
+    return BufferSourceConverter.toArrayBuffer(Buffer.concat(blocks).slice(0, byteLength));
   }
 
   public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {

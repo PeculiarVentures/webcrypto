@@ -1,5 +1,5 @@
-import { Buffer } from "buffer";
-import crypto from "crypto";
+import { Buffer } from "node:buffer";
+import crypto from "node:crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import { BufferSourceConverter } from "pvtsutils";
@@ -63,7 +63,7 @@ export class EcCrypto {
 
     const signatureRaw = core.EcUtils.encodeSignature(ecSignature, core.EcCurves.get(key.algorithm.namedCurve).size);
 
-    return signatureRaw.buffer;
+    return BufferSourceConverter.toArrayBuffer(signatureRaw);
   }
 
   public static async verify(algorithm: EcdsaParams, key: EcPublicKey, signature: Uint8Array, data: Uint8Array): Promise<boolean> {
@@ -99,7 +99,7 @@ export class EcCrypto {
     const bits = ecdh.computeSecret(Buffer.from(asnPublicKey.publicKey));
 
     if (length === null) {
-      return bits;
+      return BufferSourceConverter.toArrayBuffer(bits);
     }
 
     return new Uint8Array(bits).buffer.slice(0, length >> 3);

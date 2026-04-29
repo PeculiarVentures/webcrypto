@@ -1,4 +1,4 @@
-import { Buffer } from "buffer";
+import { Buffer } from "node:buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { IJsonConvertible } from "@peculiar/json-schema";
 import { Convert } from "pvtsutils";
@@ -8,7 +8,7 @@ import { getOidByNamedCurve } from "./helper";
 
 export class EdPublicKey extends AsymmetricKey implements IJsonConvertible {
   public readonly type = "public" as const;
-  public override algorithm!: EcKeyAlgorithm;
+  public declare algorithm: EcKeyAlgorithm;
 
   public getKey() {
     const keyInfo = AsnParser.parse(this.data, core.asn1.PublicKeyInfo);

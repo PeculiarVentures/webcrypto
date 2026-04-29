@@ -1,49 +1,73 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "patch | minor | major | 1.2.3"
+        required: true
+        default: "patch"
 
 permissions:
-  id-token: write
   contents: write
-  packages: write
+  id-token: write
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    environment: npm
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v6
+      - uses: actions/checkout@v6
         with:
-          node-version: "24"
-          cache: "npm"
-          registry-url: "https://registry.npmjs.org"
+          fetch-depth: 0
+          token: ${{ secrets.RELEASE_BOT_TOKEN }}
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run tests
-        run: npm run test
-
-      - name: Build
-        run: npm run build
-
-      - name: Publish to NPM
-        run: npm publish --provenance --access public
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+      - uses: actions/setup-node@v6
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          generate_release_notes: true
-          draft: false
-          prerelease: false
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+
+      - name: Configure git
+        run: |
+          git config user.name "release-bot"
+          git config user.email "release-bot@users.noreply.github.com"
+
+      - name: Bump version and create release tag
+        id: version
+        run: |
+          npm version "${{ inputs.version }}" -m "chore(release): v%s"
+
+          VERSION=$(node -p "require('./package.json').version")
+          MAJOR=$(node -p "require('./package.json').version.split('.')[0]")
+
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "release_tag=v$VERSION" >> "$GITHUB_OUTPUT"
+          echo "major_tag=v$MAJOR" >> "$GITHUB_OUTPUT"
+
+      - name: Push release commit and immutable tag
+        run: |
+          git push origin HEAD:${{ github.event.repository.default_branch }}
+          git push origin "${{ steps.version.outputs.release_tag }}"
+
+      - name: Update movable major tag
+        run: |
+          git tag -f "${{ steps.version.outputs.major_tag }}" "${{ steps.version.outputs.release_tag }}"
+          git push origin "${{ steps.version.outputs.major_tag }}" --force
+
+      - name: Create GitHub Release with generated changelog
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+        run: |
+          gh release create "${{ steps.version.outputs.release_tag }}" \
+            --verify-tag \
+            --title "${{ steps.version.outputs.release_tag }}" \
+            --generate-notes
+
+      - name: Publish to npm via Trusted Publisher
+        run: npm publish --provenance --access public

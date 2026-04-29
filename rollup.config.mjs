@@ -1,15 +1,24 @@
-import typescript from "rollup-plugin-typescript2";
+import typescript from "@rollup/plugin-typescript";
 import pkg from "./package.json" with { type: "json" };
 
+const startYear = 2019;
+const currentYear = new Date().getFullYear();
+
+const year
+  = startYear === currentYear
+    ? `${startYear}`
+    : `${startYear}-${currentYear}`;
+
 const banner = [
-  "/*!",
-  " Copyright (c) Peculiar Ventures, LLC",
-  "*/",
+  "/**",
+  ` * Copyright (c) ${year}, Peculiar Ventures`,
+  " * SPDX-License-Identifier: MIT",
+  " */",
   "",
 ].join("\n");
 const input = "src/index.ts";
 const external = [
-  ...["crypto", "process", "buffer"],
+  ...["node:crypto", "node:process", "node:buffer"],
   ...Object.keys(pkg.dependencies || {}),
 ];
 
@@ -18,14 +27,8 @@ export default [
     input,
     plugins: [
       typescript({
-        check: true,
-        clean: true,
-        tsconfigOverride: {
-          compilerOptions: {
-            module: "ES2015",
-            removeComments: true,
-          },
-        },
+        tsconfig: "./tsconfig.json",
+        compilerOptions: { module: "ES2015" },
       }),
     ],
     external: [...external],

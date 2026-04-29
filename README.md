@@ -27,7 +27,7 @@ We wanted to be able to write Javascript that used crypto on both the client and
 
 **At this time this solution should be considered suitable for research and experimentation, further code and security review is needed before utilization in a production application.**
 
-**Module is based on NodeJS v10 Crypto API. It would work only with Node v10 and higher.**
+**Module is based on the Node.js crypto API. It requires Node v14.18.0 or higher.**
 
 ## Installing
 
@@ -65,7 +65,7 @@ npm install @peculiar/webcrypto
 | shake128<sup>2</sup>|             |    X    |               |             |                 |                   |         |
 | shake256<sup>2</sup>|             |    X    |               |             |                 |                   |         |
 
-<sup>1</sup> Mechanism supports extended list of named curves `P-256`, `P-384`, `P-521`, `K-256`, 
+<sup>1</sup> Mechanism supports extended list of named curves `P-256`, `P-384`, `P-521`, `K-256`,
 `brainpoolP160r1`, `brainpoolP160t1`, `brainpoolP192r1`, `brainpoolP192t1`, `brainpoolP224r1`, `brainpoolP224t1`, `brainpoolP256r1`, `brainpoolP256t1`, `brainpoolP320r1`, `brainpoolP320t1`, `brainpoolP384r1`, `brainpoolP384t1`, `brainpoolP512r1`, and `brainpoolP512t1`
 
 <sup>2</sup> Mechanism is not defined by the WebCrypto specifications. Use of mechanism in a safe way is hard, it was added for the purpose of enabling interoperability with an existing system. We recommend against its use unless needed for interoperability.
@@ -87,10 +87,11 @@ const crypto = new Crypto();
 See [WebCrypto Docs](https://github.com/PeculiarVentures/webcrypto-docs/blob/master/README.md) for examples
 
 ## Bug Reporting
+
 Please report bugs either as pull requests or as issues in the issue tracker. `@peculiar/webcrypto` has a full disclosure vulnerability policy. Please do NOT attempt to report any security vulnerability in this code privately to anybody.
 
-
 ## Related
- - [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl)
- - [node-webcrypto-p11](https://github.com/PeculiarVentures/node-webcrypto-p11)
- - [webcrypto-liner](https://github.com/PeculiarVentures/webcrypto-liner)
+
+* [node-webcrypto-ossl](https://github.com/PeculiarVentures/node-webcrypto-ossl)
+* [node-webcrypto-p11](https://github.com/PeculiarVentures/node-webcrypto-p11)
+* [webcrypto-liner](https://github.com/PeculiarVentures/webcrypto-liner)

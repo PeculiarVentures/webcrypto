@@ -1,5 +1,5 @@
-import crypto from "crypto";
-import * as process from "process";
+import crypto from "node:crypto";
+import * as process from "node:process";
 import * as core from "webcrypto-core";
 import {
   AesCbcProvider, AesCmacProvider, AesCtrProvider, AesEcbProvider, AesGcmProvider, AesKwProvider,

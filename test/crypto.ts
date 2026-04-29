@@ -1,5 +1,5 @@
-import { Buffer } from "buffer";
 import assert from "node:assert";
+import { Buffer } from "node:buffer";
 import nodeCrypto from "node:crypto";
 import process from "node:process";
 import { WebcryptoTest } from "@peculiar/webcrypto-test";
@@ -17,8 +17,8 @@ WebcryptoTest.check(crypto as any, {
   DESCBC: !ciphers.includes("des-cbc"),
   RSAESPKCS1: nodeMajorVersion >= 18,
 });
-context("Crypto", () => {
-  context("getRandomValues", () => {
+describe("Crypto", () => {
+  describe("getRandomValues", () => {
     it("Uint8Array", () => {
       const array = new Uint8Array(5);
       const array2 = crypto.getRandomValues(array);
@@ -76,8 +76,8 @@ context("Crypto", () => {
     assert.strictEqual((hmac.algorithm as globalThis.HmacKeyAlgorithm).length, 512);
   });
 
-  (nodeMajorVersion < 14 ? context.skip : context)("EdDSA", () => {
-    context("generateKey", () => {
+  (nodeMajorVersion < 14 ? describe.skip : describe)("EdDSA", () => {
+    describe("generateKey", () => {
       it("Ed25519", async () => {
         const keys = await crypto.subtle.generateKey({
           name: "eddsa", namedCurve: "ed25519",
@@ -110,8 +110,8 @@ context("Crypto", () => {
     });
   });
 
-  (nodeMajorVersion < 14 ? context.skip : context)("ECDH-ES", () => {
-    context("generateKey", () => {
+  (nodeMajorVersion < 14 ? describe.skip : describe)("ECDH-ES", () => {
+    describe("generateKey", () => {
       it("X25519", async () => {
         const keys = await crypto.subtle.generateKey({
           name: "ecdh-es", namedCurve: "x25519",
@@ -140,7 +140,7 @@ context("Crypto", () => {
     });
   });
 
-  context("Extra ECC named curves", () => {
+  describe("Extra ECC named curves", () => {
     const namedCurves = [
       "brainpoolP160r1",
       "brainpoolP160t1",
@@ -158,7 +158,7 @@ context("Crypto", () => {
       "brainpoolP512t1",
     ];
 
-    context("sign/verify + pkcs8/spki", () => {
+    describe("sign/verify + pkcs8/spki", () => {
       const data = new Uint8Array(10);
 
       namedCurves.forEach((namedCurve) => {
@@ -193,7 +193,7 @@ context("Crypto", () => {
       });
     });
 
-    context("deriveBits + jwk", () => {
+    describe("deriveBits + jwk", () => {
       namedCurves.forEach((namedCurve) => {
         it(namedCurve, async () => {
           const alg: EcKeyGenParams = {
@@ -239,10 +239,10 @@ context("Crypto", () => {
     assert.strictEqual(hmacKey.algorithm.name, "HMAC");
   });
 
-  context("shake digest", () => {
+  describe("shake digest", () => {
     const data = Buffer.from("test data");
 
-    context("shake128", () => {
+    describe("shake128", () => {
       it("default", async () => {
         const hash = await crypto.subtle.digest("shake128", data);
 
@@ -262,7 +262,7 @@ context("Crypto", () => {
       });
     });
 
-    context("shake128", () => {
+    describe("shake128", () => {
       it("default", async () => {
         const hash = await crypto.subtle.digest("shake256", data);
 
@@ -283,7 +283,7 @@ context("Crypto", () => {
     });
   });
 
-  context("SHA3", () => {
+  describe("SHA3", () => {
     const data = new Uint8Array(10);
     it("SHA3-256", async () => {
       const digest = await crypto.subtle.digest("SHA3-256", data);
@@ -299,7 +299,7 @@ context("Crypto", () => {
     });
   });
 
-  context("ECDH deriveBits with null", () => {
+  describe("ECDH deriveBits with null", () => {
     it("P-256", async () => {
       const keyPair = await crypto.subtle.generateKey({
         name: "ECDH", namedCurve: "P-256",
@@ -341,10 +341,10 @@ context("Crypto", () => {
     const keys = await crypto.subtle.generateKey(alg, false, ["sign", "verify"]);
 
     assert.strictEqual((keys.privateKey.algorithm as RsaHashedKeyAlgorithm).modulusLength, 3072);
-  }).timeout(5000);
+  }, 5000);
 
-  context("Ed25519", () => {
-    context("generateKey", () => {
+  describe("Ed25519", () => {
+    describe("generateKey", () => {
       it("should generate key pair", async () => {
         const alg = { name: "ed25519" };
         const keys = await crypto.subtle.generateKey(alg, false, ["sign", "verify"]);
@@ -360,7 +360,7 @@ context("Crypto", () => {
         assert.deepStrictEqual(keys.publicKey.usages, ["verify"]);
       });
     });
-    context("sign/verify", () => {
+    describe("sign/verify", () => {
       it("should sign and verify data", async () => {
         const alg = { name: "ed25519" };
         const keys = await crypto.subtle.generateKey(alg, false, ["sign", "verify"]);
@@ -373,13 +373,13 @@ context("Crypto", () => {
         assert.ok(ok);
       });
     });
-    context("import/export", () => {
+    describe("import/export", () => {
       let keys: CryptoKeyPair;
-      before(async () => {
+      beforeAll(async () => {
         const alg = { name: "ed25519" };
         keys = await crypto.subtle.generateKey(alg, true, ["sign", "verify"]) as CryptoKeyPair;
       });
-      context("private key", () => {
+      describe("private key", () => {
         it("JWK", async () => {
           const jwk = await crypto.subtle.exportKey("jwk", keys.privateKey);
           // {
@@ -417,7 +417,7 @@ context("Crypto", () => {
           assert.strictEqual(key.algorithm.name, "Ed25519");
         });
       });
-      context("public key", () => {
+      describe("public key", () => {
         it("JWK", async () => {
           const jwk = await crypto.subtle.exportKey("jwk", keys.publicKey);
           assert.strictEqual(jwk.kty, "OKP");
@@ -454,7 +454,7 @@ context("Crypto", () => {
         });
       });
     });
-    context("Vector data", () => {
+    describe("Vector data", () => {
       const privateKeyJwk = {
         key_ops: ["sign"],
         ext: true,
@@ -472,7 +472,7 @@ context("Crypto", () => {
         kty: "OKP",
       };
 
-      context("import/export", () => {
+      describe("import/export", () => {
         it("should correctly import and export private key", async () => {
           const alg = { name: "ed25519" };
           const importedPrivateKey = await crypto.subtle.importKey("jwk", privateKeyJwk, alg, true, ["sign"]);
@@ -488,7 +488,7 @@ context("Crypto", () => {
         });
       });
 
-      context("sign/verify", () => {
+      describe("sign/verify", () => {
         it("should sign and verify data", async () => {
           const alg = { name: "ed25519" };
           const importedPrivateKey = await crypto.subtle.importKey("jwk", privateKeyJwk, alg, false, ["sign"]);
@@ -501,7 +501,7 @@ context("Crypto", () => {
       });
     });
   });
-  context("X25519", () => {
+  describe("X25519", () => {
     const privateKeyJwk = {
       key_ops: ["deriveBits", "deriveKey"],
       ext: true,
@@ -521,7 +521,7 @@ context("Crypto", () => {
 
     const derivedBitsBase64 = "lWSsBfIyBlat6Q4vHS/MmKXN0Wraz7F82D8prcSRlHw=";
 
-    context("generateKey", () => {
+    describe("generateKey", () => {
       it("should generate key pair", async () => {
         const alg = { name: "x25519" };
         const keys = await crypto.subtle.generateKey(alg, true, ["deriveBits", "deriveKey"]);
@@ -538,7 +538,7 @@ context("Crypto", () => {
       });
     });
 
-    context("import/export", () => {
+    describe("import/export", () => {
       it("should correctly import and export private key", async () => {
         const alg = { name: "x25519" };
         const importedPrivateKey = await crypto.subtle.importKey("jwk", privateKeyJwk, alg, true, ["deriveBits", "deriveKey"]);
@@ -554,7 +554,7 @@ context("Crypto", () => {
       });
     });
 
-    context("deriveBits", () => {
+    describe("deriveBits", () => {
       it("should derive bits", async () => {
         const alg = { name: "x25519" };
         const importedPrivateKey = await crypto.subtle.importKey("jwk", privateKeyJwk, alg, false, ["deriveBits"]);
