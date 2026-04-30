@@ -1,7 +1,7 @@
 import { Buffer } from "node:buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { IJsonConvertible } from "@peculiar/json-schema";
-import { Convert } from "pvtsutils";
+import { convert, toArrayBuffer } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { AsymmetricKey } from "../../keys/asymmetric";
 import { getOidByNamedCurve } from "./helper";
@@ -25,7 +25,7 @@ export class EdPublicKey extends AsymmetricKey implements IJsonConvertible {
       ext: this.extractable,
     };
 
-    return Object.assign(json, { x: Convert.ToBase64Url(key) });
+    return Object.assign(json, { x: convert.encode("base64url", key) });
   }
 
   public fromJSON(json: JsonWebKey) {
@@ -38,7 +38,7 @@ export class EdPublicKey extends AsymmetricKey implements IJsonConvertible {
 
     const keyInfo = new core.asn1.PublicKeyInfo();
     keyInfo.publicKeyAlgorithm.algorithm = getOidByNamedCurve(json.crv);
-    keyInfo.publicKey = Convert.FromBase64Url(json.x);
+    keyInfo.publicKey = toArrayBuffer(convert.decode("base64url", json.x));
 
     this.data = Buffer.from(AsnSerializer.serialize(keyInfo));
 

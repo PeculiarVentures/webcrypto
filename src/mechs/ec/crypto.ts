@@ -2,7 +2,9 @@ import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import { BufferSourceConverter } from "pvtsutils";
+import {
+  assertBufferSource, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { ShaCrypto } from "../sha";
@@ -63,7 +65,7 @@ export class EcCrypto {
 
     const signatureRaw = core.EcUtils.encodeSignature(ecSignature, core.EcCurves.get(key.algorithm.namedCurve).size);
 
-    return BufferSourceConverter.toArrayBuffer(signatureRaw);
+    return toArrayBuffer(signatureRaw);
   }
 
   public static async verify(algorithm: EcdsaParams, key: EcPublicKey, signature: Uint8Array, data: Uint8Array): Promise<boolean> {
@@ -79,8 +81,8 @@ export class EcCrypto {
     const ecSignature = new core.asn1.EcDsaSignature();
     const namedCurve = core.EcCurves.get(key.algorithm.namedCurve);
     const signaturePoint = core.EcUtils.decodeSignature(signature, namedCurve.size);
-    ecSignature.r = BufferSourceConverter.toArrayBuffer(signaturePoint.r);
-    ecSignature.s = BufferSourceConverter.toArrayBuffer(signaturePoint.s);
+    ecSignature.r = toArrayBuffer(signaturePoint.r);
+    ecSignature.s = toArrayBuffer(signaturePoint.s);
 
     const ecSignatureRaw = Buffer.from(AsnSerializer.serialize(ecSignature));
     const ok = signer.verify(options, ecSignatureRaw);
@@ -99,10 +101,10 @@ export class EcCrypto {
     const bits = ecdh.computeSecret(Buffer.from(asnPublicKey.publicKey));
 
     if (length === null) {
-      return BufferSourceConverter.toArrayBuffer(bits);
+      return toArrayBuffer(bits);
     }
 
-    return new Uint8Array(bits).buffer.slice(0, length >> 3);
+    return toArrayBuffer(bits).slice(0, length >> 3);
   }
 
   public static async exportKey(format: KeyFormat, key: CryptoKey): Promise<JsonWebKey | ArrayBuffer> {
@@ -111,7 +113,7 @@ export class EcCrypto {
         return JsonSerializer.toJSON(key);
       case "pkcs8":
       case "spki":
-        return new Uint8Array(key.data).buffer;
+        return toArrayBuffer(key.data);
       case "raw": {
         const publicKeyInfo = AsnParser.parse(key.data, core.asn1.PublicKeyInfo);
         return publicKeyInfo.publicKey;
@@ -134,17 +136,20 @@ export class EcCrypto {
         }
       }
       case "raw": {
-        const asnKey = new core.asn1.EcPublicKey(keyData as ArrayBuffer);
+        assertBufferSource(keyData);
+        const asnKey = new core.asn1.EcPublicKey(toArrayBuffer(keyData));
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "spki": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
+        assertBufferSource(keyData);
+        const keyInfo = AsnParser.parse(toUint8Array(keyData), core.asn1.PublicKeyInfo);
         const asnKey = new core.asn1.EcPublicKey(keyInfo.publicKey);
         this.assertKeyParameters(keyInfo.publicKeyAlgorithm.parameters, algorithm.namedCurve);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        assertBufferSource(keyData);
+        const keyInfo = AsnParser.parse(toUint8Array(keyData), core.asn1.PrivateKeyInfo);
         const asnKey = AsnParser.parse(keyInfo.privateKey, core.asn1.EcPrivateKey);
         this.assertKeyParameters(keyInfo.privateKeyAlgorithm.parameters, algorithm.namedCurve);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);

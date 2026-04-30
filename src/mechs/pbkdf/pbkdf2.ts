@@ -1,5 +1,8 @@
 import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
+import {
+  assertBufferSource, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { setCryptoKey, getCryptoKey } from "../storage";
 import { PbkdfCryptoKey } from "./key";
@@ -7,13 +10,13 @@ import { PbkdfCryptoKey } from "./key";
 export class Pbkdf2Provider extends core.Pbkdf2Provider {
   public async onDeriveBits(algorithm: Pbkdf2Params, baseKey: PbkdfCryptoKey, length: number): Promise<ArrayBuffer> {
     return new Promise<ArrayBuffer>((resolve, reject) => {
-      const salt = core.BufferSourceConverter.toArrayBuffer(algorithm.salt);
+      const salt = toUint8Array(algorithm.salt);
       const hash = (algorithm.hash as Algorithm).name.replace("-", "");
       crypto.pbkdf2(getCryptoKey(baseKey).data, Buffer.from(salt), algorithm.iterations, length >> 3, hash, (err, derivedBits) => {
         if (err) {
           reject(err);
         } else {
-          resolve(new Uint8Array(derivedBits).buffer);
+          resolve(toArrayBuffer(derivedBits));
         }
       });
     });
@@ -21,8 +24,9 @@ export class Pbkdf2Provider extends core.Pbkdf2Provider {
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
     if (format === "raw") {
+      assertBufferSource(keyData);
       const key = new PbkdfCryptoKey();
-      key.data = Buffer.from(keyData as ArrayBuffer);
+      key.data = Buffer.from(toUint8Array(keyData));
       key.algorithm = { name: this.name };
       key.extractable = false;
       key.usages = keyUsages;

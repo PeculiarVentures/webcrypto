@@ -2,6 +2,9 @@ import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
+import {
+  assertBufferSource, toArrayBuffer, toUint8Array,
+} from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { RsaPrivateKey } from "./private_key";
@@ -64,7 +67,7 @@ export class RsaCrypto {
         return JsonSerializer.toJSON(key);
       case "pkcs8":
       case "spki":
-        return new Uint8Array(key.data).buffer;
+        return toArrayBuffer(key.data);
       default:
         throw new core.OperationError("format: Must be 'jwk', 'pkcs8' or 'spki'");
     }
@@ -83,12 +86,14 @@ export class RsaCrypto {
         }
       }
       case "spki": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PublicKeyInfo);
+        assertBufferSource(keyData);
+        const keyInfo = AsnParser.parse(toUint8Array(keyData), core.asn1.PublicKeyInfo);
         const asnKey = AsnParser.parse(keyInfo.publicKey, core.asn1.RsaPublicKey);
         return this.importPublicKey(asnKey, algorithm, extractable, keyUsages);
       }
       case "pkcs8": {
-        const keyInfo = AsnParser.parse(new Uint8Array(keyData as ArrayBuffer), core.asn1.PrivateKeyInfo);
+        assertBufferSource(keyData);
+        const keyInfo = AsnParser.parse(toUint8Array(keyData), core.asn1.PrivateKeyInfo);
         const asnKey = AsnParser.parse(keyInfo.privateKey, core.asn1.RsaPrivateKey);
         return this.importPrivateKey(asnKey, algorithm, extractable, keyUsages);
       }
@@ -207,7 +212,7 @@ export class RsaCrypto {
     }
 
     const signature = signer.sign(options);
-    return new Uint8Array(signature).buffer;
+    return toArrayBuffer(signature);
   }
 
   protected static verifySSA(algorithm: Algorithm, key: RsaPublicKey, data: Uint8Array, signature: Uint8Array) {
@@ -237,7 +242,7 @@ export class RsaCrypto {
       // nothing
     }
 
-    return new Uint8Array(crypto.publicEncrypt(options, data)).buffer;
+    return toArrayBuffer(crypto.publicEncrypt(options, data));
   }
 
   protected static decryptOAEP(algorithm: RsaOaepParams, key: RsaPrivateKey, data: Uint8Array) {
@@ -249,6 +254,6 @@ export class RsaCrypto {
       // nothing
     }
 
-    return new Uint8Array(crypto.privateDecrypt(options, data)).buffer;
+    return toArrayBuffer(crypto.privateDecrypt(options, data));
   }
 }
