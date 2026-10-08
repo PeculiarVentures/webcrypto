@@ -7,10 +7,7 @@ import { EcPublicKey } from "./public_key";
 export class EcdsaProvider extends core.EcdsaProvider {
   public override namedCurves = core.EcCurves.names;
 
-  public override hashAlgorithms = [
-    "SHA-1", "SHA-256", "SHA-384", "SHA-512",
-    "shake128", "shake256",
-    "SHA3-256", "SHA3-384", "SHA3-512"];
+  public override hashAlgorithms = ["SHA-1", "SHA-256", "SHA-384", "SHA-512", "shake128", "shake256", "SHA3-256", "SHA3-384", "SHA3-512"];
 
   public async onGenerateKey(algorithm: EcKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKeyPair> {
     const keys = await EcCrypto.generateKey(
@@ -19,7 +16,8 @@ export class EcdsaProvider extends core.EcdsaProvider {
         name: this.name,
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return {
       privateKey: setCryptoKey(keys.privateKey as EcPrivateKey),
@@ -40,9 +38,16 @@ export class EcdsaProvider extends core.EcdsaProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const key = await EcCrypto.importKey(format, keyData, {
-      ...algorithm, name: this.name,
-    }, extractable, keyUsages);
+    const key = await EcCrypto.importKey(
+      format,
+      keyData,
+      {
+        ...algorithm,
+        name: this.name,
+      },
+      extractable,
+      keyUsages,
+    );
     return setCryptoKey(key);
   }
 

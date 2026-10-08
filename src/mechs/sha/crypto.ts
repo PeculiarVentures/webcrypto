@@ -53,8 +53,7 @@ export class ShaCrypto {
 
   public static digest(algorithm: Algorithm, data: ArrayBuffer) {
     const hashAlg = this.getAlgorithmName(algorithm);
-    const hash = crypto.createHash(hashAlg)
-      .update(Buffer.from(data)).digest();
+    const hash = crypto.createHash(hashAlg).update(Buffer.from(data)).digest();
     return new Uint8Array(hash).buffer;
   }
 }

@@ -11,7 +11,8 @@ export class AesGcmProvider extends core.AesGcmProvider {
         length: algorithm.length,
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return setCryptoKey(key);
   }

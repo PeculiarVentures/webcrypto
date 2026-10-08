@@ -5,11 +5,12 @@ import { CryptoKey } from "../../keys";
 
 export class HmacCryptoKey extends CryptoKey {
   @JsonProp({
-    name: "k", converter: JsonBase64UrlConverter,
+    name: "k",
+    converter: JsonBase64UrlConverter,
   })
-  public declare data: Buffer;
+  declare public data: Buffer;
 
-  public declare algorithm: HmacKeyAlgorithm;
+  declare public algorithm: HmacKeyAlgorithm;
 
   // @ts-ignore
   protected get alg() {

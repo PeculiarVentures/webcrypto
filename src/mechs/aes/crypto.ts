@@ -1,9 +1,7 @@
 import { Buffer } from "node:buffer";
 import crypto, { CipherGCMTypes } from "node:crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import {
-  assertBufferSource, toArrayBuffer, toUint8Array,
-} from "@peculiar/utils";
+import { assertBufferSource, toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { AesCryptoKey } from "./key";
@@ -139,12 +137,7 @@ export class AesCrypto {
   }
 
   public static async encryptAesGCM(algorithm: AesGcmParams, key: AesCryptoKey, data: Buffer) {
-    const cipher = crypto.createCipheriv(
-      `aes-${key.algorithm.length}-gcm` as CipherGCMTypes,
-      key.data,
-      Buffer.from(toUint8Array(algorithm.iv)),
-      { authTagLength: (algorithm.tagLength || 128) >> 3 },
-    ); // NodeJs d.ts doesn't support CipherGCMOptions for createCipheriv
+    const cipher = crypto.createCipheriv(`aes-${key.algorithm.length}-gcm` as CipherGCMTypes, key.data, Buffer.from(toUint8Array(algorithm.iv)), { authTagLength: (algorithm.tagLength || 128) >> 3 }); // NodeJs d.ts doesn't support CipherGCMOptions for createCipheriv
     if (algorithm.additionalData) {
       cipher.setAAD(Buffer.from(toUint8Array(algorithm.additionalData)));
     }

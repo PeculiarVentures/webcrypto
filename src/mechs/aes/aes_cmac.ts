@@ -79,7 +79,8 @@ function generateSubkeys(key: Buffer) {
   }
 
   return {
-    subkey1, subkey2,
+    subkey1,
+    subkey2,
   };
 }
 
@@ -93,7 +94,7 @@ function aesCmac(key: Buffer, message: Buffer) {
     blockCount = 1;
     lastBlockCompleteFlag = false;
   } else {
-    lastBlockCompleteFlag = (message.length % blockSize === 0);
+    lastBlockCompleteFlag = message.length % blockSize === 0;
   }
   const lastBlockIndex = blockCount - 1;
 
@@ -122,7 +123,8 @@ export class AesCmacProvider extends core.AesCmacProvider {
         length: algorithm.length,
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return setCryptoKey(key);
   }

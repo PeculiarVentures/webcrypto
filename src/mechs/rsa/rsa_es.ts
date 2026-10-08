@@ -1,7 +1,5 @@
 import crypto from "node:crypto";
-import {
-  convert, toArrayBuffer, toUint8Array,
-} from "@peculiar/utils";
+import { convert, toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { setCryptoKey, getCryptoKey } from "../storage";
 import { RsaCrypto } from "./crypto";
@@ -22,7 +20,8 @@ export class RsaEsProvider extends core.ProviderCrypto {
         name: this.name,
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return {
       privateKey: setCryptoKey(keys.privateKey as RsaPrivateKey),
@@ -70,9 +69,16 @@ export class RsaEsProvider extends core.ProviderCrypto {
   }
 
   public override async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: RsaHashedImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const key = await RsaCrypto.importKey(format, keyData, {
-      ...algorithm, name: this.name,
-    }, extractable, keyUsages);
+    const key = await RsaCrypto.importKey(
+      format,
+      keyData,
+      {
+        ...algorithm,
+        name: this.name,
+      },
+      extractable,
+      keyUsages,
+    );
     return setCryptoKey(key);
   }
 

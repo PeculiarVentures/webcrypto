@@ -5,12 +5,13 @@ import { JsonBase64UrlConverter } from "../../converters";
 import { SymmetricKey } from "../../keys";
 
 export class AesCryptoKey extends SymmetricKey {
-  public declare algorithm: AesKeyAlgorithm;
+  declare public algorithm: AesKeyAlgorithm;
 
   @JsonProp({
-    name: "k", converter: JsonBase64UrlConverter,
+    name: "k",
+    converter: JsonBase64UrlConverter,
   })
-  public declare data: Buffer;
+  declare public data: Buffer;
 
   // @ts-ignore
   public get alg() {

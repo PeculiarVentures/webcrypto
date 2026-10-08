@@ -1,15 +1,13 @@
 import { Buffer } from "node:buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
-import {
-  IJsonConvertible, JsonParser, JsonSerializer,
-} from "@peculiar/json-schema";
+import { IJsonConvertible, JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
 import { AsymmetricKey } from "../../keys";
 import { getOidByNamedCurve } from "./helper";
 
 export class EcPrivateKey extends AsymmetricKey implements IJsonConvertible {
   public readonly type = "private" as const;
-  public declare algorithm: EcKeyAlgorithm;
+  declare public algorithm: EcKeyAlgorithm;
 
   public getKey() {
     const keyInfo = AsnParser.parse(this.data, core.asn1.PrivateKeyInfo);
@@ -36,9 +34,7 @@ export class EcPrivateKey extends AsymmetricKey implements IJsonConvertible {
 
     const keyInfo = new core.asn1.PrivateKeyInfo();
     keyInfo.privateKeyAlgorithm.algorithm = "1.2.840.10045.2.1";
-    keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(
-      new core.asn1.ObjectIdentifier(getOidByNamedCurve(json.crv)),
-    );
+    keyInfo.privateKeyAlgorithm.parameters = AsnSerializer.serialize(new core.asn1.ObjectIdentifier(getOidByNamedCurve(json.crv)));
     const key = JsonParser.fromJSON(json, { targetSchema: core.asn1.EcPrivateKey });
     keyInfo.privateKey = AsnSerializer.serialize(key);
 

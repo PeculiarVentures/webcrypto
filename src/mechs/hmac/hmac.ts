@@ -1,9 +1,7 @@
 import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import {
-  assertBufferSource, toArrayBuffer, toUint8Array,
-} from "@peculiar/utils";
+import { assertBufferSource, toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { ShaCrypto } from "../sha";
 import { setCryptoKey, getCryptoKey } from "../storage";
@@ -11,10 +9,10 @@ import { HmacCryptoKey } from "./key";
 
 export class HmacProvider extends core.HmacProvider {
   public async onGenerateKey(algorithm: HmacKeyGenParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<CryptoKey> {
-    const length = (algorithm.length || this.getDefaultLength((algorithm.hash as Algorithm).name)) >> 3 << 3;
+    const length = ((algorithm.length || this.getDefaultLength((algorithm.hash as Algorithm).name)) >> 3) << 3;
     const key = new HmacCryptoKey();
     key.algorithm = {
-      ...algorithm as any,
+      ...(algorithm as any),
       length,
       name: this.name,
     };
@@ -27,16 +25,20 @@ export class HmacProvider extends core.HmacProvider {
 
   public override async onSign(algorithm: Algorithm, key: HmacCryptoKey, data: ArrayBuffer): Promise<ArrayBuffer> {
     const cryptoAlg = ShaCrypto.getAlgorithmName(key.algorithm.hash);
-    const hmac = crypto.createHmac(cryptoAlg, getCryptoKey(key).data)
-      .update(Buffer.from(toUint8Array(data))).digest();
+    const hmac = crypto
+      .createHmac(cryptoAlg, getCryptoKey(key).data)
+      .update(Buffer.from(toUint8Array(data)))
+      .digest();
 
     return toArrayBuffer(hmac);
   }
 
   public override async onVerify(algorithm: Algorithm, key: HmacCryptoKey, signature: ArrayBuffer, data: ArrayBuffer): Promise<boolean> {
     const cryptoAlg = ShaCrypto.getAlgorithmName(key.algorithm.hash);
-    const hmac = crypto.createHmac(cryptoAlg, getCryptoKey(key).data)
-      .update(Buffer.from(toUint8Array(data))).digest();
+    const hmac = crypto
+      .createHmac(cryptoAlg, getCryptoKey(key).data)
+      .update(Buffer.from(toUint8Array(data)))
+      .digest();
 
     return hmac.compare(Buffer.from(toUint8Array(signature))) === 0;
   }
