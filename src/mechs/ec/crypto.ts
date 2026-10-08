@@ -2,9 +2,7 @@ import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import {
-  assertBufferSource, toArrayBuffer, toUint8Array,
-} from "@peculiar/utils";
+import { assertBufferSource, toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { ShaCrypto } from "../sha";

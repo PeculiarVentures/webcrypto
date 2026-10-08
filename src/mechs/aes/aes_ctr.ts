@@ -11,7 +11,8 @@ export class AesCtrProvider extends core.AesCtrProvider {
         length: algorithm.length,
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return setCryptoKey(key);
   }

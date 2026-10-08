@@ -18,7 +18,8 @@ export class DesCbcProvider extends core.DesProvider {
         length: this.keySizeBits,
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return setCryptoKey(key);
   }
@@ -36,10 +37,17 @@ export class DesCbcProvider extends core.DesProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: JsonWebKey | ArrayBuffer, algorithm: Algorithm, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKey> {
-    const key = await DesCrypto.importKey(format, keyData, {
-      name: this.name, length: this.keySizeBits,
-    }, extractable, keyUsages);
-    if (key.data.length !== (this.keySizeBits >> 3)) {
+    const key = await DesCrypto.importKey(
+      format,
+      keyData,
+      {
+        name: this.name,
+        length: this.keySizeBits,
+      },
+      extractable,
+      keyUsages,
+    );
+    if (key.data.length !== this.keySizeBits >> 3) {
       throw new core.OperationError("keyData: Wrong key size");
     }
     return setCryptoKey(key);

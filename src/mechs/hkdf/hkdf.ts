@@ -26,7 +26,8 @@ export class HkdfProvider extends core.HkdfProvider {
     const byteLength = length / 8;
     const info = BufferSourceConverter.toUint8Array(params.info);
 
-    const PRK = crypto.createHmac(hash, BufferSourceConverter.toUint8Array(params.salt))
+    const PRK = crypto
+      .createHmac(hash, BufferSourceConverter.toUint8Array(params.salt))
       .update(BufferSourceConverter.toUint8Array(getCryptoKey(baseKey).data))
       .digest();
 
@@ -34,7 +35,8 @@ export class HkdfProvider extends core.HkdfProvider {
     const blockCount = Math.ceil(byteLength / hashLength) + 1; // Includes empty buffer
     for (let i = 1; i < blockCount; ++i) {
       blocks.push(
-        crypto.createHmac(hash, PRK)
+        crypto
+          .createHmac(hash, PRK)
           .update(Buffer.concat([blocks[i - 1], info, Buffer.from([i])]))
           .digest(),
       );

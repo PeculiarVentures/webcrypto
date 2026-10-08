@@ -2,9 +2,7 @@ import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
-import {
-  assertBufferSource, toArrayBuffer, toUint8Array,
-} from "@peculiar/utils";
+import { assertBufferSource, toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { RsaPrivateKey } from "./private_key";
@@ -32,10 +30,7 @@ export class RsaCrypto {
     publicKey.extractable = true;
     publicKey.usages = keyUsages.filter((usage) => this.publicKeyUsages.indexOf(usage) !== -1) as KeyUsage[];
 
-    const publicExponent = Buffer.concat([
-      Buffer.alloc(4 - algorithm.publicExponent.byteLength, 0),
-      Buffer.from(algorithm.publicExponent),
-    ]).readInt32BE(0);
+    const publicExponent = Buffer.concat([Buffer.alloc(4 - algorithm.publicExponent.byteLength, 0), Buffer.from(algorithm.publicExponent)]).readInt32BE(0);
 
     const keys = crypto.generateKeyPairSync("rsa", {
       modulusLength: algorithm.modulusLength,

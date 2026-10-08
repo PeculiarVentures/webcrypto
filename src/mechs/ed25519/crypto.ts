@@ -1,8 +1,6 @@
 import crypto from "node:crypto";
 import { AsnConvert } from "@peculiar/asn1-schema";
-import {
-  assertBufferSource, convert, toArrayBuffer,
-} from "@peculiar/utils";
+import { assertBufferSource, convert, toArrayBuffer } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { Ed25519CryptoKey } from "./crypto_key";
@@ -73,9 +71,7 @@ export class Ed25519Crypto {
           const privateData = new core.asn1.EdPrivateKey();
           privateData.value = toArrayBuffer(convert.decode("base64url", jwk.d));
           const pkcs8 = new core.asn1.PrivateKeyInfo();
-          pkcs8.privateKeyAlgorithm.algorithm = algorithm.name.toLowerCase() === "ed25519"
-            ? core.asn1.idEd25519
-            : core.asn1.idX25519;
+          pkcs8.privateKeyAlgorithm.algorithm = algorithm.name.toLowerCase() === "ed25519" ? core.asn1.idEd25519 : core.asn1.idX25519;
           pkcs8.privateKey = AsnConvert.serialize(privateData);
           const raw = AsnConvert.serialize(pkcs8);
           const pem = core.PemConverter.fromBufferSource(raw, "PRIVATE KEY");
@@ -87,7 +83,8 @@ export class Ed25519Crypto {
             key: jwk as JsonWebKey,
           });
           const pem = pubKey.export({
-            format: "pem", type: "spki",
+            format: "pem",
+            type: "spki",
           }) as string;
           return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
         } else {
@@ -116,7 +113,8 @@ export class Ed25519Crypto {
           },
         });
         const pem = key.export({
-          format: "pem", type: "spki",
+          format: "pem",
+          type: "spki",
         }) as string;
         return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
       }

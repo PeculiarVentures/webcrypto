@@ -30,6 +30,9 @@ jobs:
       - name: Run linter
         run: npm run lint
 
+      - name: Check formatting
+        run: npm run format:check
+
       - name: Run test with coverage
         run: npm run coverage
 
@@ -47,4 +50,4 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           parallel-finished: true
-          carryforward: 'run-22.x'
+          carryforward: "run-22.x"

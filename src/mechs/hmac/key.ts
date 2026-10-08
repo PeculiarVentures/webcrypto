@@ -5,13 +5,13 @@ import { CryptoKey } from "../../keys";
 
 export class HmacCryptoKey extends CryptoKey {
   @JsonProp({
-    name: "k", converter: JsonBase64UrlConverter,
+    name: "k",
+    converter: JsonBase64UrlConverter,
   })
-  public declare data: Buffer;
+  declare public data: Buffer;
 
-  public declare algorithm: HmacKeyAlgorithm;
+  declare public algorithm: HmacKeyAlgorithm;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   protected get alg() {
     const hash = this.algorithm.hash.name.toUpperCase();

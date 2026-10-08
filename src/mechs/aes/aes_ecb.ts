@@ -11,7 +11,8 @@ export class AesEcbProvider extends core.AesEcbProvider {
         length: algorithm.length,
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return setCryptoKey(key);
   }

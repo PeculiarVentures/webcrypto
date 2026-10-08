@@ -6,17 +6,11 @@
     "skipLibCheck": true,
     "removeComments": true,
     "importHelpers": true,
-    "types": [
-      "node",
-      "vitest/globals",
-    ],
+    "types": ["node", "vitest/globals"],
     "strict": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "noImplicitOverride": true
   },
-  "exclude": [
-    "build/**/*",
-    "index.d.ts"
-  ]
+  "exclude": ["build/**/*", "index.d.ts"]
 }

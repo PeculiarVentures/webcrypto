@@ -8,14 +8,19 @@ export class CryptoKey extends core.CryptoKey {
   public override algorithm: KeyAlgorithm = { name: "" };
 
   @JsonProp({
-    name: "ext", type: JsonPropTypes.Boolean, optional: true,
+    name: "ext",
+    type: JsonPropTypes.Boolean,
+    optional: true,
   })
   public override extractable = false;
 
   public override type: KeyType = "secret";
 
   @JsonProp({
-    name: "key_ops", type: JsonPropTypes.String, repeated: true, optional: true,
+    name: "key_ops",
+    type: JsonPropTypes.String,
+    repeated: true,
+    optional: true,
   })
   public override usages: KeyUsage[] = [];
 
@@ -23,7 +28,8 @@ export class CryptoKey extends core.CryptoKey {
   protected kty = "oct";
 
   @JsonProp({
-    type: JsonPropTypes.String, optional: true,
+    type: JsonPropTypes.String,
+    optional: true,
   })
   protected alg = "";
 }

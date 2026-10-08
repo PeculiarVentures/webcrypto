@@ -1,15 +1,13 @@
 import { Buffer } from "node:buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
-import {
-  IJsonConvertible, JsonParser, JsonSerializer,
-} from "@peculiar/json-schema";
+import { IJsonConvertible, JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
 import { AsymmetricKey } from "../../keys";
 import { getOidByNamedCurve } from "./helper";
 
 export class EdPrivateKey extends AsymmetricKey implements IJsonConvertible {
   public readonly type = "private" as const;
-  public declare algorithm: EcKeyAlgorithm;
+  declare public algorithm: EcKeyAlgorithm;
 
   public getKey() {
     const keyInfo = AsnParser.parse(this.data, core.asn1.PrivateKeyInfo);

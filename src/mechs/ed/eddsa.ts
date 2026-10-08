@@ -13,7 +13,8 @@ export class EdDsaProvider extends core.EdDsaProvider {
         namedCurve: algorithm.namedCurve.replace(/^ed/i, "Ed"),
       },
       extractable,
-      keyUsages);
+      keyUsages,
+    );
 
     return {
       privateKey: setCryptoKey(keys.privateKey as CryptoKey),
@@ -34,9 +35,16 @@ export class EdDsaProvider extends core.EdDsaProvider {
   }
 
   public async onImportKey(format: KeyFormat, keyData: ArrayBuffer | JsonWebKey, algorithm: EcKeyImportParams, extractable: boolean, keyUsages: KeyUsage[]): Promise<core.CryptoKey> {
-    const key = await EdCrypto.importKey(format, keyData, {
-      ...algorithm, name: this.name,
-    }, extractable, keyUsages);
+    const key = await EdCrypto.importKey(
+      format,
+      keyData,
+      {
+        ...algorithm,
+        name: this.name,
+      },
+      extractable,
+      keyUsages,
+    );
     return setCryptoKey(key);
   }
 }

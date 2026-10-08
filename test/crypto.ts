@@ -48,49 +48,66 @@ describe("Crypto", () => {
 
   it("Import wrong named curve", async () => {
     const spki = Buffer.from("MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETzlbSDQWz+1nwEHsrT516OAEX5YWzwVYj39BH+Rv5yoP9yLgM5wIXgOls5DoLDJVQ+45XDrD/xjSCcul5NACZw==", "base64");
-    await assert.rejects(crypto.subtle.importKey(
-      "spki",
-      spki,
-      {
-        name: "ECDSA", namedCurve: "K-256",
-      } as Algorithm,
-      false,
-      ["verify"]), core.CryptoError);
+    await assert.rejects(
+      crypto.subtle.importKey(
+        "spki",
+        spki,
+        {
+          name: "ECDSA",
+          namedCurve: "K-256",
+        } as Algorithm,
+        false,
+        ["verify"],
+      ),
+      core.CryptoError,
+    );
   });
 
   it("HKDF derive HMAC key", async () => {
     const hkdf = await crypto.subtle.importKey("raw", new Uint8Array([1, 2, 3, 4, 5]), { name: "HKDF" }, false, ["deriveKey"]);
-    const hmac = await crypto.subtle.deriveKey({
-      name: "HKDF",
-      hash: "SHA-256",
-      info: new Uint8Array([1, 2, 3, 4, 5]),
-      salt: new Uint8Array([1, 2, 3, 4, 5]),
-    } as HkdfParams,
-    hkdf,
-    {
-      name: "HMAC",
-      hash: "SHA-1",
-    } as globalThis.HmacImportParams,
-    false,
-    ["sign"]);
+    const hmac = await crypto.subtle.deriveKey(
+      {
+        name: "HKDF",
+        hash: "SHA-256",
+        info: new Uint8Array([1, 2, 3, 4, 5]),
+        salt: new Uint8Array([1, 2, 3, 4, 5]),
+      } as HkdfParams,
+      hkdf,
+      {
+        name: "HMAC",
+        hash: "SHA-1",
+      } as globalThis.HmacImportParams,
+      false,
+      ["sign"],
+    );
     assert.strictEqual((hmac.algorithm as globalThis.HmacKeyAlgorithm).length, 512);
   });
 
   (nodeMajorVersion < 14 ? describe.skip : describe)("EdDSA", () => {
     describe("generateKey", () => {
       it("Ed25519", async () => {
-        const keys = await crypto.subtle.generateKey({
-          name: "eddsa", namedCurve: "ed25519",
-        } as globalThis.EcKeyGenParams, false, ["sign", "verify"]);
+        const keys = await crypto.subtle.generateKey(
+          {
+            name: "eddsa",
+            namedCurve: "ed25519",
+          } as globalThis.EcKeyGenParams,
+          false,
+          ["sign", "verify"],
+        );
 
         assert.strictEqual(keys.privateKey.algorithm.name, "EdDSA");
         assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "Ed25519");
       });
 
       it("Ed448", async () => {
-        const keys = await crypto.subtle.generateKey({
-          name: "eddsa", namedCurve: "ed448",
-        } as globalThis.EcKeyGenParams, true, ["sign", "verify"]);
+        const keys = await crypto.subtle.generateKey(
+          {
+            name: "eddsa",
+            namedCurve: "ed448",
+          } as globalThis.EcKeyGenParams,
+          true,
+          ["sign", "verify"],
+        );
         assert.strictEqual(keys.privateKey.algorithm.name, "EdDSA");
         assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "Ed448");
 
@@ -98,9 +115,16 @@ describe("Crypto", () => {
         assert.strictEqual(data.kty, "OKP");
         assert.strictEqual(data.crv, "Ed448");
         assert.strictEqual(!!data.d, true);
-        const privateKey = await crypto.subtle.importKey("jwk", data, {
-          name: "eddsa", namedCurve: "ed448",
-        } as EcKeyImportParams, false, ["sign"]);
+        const privateKey = await crypto.subtle.importKey(
+          "jwk",
+          data,
+          {
+            name: "eddsa",
+            namedCurve: "ed448",
+          } as EcKeyImportParams,
+          false,
+          ["sign"],
+        );
 
         const message = Buffer.from("message");
         const signature = await crypto.subtle.sign({ name: "EdDSA" }, privateKey, message);
@@ -113,23 +137,38 @@ describe("Crypto", () => {
   (nodeMajorVersion < 14 ? describe.skip : describe)("ECDH-ES", () => {
     describe("generateKey", () => {
       it("X25519", async () => {
-        const keys = await crypto.subtle.generateKey({
-          name: "ecdh-es", namedCurve: "x25519",
-        } as globalThis.EcKeyGenParams, false, ["deriveBits", "deriveKey"]);
+        const keys = await crypto.subtle.generateKey(
+          {
+            name: "ecdh-es",
+            namedCurve: "x25519",
+          } as globalThis.EcKeyGenParams,
+          false,
+          ["deriveBits", "deriveKey"],
+        );
         assert.strictEqual(keys.privateKey.algorithm.name, "ECDH-ES");
         assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "X25519");
       });
 
       it("X448", async () => {
-        const keys = await crypto.subtle.generateKey({
-          name: "ecdh-es", namedCurve: "x448",
-        } as globalThis.EcKeyGenParams, true, ["deriveBits", "deriveKey"]);
+        const keys = await crypto.subtle.generateKey(
+          {
+            name: "ecdh-es",
+            namedCurve: "x448",
+          } as globalThis.EcKeyGenParams,
+          true,
+          ["deriveBits", "deriveKey"],
+        );
         assert.strictEqual(keys.privateKey.algorithm.name, "ECDH-ES");
         assert.strictEqual((keys.privateKey.algorithm as EcKeyAlgorithm).namedCurve, "X448");
 
-        const bits = await crypto.subtle.deriveBits({
-          name: "ECDH-ES", public: keys.publicKey,
-        } as globalThis.EcdhKeyDeriveParams, keys.privateKey, 256);
+        const bits = await crypto.subtle.deriveBits(
+          {
+            name: "ECDH-ES",
+            public: keys.publicKey,
+          } as globalThis.EcdhKeyDeriveParams,
+          keys.privateKey,
+          256,
+        );
         assert.strictEqual(bits.byteLength, 32);
 
         const data = await crypto.subtle.exportKey("jwk", keys.publicKey);
@@ -164,10 +203,12 @@ describe("Crypto", () => {
       namedCurves.forEach((namedCurve) => {
         it(namedCurve, async () => {
           const alg: EcKeyGenParams = {
-            name: "ECDSA", namedCurve,
+            name: "ECDSA",
+            namedCurve,
           };
           const signAlg = {
-            ...alg, hash: "SHA-256",
+            ...alg,
+            hash: "SHA-256",
           } as EcdsaParams;
 
           const keys = await crypto.subtle.generateKey(alg, true, ["sign", "verify"]);
@@ -197,13 +238,15 @@ describe("Crypto", () => {
       namedCurves.forEach((namedCurve) => {
         it(namedCurve, async () => {
           const alg: EcKeyGenParams = {
-            name: "ECDH", namedCurve,
+            name: "ECDH",
+            namedCurve,
           };
 
           const keys = await crypto.subtle.generateKey(alg, true, ["deriveBits", "deriveKey"]);
 
           const deriveAlg: EcdhKeyDeriveParams = {
-            name: "ECDH", public: keys.publicKey,
+            name: "ECDH",
+            public: keys.publicKey,
           };
           const derivedBits = await crypto.subtle.deriveBits(deriveAlg, keys.privateKey, 128);
 
@@ -212,12 +255,22 @@ describe("Crypto", () => {
           const privateKey = await crypto.subtle.importKey("jwk", privateJwk, alg, true, ["deriveBits"]);
           const publicKey = await crypto.subtle.importKey("jwk", publicJwk, alg, true, []);
 
-          const derivedBits2 = await crypto.subtle.deriveBits({
-            name: "ECDH", public: keys.publicKey,
-          } as EcdhKeyDeriveParams, privateKey, 128);
-          const derivedBits3 = await crypto.subtle.deriveBits({
-            name: "ECDH", public: publicKey,
-          } as EcdhKeyDeriveParams, keys.privateKey, 128);
+          const derivedBits2 = await crypto.subtle.deriveBits(
+            {
+              name: "ECDH",
+              public: keys.publicKey,
+            } as EcdhKeyDeriveParams,
+            privateKey,
+            128,
+          );
+          const derivedBits3 = await crypto.subtle.deriveBits(
+            {
+              name: "ECDH",
+              public: publicKey,
+            } as EcdhKeyDeriveParams,
+            keys.privateKey,
+            128,
+          );
 
           assert.strictEqual(convert.encode("hex", derivedBits2), convert.encode("hex", derivedBits));
           assert.strictEqual(convert.encode("hex", derivedBits3), convert.encode("hex", derivedBits));
@@ -227,15 +280,27 @@ describe("Crypto", () => {
   });
 
   it("Import Secret JWK without 'alg' and 'key_ops' fields", async () => {
-    const aesKey = await crypto.subtle.generateKey({
-      name: "AES-CBC", length: 256,
-    }, true, ["encrypt", "decrypt"]);
+    const aesKey = await crypto.subtle.generateKey(
+      {
+        name: "AES-CBC",
+        length: 256,
+      },
+      true,
+      ["encrypt", "decrypt"],
+    );
     const jwk = await crypto.subtle.exportKey("jwk", aesKey);
     delete jwk.key_ops;
     delete jwk.alg;
-    const hmacKey = await crypto.subtle.importKey("jwk", jwk, {
-      name: "HMAC", hash: "SHA-256",
-    } as Algorithm, false, ["sign", "verify"]);
+    const hmacKey = await crypto.subtle.importKey(
+      "jwk",
+      jwk,
+      {
+        name: "HMAC",
+        hash: "SHA-256",
+      } as Algorithm,
+      false,
+      ["sign", "verify"],
+    );
     assert.strictEqual(hmacKey.algorithm.name, "HMAC");
   });
 
@@ -250,13 +315,16 @@ describe("Crypto", () => {
       });
 
       it("128 byte length", async () => {
-        const hash = await crypto.subtle.digest({
-          name: "shake128", length: 128,
-        } as core.ShakeParams, data);
+        const hash = await crypto.subtle.digest(
+          {
+            name: "shake128",
+            length: 128,
+          } as core.ShakeParams,
+          data,
+        );
 
         assert.strictEqual(
           Buffer.from(hash).toString("hex"),
-          // eslint-disable-next-line @stylistic/max-len
           "ae3bdcf04986a8e7ddd99ac948254693fc32ca6ce3ed278c0c54127f072ba21e977d76aa76cab8f85f61c3e1fb7dab42c6b96d39f96fbd8cdcba7121e28cc97bb51f277a00398f99a9e6f11d027473cbffb3ac4ce444e2e8284caeca4e62f725d340fa3519eec7ca3eb4188607c26b0ecdf3750beba8882d6f2b734960cca914",
         );
       });
@@ -270,13 +338,16 @@ describe("Crypto", () => {
       });
 
       it("256 byte length", async () => {
-        const hash = await crypto.subtle.digest({
-          name: "shake256", length: 256,
-        } as core.ShakeParams, data);
+        const hash = await crypto.subtle.digest(
+          {
+            name: "shake256",
+            length: 256,
+          } as core.ShakeParams,
+          data,
+        );
 
         assert.strictEqual(
           Buffer.from(hash).toString("hex"),
-          // eslint-disable-next-line @stylistic/max-len
           "be15253026b9a85e01ae54b1939284e8e514fbdad2a3bd5c1c0f437e60548e262dd68c2a2f932847f9610eeb51f8ba1a180ca878c788e900d899538d45c9c4a6f1bf10d8502a7ccbd9fd540bd856591000700e10130673ef970ffb788afe08426648a216d032733b71e85f128f1ed9e4c8bd910b5000e8c381afb45735680eaf7cb5bf1ae4265ee0822dfe6a9426ff21e309398df57cbf5861f5947f3d261e2d4517ff0d1be988e7014a09c4312d37010cf0e47468c1cf832e6a61e9d9fe3b67e6ab265cb6d95ad7a1f863d71e0e6ed5cd17d568b86e99d84bdb970a580f551017b501ae6761d2d6de76a64385dc10f27d18c2564a6bfbfb1e3f335010bebdf8",
         );
       });
@@ -301,32 +372,62 @@ describe("Crypto", () => {
 
   describe("ECDH deriveBits with null", () => {
     it("P-256", async () => {
-      const keyPair = await crypto.subtle.generateKey({
-        name: "ECDH", namedCurve: "P-256",
-      }, false, ["deriveBits"]);
-      const bits = await crypto.subtle.deriveBits({
-        name: keyPair.publicKey.algorithm.name, public: keyPair.publicKey,
-      } as globalThis.EcdhKeyDeriveParams, keyPair.privateKey, null as unknown as number);
+      const keyPair = await crypto.subtle.generateKey(
+        {
+          name: "ECDH",
+          namedCurve: "P-256",
+        },
+        false,
+        ["deriveBits"],
+      );
+      const bits = await crypto.subtle.deriveBits(
+        {
+          name: keyPair.publicKey.algorithm.name,
+          public: keyPair.publicKey,
+        } as globalThis.EcdhKeyDeriveParams,
+        keyPair.privateKey,
+        null as unknown as number,
+      );
       assert.equal(bits.byteLength, 32);
     });
 
     it("P-384", async () => {
-      const keyPair = await crypto.subtle.generateKey({
-        name: "ECDH", namedCurve: "P-384",
-      }, false, ["deriveBits"]);
-      const bits = await crypto.subtle.deriveBits({
-        name: keyPair.publicKey.algorithm.name, public: keyPair.publicKey,
-      } as globalThis.EcdhKeyDeriveParams, keyPair.privateKey, null as unknown as number);
+      const keyPair = await crypto.subtle.generateKey(
+        {
+          name: "ECDH",
+          namedCurve: "P-384",
+        },
+        false,
+        ["deriveBits"],
+      );
+      const bits = await crypto.subtle.deriveBits(
+        {
+          name: keyPair.publicKey.algorithm.name,
+          public: keyPair.publicKey,
+        } as globalThis.EcdhKeyDeriveParams,
+        keyPair.privateKey,
+        null as unknown as number,
+      );
       assert.equal(bits.byteLength, 48);
     });
 
     it("P-521", async () => {
-      const keyPair = await crypto.subtle.generateKey({
-        name: "ECDH", namedCurve: "P-521",
-      }, false, ["deriveBits"]);
-      const bits = await crypto.subtle.deriveBits({
-        name: keyPair.publicKey.algorithm.name, public: keyPair.publicKey,
-      } as globalThis.EcdhKeyDeriveParams, keyPair.privateKey, null as unknown as number);
+      const keyPair = await crypto.subtle.generateKey(
+        {
+          name: "ECDH",
+          namedCurve: "P-521",
+        },
+        false,
+        ["deriveBits"],
+      );
+      const bits = await crypto.subtle.deriveBits(
+        {
+          name: keyPair.publicKey.algorithm.name,
+          public: keyPair.publicKey,
+        } as globalThis.EcdhKeyDeriveParams,
+        keyPair.privateKey,
+        null as unknown as number,
+      );
       assert.equal(bits.byteLength, 66);
     });
   });
@@ -377,7 +478,7 @@ describe("Crypto", () => {
       let keys: CryptoKeyPair;
       beforeAll(async () => {
         const alg = { name: "ed25519" };
-        keys = await crypto.subtle.generateKey(alg, true, ["sign", "verify"]) as CryptoKeyPair;
+        keys = (await crypto.subtle.generateKey(alg, true, ["sign", "verify"])) as CryptoKeyPair;
       });
       describe("private key", () => {
         it("JWK", async () => {
@@ -559,9 +660,14 @@ describe("Crypto", () => {
         const alg = { name: "x25519" };
         const importedPrivateKey = await crypto.subtle.importKey("jwk", privateKeyJwk, alg, false, ["deriveBits"]);
         const importedPublicKey = await crypto.subtle.importKey("jwk", publicKeyJwk, alg, true, []);
-        const bits = await crypto.subtle.deriveBits({
-          name: "x25519", public: importedPublicKey,
-        } as EcdhKeyDeriveParams, importedPrivateKey, 256);
+        const bits = await crypto.subtle.deriveBits(
+          {
+            name: "x25519",
+            public: importedPublicKey,
+          } as EcdhKeyDeriveParams,
+          importedPrivateKey,
+          256,
+        );
         assert.strictEqual(Buffer.from(bits).toString("base64"), derivedBitsBase64);
       });
     });

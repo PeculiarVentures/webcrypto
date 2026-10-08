@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["eslint", "import", "oxc", "typescript", "unicorn"],
+  "categories": {
+    "correctness": "error",
+    "perf": "warn",
+    "suspicious": "warn"
+  },
+  "rules": {
+    "eslint/no-shadow": "off",
+    "import/namespace": "off",
+    "typescript/no-explicit-any": "off",
+    "typescript/no-extraneous-class": "off",
+    "typescript/no-non-null-assertion": "off",
+    "typescript/prefer-for-of": "off",
+    "typescript/unified-signatures": "off",
+    "unicorn/no-array-reverse": "off",
+    "unicorn/no-array-sort": "off"
+  },
+  "ignorePatterns": ["**/build/**", "coverage/**"]
+}
