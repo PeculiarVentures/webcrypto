@@ -18,7 +18,9 @@ const banner = [
 ].join("\n");
 const input = "src/index.ts";
 const external = [
-  ...["node:crypto", "node:process", "node:buffer"],
+  "node:crypto",
+  "node:process",
+  "node:buffer",
   ...Object.keys(pkg.dependencies || {}),
 ];
 

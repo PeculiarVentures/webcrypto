@@ -12,7 +12,6 @@ export class AesCryptoKey extends SymmetricKey {
   })
   public declare data: Buffer;
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   public get alg() {
     switch (this.algorithm.name.toUpperCase()) {
