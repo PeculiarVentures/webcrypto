@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { AsnConvert } from "@peculiar/asn1-schema";
 import { assertBufferSource, convert, toArrayBuffer } from "@peculiar/utils";
+import { pem } from "@peculiar/utils/pem";
 import * as core from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { Ed25519CryptoKey } from "./crypto_key";
@@ -36,7 +37,7 @@ export class Ed25519Crypto {
   public static async sign(algorithm: Algorithm, key: Ed25519PrivateKey, data: Uint8Array): Promise<ArrayBuffer> {
     const signature = crypto.sign(null, Buffer.from(data), key.data);
 
-    return core.BufferSourceConverter.toArrayBuffer(signature);
+    return toArrayBuffer(signature);
   }
 
   public static async verify(algorithm: Algorithm, key: Ed25519PublicKey, signature: Uint8Array, data: Uint8Array): Promise<boolean> {
@@ -48,10 +49,10 @@ export class Ed25519Crypto {
       case "jwk":
         return key.toJWK();
       case "pkcs8": {
-        return core.PemConverter.toArrayBuffer(key.data.toString());
+        return toArrayBuffer(pem.decodeFirst(key.data.toString()));
       }
       case "spki": {
-        return core.PemConverter.toArrayBuffer(key.data.toString());
+        return toArrayBuffer(pem.decodeFirst(key.data.toString()));
       }
       case "raw": {
         const jwk = key.toJWK();
@@ -74,32 +75,29 @@ export class Ed25519Crypto {
           pkcs8.privateKeyAlgorithm.algorithm = algorithm.name.toLowerCase() === "ed25519" ? core.asn1.idEd25519 : core.asn1.idX25519;
           pkcs8.privateKey = AsnConvert.serialize(privateData);
           const raw = AsnConvert.serialize(pkcs8);
-          const pem = core.PemConverter.fromBufferSource(raw, "PRIVATE KEY");
-          return new Ed25519PrivateKey(algorithm, extractable, keyUsages, pem);
+          return new Ed25519PrivateKey(algorithm, extractable, keyUsages, pem.encode("PRIVATE KEY", raw));
         } else if (jwk.x) {
           // public key
           const pubKey = crypto.createPublicKey({
             format: "jwk",
             key: jwk as JsonWebKey,
           });
-          const pem = pubKey.export({
+          const publicPem = pubKey.export({
             format: "pem",
             type: "spki",
           }) as string;
-          return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
+          return new Ed25519PublicKey(algorithm, extractable, keyUsages, publicPem);
         } else {
           throw new core.OperationError("keyData: Cannot import JWK. 'd' or 'x' must be presented");
         }
       }
       case "pkcs8": {
         assertBufferSource(keyData);
-        const pem = core.PemConverter.fromBufferSource(toArrayBuffer(keyData), "PRIVATE KEY");
-        return new Ed25519PrivateKey(algorithm, extractable, keyUsages, pem);
+        return new Ed25519PrivateKey(algorithm, extractable, keyUsages, pem.encode("PRIVATE KEY", keyData));
       }
       case "spki": {
         assertBufferSource(keyData);
-        const pem = core.PemConverter.fromBufferSource(toArrayBuffer(keyData), "PUBLIC KEY");
-        return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
+        return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem.encode("PUBLIC KEY", keyData));
       }
       case "raw": {
         assertBufferSource(keyData);
@@ -112,11 +110,11 @@ export class Ed25519Crypto {
             x: convert.encode("base64url", raw),
           },
         });
-        const pem = key.export({
+        const publicPem = key.export({
           format: "pem",
           type: "spki",
         }) as string;
-        return new Ed25519PublicKey(algorithm, extractable, keyUsages, pem);
+        return new Ed25519PublicKey(algorithm, extractable, keyUsages, publicPem);
       }
       default:
         return Promise.reject(new core.OperationError("format: Must be 'jwk', 'raw', pkcs8' or 'spki'"));
