@@ -1,5 +1,5 @@
 import { Buffer } from "node:buffer";
-import { IJsonConverter } from "@peculiar/json-schema";
+import type { IJsonConverter } from "@peculiar/json-schema";
 import { convert } from "@peculiar/utils";
 
 export const JsonBase64UrlConverter: IJsonConverter<Buffer, string> = {
