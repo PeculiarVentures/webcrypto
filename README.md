@@ -18,22 +18,37 @@ We wanted to be able to write Javascript that used crypto on both the client and
 
 - [WARNING](#warning)
 - [Installing](#installing)
+- [Breaking Changes In v2](#breaking-changes-in-v2)
+- [Supported algorithms](#supported-algorithms)
 - [Using](#using)
 - [Examples](#examples)
 - [Bug Reporting](#bug-reporting)
+- [Contributing](#contributing)
 - [Related](#related)
 
 ## WARNING
 
 **At this time this solution should be considered suitable for research and experimentation, further code and security review is needed before utilization in a production application.**
 
-**Module is based on the Node.js crypto API. It requires Node v14.18.0 or higher.**
+**Module is based on the Node.js crypto API.**
 
 ## Installing
 
-```
+```sh
 npm install @peculiar/webcrypto
 ```
+
+The package is ESM-only with TypeScript declarations, and requires Node.js `^20.19.0 || >=22.12.0`. CommonJS code can still `require()` it on those versions. `webcrypto-core`, `@peculiar/asn1-schema` and `@peculiar/json-schema` are peer dependencies; npm 7+ installs them automatically.
+
+## Breaking Changes In v2
+
+v2 is ESM-only and requires Node.js `^20.19.0 || >=22.12.0` (was `>=14.18.0`). CommonJS code can still `require("@peculiar/webcrypto")` on these versions; Node.js 22.0–22.11 can't. The public API is unchanged: `Crypto` and `CryptoKey`, with the same algorithms and key import/export behavior.
+
+- **TypeScript compiling to CommonJS:** use `"module": "node20"` or `"nodenext"` (`node16` fails with TS1479). ESM and bundler setups need no changes. Consumers don't need `experimentalDecorators`.
+- **Jest in CommonJS mode:** switch to ESM mode or Vitest, or add `@peculiar/webcrypto`, `webcrypto-core`, `asn1js` and the `@peculiar/*` packages to `transformIgnorePatterns`.
+- **Deep imports** (`@peculiar/webcrypto/build/...`) stay blocked by `exports`; import from `@peculiar/webcrypto`. The `react-native` field is removed.
+- **Generated type declarations** replace the hand-written `index.d.ts`. `Crypto` now shows its `webcrypto-core` base class (for example `crypto.subtle.providers`); code written against the 1.x types still compiles.
+- **Peer dependencies:** `webcrypto-core` `^2.0.0`, `@peculiar/asn1-schema` `^3.0.0` and `@peculiar/json-schema` `^3.0.0`. Keys are parsed with classes that webcrypto-core registers in the schema storages of those packages, and `CryptoKey` is webcrypto-core's class, so an app needs exactly one copy of each; a conflicting major now fails at install (`ERESOLVE`) instead of at runtime. `@peculiar/utils` moves from 2 to 4.
 
 ## Supported algorithms
 
@@ -76,8 +91,9 @@ npm install @peculiar/webcrypto
 
 ## Using
 
-```javascript
-const { Crypto } = require("@peculiar/webcrypto");
+```js
+import { Crypto } from "@peculiar/webcrypto";
+// CommonJS: const { Crypto } = require("@peculiar/webcrypto");
 
 const crypto = new Crypto();
 ```
@@ -89,6 +105,10 @@ See [WebCrypto Docs](https://github.com/PeculiarVentures/webcrypto-docs/blob/mas
 ## Bug Reporting
 
 Please report bugs either as pull requests or as issues in the issue tracker. `@peculiar/webcrypto` has a full disclosure vulnerability policy. Please do NOT attempt to report any security vulnerability in this code privately to anybody.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the development setup, checks and release process.
 
 ## Related
 
