@@ -8,7 +8,6 @@
   },
   "rules": {
     "eslint/no-shadow": "off",
-    "import/namespace": "off",
     "typescript/no-explicit-any": "off",
     "typescript/no-extraneous-class": "off",
     "typescript/no-non-null-assertion": "off",

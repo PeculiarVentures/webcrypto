@@ -1,5 +1,6 @@
 import assert from "node:assert";
 import { Buffer } from "node:buffer";
+import nodeCrypto from "node:crypto";
 import { convert } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { describe, it } from "vitest";
@@ -123,5 +124,19 @@ describe("EC", () => {
         });
       });
     });
+  });
+});
+
+describe("JWK base64url members", () => {
+  // EC and RSA members are decoded by webcrypto-core; same results as 1.7.1.
+  it.each([
+    ["padding", (v: string) => `${v}=`],
+    ["base64 alphabet", (v: string) => v.replace(/-/g, "+").replace(/_/g, "/").replace(/^./, "+")],
+    ["invalid character", (v: string) => `*${v.slice(1)}`],
+  ])("rejects %s in EC 'd' and RSA 'n'", async (_name, change) => {
+    const ec = nodeCrypto.generateKeyPairSync("ec", { namedCurve: "P-256" }).privateKey.export({ format: "jwk" });
+    await assert.rejects(crypto.subtle.importKey("jwk", { ...ec, d: change(ec.d!) }, { name: "ECDSA", namedCurve: "P-256" }, true, ["sign"]));
+    const rsa = nodeCrypto.generateKeyPairSync("rsa", { modulusLength: 1024 }).publicKey.export({ format: "jwk" });
+    await assert.rejects(crypto.subtle.importKey("jwk", { ...rsa, n: change(rsa.n!) }, { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" }, true, ["verify"]));
   });
 });
