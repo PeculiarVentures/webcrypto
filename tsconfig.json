@@ -6,7 +6,7 @@
     "skipLibCheck": true,
     "removeComments": true,
     "importHelpers": true,
-    "types": ["node", "vitest/globals"],
+    "types": ["node"],
     "strict": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
