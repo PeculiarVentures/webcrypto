@@ -1,5 +1,5 @@
 import { Buffer } from "node:buffer";
-import crypto, { CipherGCMTypes } from "node:crypto";
+import crypto, { type CipherGCMTypes } from "node:crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import { assertBufferSource, toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";

@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
-import { IJsonConvertible, JsonParser, JsonSerializer } from "@peculiar/json-schema";
+import { type IJsonConvertible, JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import * as core from "webcrypto-core";
 import { AsymmetricKey } from "../../keys/asymmetric";
 import { getOidByNamedCurve } from "./helper";

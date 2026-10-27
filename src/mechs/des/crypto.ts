@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 import { JsonParser, JsonSerializer } from "@peculiar/json-schema";
 import { assertBufferSource, toArrayBuffer, toUint8Array } from "@peculiar/utils";
 import * as core from "webcrypto-core";
-import { DesParams } from "webcrypto-core";
+import type { DesParams } from "webcrypto-core";
 import { CryptoKey } from "../../keys";
 import { DesCryptoKey } from "./key";
 

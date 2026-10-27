@@ -1,16 +1,18 @@
 {
   "compilerOptions": {
-    "target": "es2022",
-    "module": "esnext",
+    "target": "es2023",
+    "lib": ["es2023", "DOM"],
+    "module": "preserve",
     "moduleResolution": "bundler",
-    "skipLibCheck": true,
-    "removeComments": true,
-    "importHelpers": true,
     "types": ["node"],
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true,
     "strict": true,
-    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "noImplicitOverride": true,
+    "noErrorTruncation": true,
     "experimentalDecorators": true,
-    "noImplicitOverride": true
+    "noEmit": true
   },
-  "exclude": ["build/**/*", "index.d.ts"]
+  "include": ["src", "*.config.ts"]
 }

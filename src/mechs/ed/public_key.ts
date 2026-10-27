@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
 import { AsnParser, AsnSerializer } from "@peculiar/asn1-schema";
-import { IJsonConvertible } from "@peculiar/json-schema";
+import type { IJsonConvertible } from "@peculiar/json-schema";
 import { convert, toArrayBuffer } from "@peculiar/utils";
 import * as core from "webcrypto-core";
 import { AsymmetricKey } from "../../keys/asymmetric";
