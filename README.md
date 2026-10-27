@@ -5,7 +5,7 @@
 <div align="center">
 
 ![NPM License](https://img.shields.io/npm/l/@peculiar/webcrypto)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/webcrypto/test.yml?label=test)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/PeculiarVentures/webcrypto/publish.yml?branch=master&label=publish)
 [![npm version](https://img.shields.io/npm/v/@peculiar/webcrypto.svg)](https://www.npmjs.com/package/@peculiar/webcrypto)
 ![Coveralls](https://img.shields.io/coverallsCoverage/github/PeculiarVentures/webcrypto)
 [![npm downloads](https://img.shields.io/npm/dm/@peculiar/webcrypto.svg)](https://www.npmjs.com/package/@peculiar/webcrypto)
