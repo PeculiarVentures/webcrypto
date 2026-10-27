@@ -1,6 +1,6 @@
 {
   "name": "@peculiar/webcrypto",
-  "version": "1.7.2",
+  "version": "2.0.0",
   "description": "A WebCrypto Polyfill for NodeJS",
   "type": "module",
   "sideEffects": false,
