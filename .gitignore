@@ -1,14 +1,4 @@
-/node_modules
-
-# VS Code
-/.vscode
-
-# Coverage
-/.nyc_output
-/coverage
-
-# Output
+coverage
+node_modules
 build
-
-# MacOS
 .DS_Store
