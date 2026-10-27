@@ -12,8 +12,7 @@ export class HmacCryptoKey extends CryptoKey {
 
   declare public algorithm: HmacKeyAlgorithm;
 
-  // @ts-ignore
-  protected get alg() {
+  protected override get alg() {
     const hash = this.algorithm.hash.name.toUpperCase();
     return `HS${hash.replace("SHA-", "")}`;
   }

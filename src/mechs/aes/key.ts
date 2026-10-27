@@ -13,8 +13,7 @@ export class AesCryptoKey extends SymmetricKey {
   })
   declare public data: Buffer;
 
-  // @ts-ignore
-  public get alg() {
+  public override get alg() {
     switch (this.algorithm.name.toUpperCase()) {
       case "AES-CBC":
         return `A${this.algorithm.length}CBC`;

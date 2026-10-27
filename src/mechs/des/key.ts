@@ -13,8 +13,7 @@ export class DesCryptoKey extends SymmetricKey {
   })
   declare public data: Buffer;
 
-  // @ts-ignore
-  public get alg() {
+  public override get alg() {
     switch (this.algorithm.name.toUpperCase()) {
       case "DES-CBC":
         return "DES-CBC";
