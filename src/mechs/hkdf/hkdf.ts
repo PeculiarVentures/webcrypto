@@ -1,7 +1,8 @@
 import { Buffer } from "node:buffer";
 import crypto from "node:crypto";
+import { toArrayBuffer, toUint8Array } from "@peculiar/utils/bytes";
 import * as core from "webcrypto-core";
-import { BufferSourceConverter, CryptoKey } from "webcrypto-core";
+import { CryptoKey } from "webcrypto-core";
 import { setCryptoKey, getCryptoKey } from "../storage";
 import { HkdfCryptoKey } from "./key";
 
@@ -24,11 +25,11 @@ export class HkdfProvider extends core.HkdfProvider {
     const hashLength = crypto.createHash(hash).digest().length;
 
     const byteLength = length / 8;
-    const info = BufferSourceConverter.toUint8Array(params.info);
+    const info = toUint8Array(params.info);
 
     const PRK = crypto
-      .createHmac(hash, BufferSourceConverter.toUint8Array(params.salt))
-      .update(BufferSourceConverter.toUint8Array(getCryptoKey(baseKey).data))
+      .createHmac(hash, toUint8Array(params.salt))
+      .update(toUint8Array(getCryptoKey(baseKey).data))
       .digest();
 
     const blocks = [Buffer.alloc(0)];
@@ -42,7 +43,7 @@ export class HkdfProvider extends core.HkdfProvider {
       );
     }
 
-    return BufferSourceConverter.toArrayBuffer(Buffer.concat(blocks).slice(0, byteLength));
+    return toArrayBuffer(Buffer.concat(blocks).slice(0, byteLength));
   }
 
   public override checkCryptoKey(key: CryptoKey, keyUsage?: KeyUsage) {

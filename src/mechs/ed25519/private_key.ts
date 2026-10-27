@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { AsnConvert } from "@peculiar/asn1-schema";
+import { pem } from "@peculiar/utils/pem";
 import * as core from "webcrypto-core";
 import { Ed25519CryptoKey } from "./crypto_key";
 
@@ -13,7 +14,7 @@ export class Ed25519PrivateKey extends Ed25519CryptoKey {
         format: "pem",
       })
       .export({ format: "jwk" }) as JsonWebKey;
-    const raw = core.PemConverter.toUint8Array(this.data.toString());
+    const raw = pem.decodeFirst(this.data.toString());
     const pkcs8 = AsnConvert.parse(raw, core.asn1.PrivateKeyInfo);
     const d = AsnConvert.parse(pkcs8.privateKey, core.asn1.EdPrivateKey).value;
     return {

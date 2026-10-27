@@ -57,7 +57,7 @@
   "dependencies": {
     "@peculiar/asn1-schema": "^2.7.0",
     "@peculiar/json-schema": "^1.1.12",
-    "@peculiar/utils": "^2.0.2",
+    "@peculiar/utils": "^4.1.0",
     "webcrypto-core": "^1.9.2"
   },
   "devDependencies": {
