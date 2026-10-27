@@ -55,13 +55,17 @@
   },
   "homepage": "https://github.com/PeculiarVentures/webcrypto#readme",
   "dependencies": {
-    "@peculiar/asn1-schema": "^2.7.0",
-    "@peculiar/json-schema": "^1.1.12",
-    "@peculiar/utils": "^4.1.0",
-    "webcrypto-core": "^1.9.2"
+    "@peculiar/utils": "^4.1.0"
+  },
+  "peerDependencies": {
+    "@peculiar/asn1-schema": "^3.0.0",
+    "@peculiar/json-schema": "^3.0.0",
+    "webcrypto-core": "^2.0.0"
   },
   "devDependencies": {
     "@arethetypeswrong/core": "^0.18.5",
+    "@peculiar/asn1-schema": "^3.0.0",
+    "@peculiar/json-schema": "^3.0.0",
     "@peculiar/webcrypto-test": "^2.0.0",
     "@types/node": "^25.9.9",
     "@vitest/coverage-v8": "^5.0.5",
@@ -69,7 +73,8 @@
     "oxlint": "^1.90.0",
     "tsdown": "^0.23.2",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.5"
+    "vitest": "^5.0.5",
+    "webcrypto-core": "^2.0.0"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
