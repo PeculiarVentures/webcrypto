@@ -1,27 +1,21 @@
-name: test
+name: Test
 
+# Pushes to master are tested by Publish, which calls this workflow before release-please.
 on:
   pull_request:
-    branches: [main, master]
-    types: [opened, synchronize]
-  push:
-    branches: [main, master]
+  workflow_call:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20, 22]
+  build:
+    runs-on: ubuntu-24.04
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 24
           cache: "npm"
 
       - name: Install dependencies
@@ -33,21 +27,17 @@ jobs:
       - name: Check formatting
         run: npm run format:check
 
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build package
+        run: npm run build
+
+      - name: Check generated package exports are committed
+        run: git diff --exit-code package.json
+
       - name: Run test with coverage
         run: npm run coverage
 
       - name: Coveralls
         uses: coverallsapp/github-action@v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          parallel: true
-
-  finish:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Close parallel build
-        uses: coverallsapp/github-action@v2
-        with:
-          parallel-finished: true
-          carryforward: "run-22.x"
